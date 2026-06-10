@@ -634,14 +634,18 @@ version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+]
+
+[package.dev-dependencies]
+dev = [
     { name = "ruff" },
 ]
 
 [package.metadata]
-requires-dist = [
-    { name = "fastapi", extras = ["standard"], specifier = ">=0.136.3" },
-    { name = "ruff", specifier = ">=0.15.16" },
-]
+requires-dist = [{ name = "fastapi", extras = ["standard"], specifier = ">=0.136.3" }]
+
+[package.metadata.requires-dev]
+dev = [{ name = "ruff", specifier = ">=0.15.16" }]
 
 [[package]]
 name = "ruff"
