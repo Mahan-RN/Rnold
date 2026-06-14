@@ -16,7 +16,7 @@ class TestProblem:
             diff=4,
             starter_code="x = 2+2",
         )
-    
+
     def test_constructor(self) -> None:
         assert self.problem1.id == 123
         assert self.problem1.title == "Arrays"
