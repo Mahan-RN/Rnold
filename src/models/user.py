@@ -5,11 +5,11 @@ class User:
     def __init__(
         self, git_email: str, git_id: int, git_username: str, created_at: dt
     ) -> None:
-        self.git_id: int = git_id
-        self.git_email: str = git_email
-        self.git_username: str = git_username
-        self.created_at: dt = created_at
-        self.last_seen: dt = created_at
+        self.git_id = git_id
+        self.git_email = git_email
+        self.git_username = git_username
+        self.created_at = created_at
+        self.last_seen = created_at
 
     @property
     def git_id(self) -> int:

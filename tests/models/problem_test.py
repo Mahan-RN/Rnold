@@ -4,9 +4,6 @@ from src.models.problem import Problem, Difficulty
 
 class TestProblem:
 
-    problem1: Problem
-    problem2: Problem
-
     @pytest.fixture(autouse=True)
     def before_each(self) -> None:
         self.problem1 = Problem(

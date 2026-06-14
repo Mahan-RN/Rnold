@@ -11,10 +11,10 @@ class Problem:
     def __init__(
         self, id: int, title: str, desc: str, diff: Difficulty, starter_code: str
     ):
-        self.id: int = id
-        self.title: str = title
-        self.desc: str = desc
-        self.diff: Difficulty = diff
+        self.id = id
+        self.title = title
+        self.desc = desc
+        self.diff = diff
         self.starter_code = starter_code
 
     @property

@@ -7,7 +7,7 @@ class TestUser:
 
     @pytest.fixture(autouse=True)
     def before_each(self) -> None:
-        dt: datetime = datetime(2026, 6, 13, 10, 53, 0)
+        dt = datetime(2026, 6, 13, 10, 53, 0)
         self.user1: User = User(
             git_email="myemail@gmail.com",
             git_id=12345678,

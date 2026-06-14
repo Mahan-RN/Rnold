@@ -7,11 +7,11 @@ class TestCase:
         expected_output: str,
         is_hidden: bool = True,
     ) -> None:
-        self.id: int = id
-        self.problem_id: int = problem_id
-        self.input: str = input
-        self.expected_output: str = expected_output
-        self.is_hidden: bool = is_hidden
+        self.id = id
+        self.problem_id = problem_id
+        self.input = input
+        self.expected_output = expected_output
+        self.is_hidden = is_hidden
 
     @property
     def id(self) -> int:
