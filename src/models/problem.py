@@ -35,7 +35,7 @@ class Problem:
 
     @property
     def starter_code(self) -> str:
-        return self.starter_code
+        return self._starter_code
 
     @id.setter
     def id(self, id: int) -> None:
