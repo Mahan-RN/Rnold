@@ -1,5 +1,5 @@
 import pytest
-from src.models.problem import Problem
+from src.models.problem import Problem, Difficulty
 
 
 class TestProblem:
@@ -8,12 +8,12 @@ class TestProblem:
     problem2: Problem
 
     @pytest.fixture(autouse=True)
-    def before_each(self):
+    def before_each(self) -> None:
         self.problem1 = Problem(
             id=123,
             title="Arrays",
             desc="this is an array problem",
-            diff=4,
+            diff=Difficulty.HARD,
             starter_code="x = 2+2",
         )
 
@@ -21,5 +21,5 @@ class TestProblem:
         assert self.problem1.id == 123
         assert self.problem1.title == "Arrays"
         assert self.problem1.desc == "this is an array problem"
-        assert self.problem1.diff == 4
+        assert self.problem1.diff == Difficulty.HARD
         assert self.problem1.starter_code == "x = 2+2"

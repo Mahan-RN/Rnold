@@ -17,37 +17,37 @@ class TestCase:
     def id(self) -> int:
         return self._id
 
-    @property
-    def problem_id(self) -> int:
-        return self._problem_id
-
-    @property
-    def input(self) -> str:
-        return self._input
-
-    @property
-    def expected_output(self) -> str:
-        return self._expected_output
-
-    @property
-    def is_hidden(self) -> bool:
-        return self._is_hidden
-
     @id.setter
     def id(self, id: int) -> None:
         self._id = id
+
+    @property
+    def problem_id(self) -> int:
+        return self._problem_id
 
     @problem_id.setter
     def problem_id(self, problem_id: int) -> None:
         self._problem_id = problem_id
 
+    @property
+    def input(self) -> str:
+        return self._input
+
     @input.setter
     def input(self, input: str) -> None:
         self._input = input
 
+    @property
+    def expected_output(self) -> str:
+        return self._expected_output
+
     @expected_output.setter
     def expected_output(self, expected_output: str) -> None:
         self._expected_output = expected_output
+
+    @property
+    def is_hidden(self) -> bool:
+        return self._is_hidden
 
     @is_hidden.setter
     def is_hidden(self, is_hidden: bool) -> None:
