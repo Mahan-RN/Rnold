@@ -1,10 +1,10 @@
 import pytest
 from src.models.user import User
 from datetime import datetime
+from uuid import UUID
 
 
 class TestUser:
-
     @pytest.fixture(autouse=True)
     def before_each(self) -> None:
         dt = datetime(2026, 6, 13, 10, 53, 0)
@@ -16,6 +16,8 @@ class TestUser:
         )
 
     def test_constructor(self) -> None:
+        assert isinstance(self.user1._user_id, UUID)
+        assert self.user1._user_id.version == 4
         assert self.user1.git_email == "myemail@gmail.com"
         assert self.user1.git_id == 12345678
         assert self.user1.git_username == "generic_user"

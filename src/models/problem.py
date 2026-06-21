@@ -1,4 +1,6 @@
 from enum import Enum
+from uuid import UUID, uuid4
+from typing import Final
 
 
 class Difficulty(Enum):
@@ -9,21 +11,17 @@ class Difficulty(Enum):
 
 class Problem:
     def __init__(
-        self, id: int, title: str, desc: str, diff: Difficulty, starter_code: str
-    ):
-        self.id = id
+        self, title: str, desc: str, diff: Difficulty, starter_code: str
+    ) -> None:
+        self._id: Final[UUID] = uuid4()
         self.title = title
         self.desc = desc
         self.diff = diff
         self.starter_code = starter_code
 
     @property
-    def id(self) -> int:
+    def id(self) -> UUID:
         return self._id
-
-    @id.setter
-    def id(self, id: int) -> None:
-        self._id = id
 
     @property
     def title(self) -> str:

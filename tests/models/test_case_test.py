@@ -3,7 +3,6 @@ from src.models.test_case import TestCase
 
 
 class TestTestCase:
-
     @pytest.fixture(autouse=True)
     def before_each(self) -> None:
         self.test_case1 = TestCase(

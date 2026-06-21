@@ -1,15 +1,22 @@
 from datetime import datetime as dt
+from uuid import UUID, uuid4
+from typing import Final
 
 
 class User:
     def __init__(
         self, git_email: str, git_id: int, git_username: str, created_at: dt
     ) -> None:
+        self._user_id: Final[UUID] = uuid4()
         self.git_id = git_id
         self.git_email = git_email
         self.git_username = git_username
         self.created_at = created_at
         self.last_seen = created_at
+
+    @property
+    def get_user_id(self) -> UUID:
+        return self._user_id
 
     @property
     def git_id(self) -> int:
