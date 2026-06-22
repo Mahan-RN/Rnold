@@ -1,54 +1,13 @@
-class TestCase:
-    def __init__(
-        self,
-        id: int,
-        problem_id: int,
-        input: str,
-        expected_output: str,
-        is_hidden: bool = True,
-    ) -> None:
-        self.id = id
-        self.problem_id = problem_id
-        self.input = input
-        self.expected_output = expected_output
-        self.is_hidden = is_hidden
+from src.database import Base
+from sqlalchemy import ForeignKey, Text
+from sqlalchemy.orm import Mapped, mapped_column
 
-    @property
-    def id(self) -> int:
-        return self._id
 
-    @id.setter
-    def id(self, id: int) -> None:
-        self._id = id
+class TestCase(Base):
+    __tablename__ = "test_cases"
 
-    @property
-    def problem_id(self) -> int:
-        return self._problem_id
-
-    @problem_id.setter
-    def problem_id(self, problem_id: int) -> None:
-        self._problem_id = problem_id
-
-    @property
-    def input(self) -> str:
-        return self._input
-
-    @input.setter
-    def input(self, input: str) -> None:
-        self._input = input
-
-    @property
-    def expected_output(self) -> str:
-        return self._expected_output
-
-    @expected_output.setter
-    def expected_output(self, expected_output: str) -> None:
-        self._expected_output = expected_output
-
-    @property
-    def is_hidden(self) -> bool:
-        return self._is_hidden
-
-    @is_hidden.setter
-    def is_hidden(self, is_hidden: bool) -> None:
-        self._is_hidden = is_hidden
+    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
+    problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
+    input: Mapped[str] = mapped_column(Text)
+    expected_output: Mapped[str] = mapped_column(Text)
+    is_hidden: Mapped[bool] = mapped_column(default=True)
