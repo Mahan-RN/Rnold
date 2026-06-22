@@ -1,59 +1,19 @@
-from datetime import datetime as dt
-from uuid import UUID, uuid4
-from typing import Final
+from src.database import Base
+from datetime import datetime
+from sqlalchemy import DateTime, func
+from sqlalchemy.orm import Mapped, mapped_column
 
 
-class User:
-    def __init__(
-        self, git_email: str, git_id: int, git_username: str, created_at: dt
-    ) -> None:
-        self._user_id: Final[UUID] = uuid4()
-        self.git_id = git_id
-        self.git_email = git_email
-        self.git_username = git_username
-        self.created_at = created_at
-        self.last_seen = created_at
+class User(Base):
+    __tablename__ = "users"
 
-    @property
-    def get_user_id(self) -> UUID:
-        return self._user_id
-
-    @property
-    def git_id(self) -> int:
-        return self._git_id
-
-    @git_id.setter
-    def git_id(self, git_id: int) -> None:
-        self._git_id = git_id
-
-    @property
-    def git_email(self) -> str:
-        return self._git_email
-
-    @git_email.setter
-    def git_email(self, git_email: str) -> None:
-        self._git_email = git_email
-
-    @property
-    def git_username(self) -> str:
-        return self._git_username
-
-    @git_username.setter
-    def git_username(self, git_username: str) -> None:
-        self._git_username = git_username
-
-    @property
-    def created_at(self) -> dt:
-        return self._created_at
-
-    @created_at.setter
-    def created_at(self, created_at: dt) -> None:
-        self._created_at = created_at
-
-    @property
-    def last_seen(self) -> dt:
-        return self._last_seen
-
-    @last_seen.setter
-    def last_seen(self, last_seen: dt) -> None:
-        self._last_seen = last_seen
+    id: Mapped[int] = mapped_column(primary_key=True)
+    github_id: Mapped[int] = mapped_column(unique=True)
+    github_email: Mapped[str]
+    github_username: Mapped[str]
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
+    last_login: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now()
+    )
