@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, DeclarativeBase
+from sqlalchemy.orm import sessionmaker, DeclarativeBase, MappedAsDataclass
 import os
 
 load_dotenv()
@@ -12,5 +12,5 @@ engine = create_engine(DATABASE_URL)
 session = sessionmaker(bind=engine)
 
 
-class Base(DeclarativeBase):
+class Base(MappedAsDataclass, DeclarativeBase):
     pass
