@@ -11,3 +11,6 @@ class TestCase(Base):
     input: Mapped[str] = mapped_column(Text)
     expected_output: Mapped[str] = mapped_column(Text)
     is_hidden: Mapped[bool] = mapped_column(default=True)
+
+    def __repr__(self) -> str:
+        return f"TestCase({self.id}, problem id: {self.problem_id})"

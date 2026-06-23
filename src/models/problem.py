@@ -19,3 +19,6 @@ class Problem(Base):
     description: Mapped[str] = mapped_column(Text)
     difficulty: Mapped[str] = mapped_column(Text)
     starter_code: Mapped[str] = mapped_column(Text)
+
+    def __repr__(self) -> str:
+        return f'Problem({self.id}, "{self.slug}")'

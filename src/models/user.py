@@ -17,3 +17,9 @@ class User(Base):
     last_login: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
+
+    def __repr__(self) -> str:
+        return (
+            f"User({self.id}, github_id: {self.github_id},"
+            f"github_email: {self.github_email}, github_username: {self.github_username})"
+        )
