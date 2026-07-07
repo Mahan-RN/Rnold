@@ -1,0 +1,61 @@
+// Database schema for Rnold
+
+Table users {
+  github_id integer [primary key]
+  github_email varchar [not null]
+  github_username varchar [not null]
+  role varchar [not null]
+  created_at timestamptz [not null, default:'now()']
+  last_login timestamptz [not null, default:'now()']
+}
+
+Table problems {
+  id integer [primary key]
+  topic_id integer [ref: > topics.id]
+  order integer
+  slug varchar [not null, unique]
+  title varchar [not null]
+  description varchar [not null]
+  difficulty varchar [not null]
+  starter_code varchar [not null]
+}
+
+Table topics {
+  id integer [primary key]
+  name varchar [not null, unique]
+  slug varchar [not null, unique]
+  description varchar
+  order int [not null, unique]
+}
+
+Table test_cases {
+  id integer [primary key]
+  problem_id integer [ref: > problems.id]
+  input varchar [not null]
+  expected_output varchar [not null]
+  is_hidden bool [default: True]
+}
+
+Table submissions {
+  id integer [primary key]
+  user_id integer [not null, ref: > users.github_id]
+  problem_id integer [not null, ref: > problems.id]
+  status varchar [not null]
+  submitted_at timestamptz [not null, default:'now()']
+  runtime_ms integer
+  code varchar
+}
+
+Table user_problem_status {
+  user_id integer [not null, ref: > users.github_id]
+  problem_id integer [not null, ref: > problems.id]
+  solved boolean [not null, default: false]
+  first_solved_at timestamptz
+  best_runtime_ms integer
+  attempt_count integer [not null, default: 0]
+
+  indexes {
+    (user_id, problem_id) [pk]
+  }
+
+}

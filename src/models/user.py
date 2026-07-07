@@ -11,6 +11,7 @@ class User(Base):
     github_id: Mapped[int] = mapped_column(unique=True)
     github_email: Mapped[str]
     github_username: Mapped[str]
+    role: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
