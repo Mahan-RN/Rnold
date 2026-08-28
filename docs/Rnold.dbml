@@ -4,7 +4,7 @@ Table users {
   github_id integer [primary key]
   github_email varchar [not null]
   username varchar [not null]
-  role varchar [not null]
+  role varchar [not null, default:'USER']
   created_at timestamptz [not null, default:'now()']
   last_login timestamptz [not null, default:'now()']
 }
