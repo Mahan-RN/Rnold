@@ -38,7 +38,7 @@ Table topics {
 
 Table test_cases {
   id integer [primary key]
-  problem_id integer [not null, ref: > problems.id, note: 'ON DELETE CASCADE']
+  problem_id integer [primary key, ref: > problems.id, note: 'ON DELETE CASCADE']
   code varchar [not null]
   expected_output varchar [not null]
   is_hidden bool [default: True]
