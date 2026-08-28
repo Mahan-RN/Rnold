@@ -7,9 +7,14 @@ class Topic(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True)
-    slug: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str]
-    order: Mapped[int] = mapped_column(unique=True)
+    sort_order: Mapped[int | None] = mapped_column(unique=True)
 
     def __repr__(self) -> str:
-        return f"Topic({self.name}, {self.slug})"
+        return f"""
+        Topic(
+        id: {self.id},
+        name: '{self.name}',
+        description: '{self.description}',
+        sort_order: {self.sort_order}
+        )"""
