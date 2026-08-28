@@ -100,6 +100,21 @@
         "secondSchemaName": "public",
         "secondRelation": "*",
         "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "problem_id"
+        ],
+        "firstTableName": "test_cases",
+        "firstSchemaName": "public",
+        "firstRelation": "*",
+        "secondFieldNames": [
+          "id"
+        ],
+        "secondTableName": "problems",
+        "secondSchemaName": "public",
+        "secondRelation": "1",
+        "checkPoints": []
       }
     ]
   },

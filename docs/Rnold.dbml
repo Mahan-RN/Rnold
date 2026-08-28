@@ -11,7 +11,7 @@ Table users {
 
 Table submissions {
   id integer [primary key]
-  user_id integer [not null, ref: > users.github_id]
+  user_id integer [not null, ref: > users.github_id, note: 'ON DELETE CASCADE']
   problem_id integer [not null, ref: > problems.id]
   status varchar [not null]
   created_at timestamptz [not null, default:'now()']
@@ -38,7 +38,7 @@ Table topics {
 
 Table test_cases {
   id integer [primary key]
-  problem_id integer [ref: > problems.id]
+  problem_id integer [not null, ref: > problems.id, note: 'ON DELETE CASCADE']
   code varchar [not null]
   expected_output varchar [not null]
   is_hidden bool [default: True]
