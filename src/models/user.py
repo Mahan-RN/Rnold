@@ -1,11 +1,15 @@
 from src.database import Base
 from datetime import datetime
 from sqlalchemy import DateTime, func
-from sqlalchemy.orm import Mapped, mapped_column
-from enum import Enum, auto
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from enum import IntEnum, auto
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .submission import Submission
 
 
-class Role(Enum):
+class Role(IntEnum):
     USER = auto()
     ADMIN = auto()
 
@@ -21,6 +25,9 @@ class User(Base):
     )
     last_login: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
+    )
+    submissions: Mapped[list["Submission"]] = relationship(
+        back_populates="user", cascade="all, delete-orphan", passive_deletes=True
     )
     role: Mapped[int] = mapped_column(default=Role.USER)
 
