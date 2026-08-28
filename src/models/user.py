@@ -2,12 +2,12 @@ from src.database import Base
 from datetime import datetime
 from sqlalchemy import DateTime, func
 from sqlalchemy.orm import Mapped, mapped_column
-from enum import Enum
+from enum import Enum, auto
 
 
 class Role(Enum):
-    USER = 1
-    ADMIN = 2
+    USER = auto()
+    ADMIN = auto()
 
 
 class User(Base):
@@ -22,11 +22,16 @@ class User(Base):
     last_login: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
-    role: Mapped[str] = mapped_column(default=Role.USER)
+    role: Mapped[int] = mapped_column(default=Role.USER)
 
     def __repr__(self) -> str:
-        return (
-            f"User(github_id: {self.github_id}, "
-            f"github_email: `{self.github_email}`, username: `{self.username}`, created_at: `{self.created_at}`, "
-            f"last_login: `{self.last_login}`)"
-        )
+        return f"""
+            User(
+            github_id: {self.github_id},
+            github_email: '{self.github_email}',
+            username: '{self.username}',
+            created_at: '{self.created_at}',
+            last_login: '{self.last_login}',
+            role: {self.role}
+            )
+            """
