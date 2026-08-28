@@ -1,51 +1,76 @@
 {
-  "version": "2.0.0",
+  "version": "3.0.0",
   "darkMode": true,
-  "gridEnabling": false,
+  "gridEnabling": true,
   "currentViewName": null,
   "defaultView": {
     "detailLevel": "All",
+    "relationshipMode": "All",
     "tablePositions": [
       {
         "name": "users",
         "schemaName": "public",
-        "x": 12,
-        "y": 12
-      },
-      {
-        "name": "problems",
-        "schemaName": "public",
-        "x": 534.54541015625,
-        "y": 53
-      },
-      {
-        "name": "topics",
-        "schemaName": "public",
-        "x": 12,
-        "y": 282
-      },
-      {
-        "name": "test_cases",
-        "schemaName": "public",
-        "x": 1025.11767578125,
-        "y": 314
+        "x": 0,
+        "y": 0
       },
       {
         "name": "submissions",
         "schemaName": "public",
-        "x": 1025.11767578125,
-        "y": 12
+        "x": 320,
+        "y": 0
       },
       {
-        "name": "user_problem_status",
+        "name": "problems",
         "schemaName": "public",
-        "x": 1025.11767578125,
-        "y": 552
+        "x": 632,
+        "y": 0
+      },
+      {
+        "name": "topics",
+        "schemaName": "public",
+        "x": 930.775593936862,
+        "y": 48
+      },
+      {
+        "name": "test_cases",
+        "schemaName": "public",
+        "x": 619.8293160851113,
+        "y": -248
       }
     ],
     "tableGroupCollapseStates": [],
     "stickyNoteLayouts": [],
     "referencePaths": [
+      {
+        "firstFieldNames": [
+          "github_id"
+        ],
+        "firstTableName": "users",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "user_id"
+        ],
+        "secondTableName": "submissions",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
+      {
+        "firstFieldNames": [
+          "id"
+        ],
+        "firstTableName": "problems",
+        "firstSchemaName": "public",
+        "firstRelation": "1",
+        "secondFieldNames": [
+          "problem_id"
+        ],
+        "secondTableName": "submissions",
+        "secondSchemaName": "public",
+        "secondRelation": "*",
+        "checkPoints": []
+      },
       {
         "firstFieldNames": [
           "id"
@@ -72,66 +97,6 @@
           "problem_id"
         ],
         "secondTableName": "test_cases",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "github_id"
-        ],
-        "firstTableName": "users",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "user_id"
-        ],
-        "secondTableName": "submissions",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "problems",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "problem_id"
-        ],
-        "secondTableName": "submissions",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "github_id"
-        ],
-        "firstTableName": "users",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "user_id"
-        ],
-        "secondTableName": "user_problem_status",
-        "secondSchemaName": "public",
-        "secondRelation": "*",
-        "checkPoints": []
-      },
-      {
-        "firstFieldNames": [
-          "id"
-        ],
-        "firstTableName": "problems",
-        "firstSchemaName": "public",
-        "firstRelation": "1",
-        "secondFieldNames": [
-          "problem_id"
-        ],
-        "secondTableName": "user_problem_status",
         "secondSchemaName": "public",
         "secondRelation": "*",
         "checkPoints": []
