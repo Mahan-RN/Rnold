@@ -25,3 +25,6 @@ show_error_codes = true
 warn_unused_ignores = true
 files = ["src/"]
 explicit_package_bases = true
+
+[tool.fastapi]
+entrypoint = "src.main:app"
