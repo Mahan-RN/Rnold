@@ -1,11 +1,12 @@
+import os
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+
 from alembic import context
 from dotenv import load_dotenv
-import os
-from src.database import Base
+from sqlalchemy import engine_from_config, pool
+
 import src.models  # noqa: F401 — imported to register models with Base.metadata
+from src.database import Base
 
 # Load .env file
 load_dotenv()

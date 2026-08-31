@@ -1,8 +1,10 @@
 from enum import IntEnum, auto
-from src.database import Base
-from sqlalchemy import Text, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
+
+from sqlalchemy import ForeignKey, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+
+from src.database import Base
 
 if TYPE_CHECKING:
     from .test_case import TestCase

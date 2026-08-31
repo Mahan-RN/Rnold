@@ -1,9 +1,11 @@
-from fastapi import FastAPI
-from src.routers import users_router
-from contextlib import asynccontextmanager
-from src.database import Base, engine
 from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+
+from fastapi import FastAPI
+
 import src.models  # noqa: F401
+from src.database import Base, engine
+from src.routers import users_router
 
 
 @asynccontextmanager
