@@ -16,7 +16,7 @@ DbSession = Annotated[Session, Depends(get_db)]
 
 @router.get("", response_model=list[GetUser])
 def get_users(db: DbSession) -> Sequence[User]:
-    stmt = select(User).order_by(User.github_id)
+    stmt = select(User).order_by(User.username)
     return db.scalars(stmt).all()
 
 
