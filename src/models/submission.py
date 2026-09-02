@@ -21,7 +21,9 @@ class Submission(Base):
     __tablename__ = "submissions"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    user_id: Mapped[int] = mapped_column(
+        ForeignKey("users.github_id", ondelete="CASCADE")
+    )
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
     status: Mapped[int]
     created_at: Mapped[datetime] = mapped_column(
