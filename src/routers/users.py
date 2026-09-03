@@ -20,7 +20,11 @@ def get_users(db: DbSession) -> Sequence[User]:
     return db.scalars(stmt).all()
 
 
-@router.get("/{user_github_id}", response_model=GetUser)
+@router.get(
+    "/{user_github_id}",
+    response_model=GetUser,
+    responses={404: {"description": "User not found"}},
+)
 def get_user(user_github_id: str, db: DbSession) -> User:
     user: User | None = db.get(User, user_github_id)
     if user is not None:
