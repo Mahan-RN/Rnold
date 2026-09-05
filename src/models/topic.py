@@ -6,7 +6,7 @@ from src.database import Base
 class Topic(Base):
     __tablename__ = "topics"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
     name: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str]
     sort_order: Mapped[int | None] = mapped_column(unique=True)

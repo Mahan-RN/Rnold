@@ -1,3 +1,3 @@
-from src.schemas.user import GetUser
+from src.schemas.user import GetUser, PostUser
 
-__all__ = ["GetUser"]
+__all__ = ["GetUser", "PostUser"]

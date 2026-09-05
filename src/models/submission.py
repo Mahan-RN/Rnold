@@ -8,7 +8,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 
 if TYPE_CHECKING:
-    from .user import User
+    from src.models.problem import Problem
+    from src.models.user import User
 
 
 class Status(IntEnum):
@@ -20,18 +21,19 @@ class Status(IntEnum):
 class Submission(Base):
     __tablename__ = "submissions"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.github_id", ondelete="CASCADE")
     )
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
     status: Mapped[int]
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True), server_default=func.now(), init=False
     )
     runtime_ms: Mapped[int]
     code: Mapped[str] = mapped_column(Text)
     user: Mapped["User"] = relationship(back_populates="submissions")
+    problem: Mapped["Problem"] = relationship(back_populates="submissions")
 
     def __repr__(self) -> str:
         return f"""

@@ -23,13 +23,17 @@ class User(Base):
     github_email: Mapped[str]
     username: Mapped[str]
     created_at: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True), server_default=func.now(), init=False
     )
     last_login: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
+        DateTime(timezone=True), server_default=func.now(), init=False
     )
     submissions: Mapped[list["Submission"]] = relationship(
-        back_populates="user", cascade="all, delete-orphan", passive_deletes=True
+        back_populates="user",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        init=False,
+        default_factory=list,
     )
     role: Mapped[int] = mapped_column(default=Role.USER)
 

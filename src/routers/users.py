@@ -34,3 +34,16 @@ def get_user(user_github_id: str, db: DbSession) -> User:
             status_code=404,
             detail=f"User with GitHub ID {user_github_id} does not exist",
         )
+
+
+# @router.post("", response_model=GetUser)
+# def post_user(user: PostUser, db: DbSession) -> User:
+#     user_dict = user.model_dump()
+#     casted_user = User(
+#         github_id=user_dict["github_id"],
+#         github_email=user_dict["github_email"],
+#         username=user_dict["username"],
+#     )
+#     db.add(casted_user)
+#     db.commit()
+#     return casted_user

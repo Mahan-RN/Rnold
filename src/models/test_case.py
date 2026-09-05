@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 class TestCase(Base):
     __tablename__ = "test_cases"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"), primary_key=True)
     code: Mapped[str] = mapped_column(Text)
     expected_output: Mapped[str] = mapped_column(Text)
