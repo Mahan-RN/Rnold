@@ -1,9 +1,8 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
-
 import src.models  # noqa: F401
+from fastapi import FastAPI
 from src.database import Base, engine
 from src.routers import users_router
 

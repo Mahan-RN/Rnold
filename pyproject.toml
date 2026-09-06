@@ -29,6 +29,7 @@ show_error_codes = true
 warn_unused_ignores = true
 files = ["src/"]
 explicit_package_bases = true
+plugins = "pydantic.mypy"
 
 [tool.fastapi]
 entrypoint = "src.main:app"
