@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class GitAuthSettings(BaseSettings):
     github_client_id: str
     github_client_secret: SecretStr
-    github_redirect_url: str
+    github_redirect_uri: str
     session_secret_key: SecretStr
 
     model_config = SettingsConfigDict(
