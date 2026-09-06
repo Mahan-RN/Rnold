@@ -1,8 +1,10 @@
 import secrets
 from typing import TypedDict, cast
 from urllib.parse import urlencode
+
 import httpx
-from src.config import GitAuthSettings
+
+from src.config import git_auth_settings
 
 GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
@@ -46,8 +48,8 @@ def generate_state() -> str:
 
 def build_authorize_url(state: str) -> str:
     params = {
-        "client_id": GitAuthSettings.github_client_id,
-        "redirect_uri": GitAuthSettings.github_redirect_uri,
+        "client_id": git_auth_settings.github_client_id,
+        "redirect_uri": git_auth_settings.github_redirect_uri,
         "scope": SCOPES,
         "state": state,
     }
@@ -59,10 +61,10 @@ def exchange_code_for_token(code: str) -> str:
         response = client.post(
             GITHUB_TOKEN_URL,
             data={
-                "client_id": GitAuthSettings.github_client_id,
-                "client_secret": GitAuthSettings.github_client_secret,
+                "client_id": git_auth_settings.github_client_id,
+                "client_secret": git_auth_settings.github_client_secret,
                 "code": code,
-                "redirect_uri": GitAuthSettings.github_redirect_uri,
+                "redirect_uri": git_auth_settings.github_redirect_uri,
             },
             headers={"Accept": "application/json"},
         )

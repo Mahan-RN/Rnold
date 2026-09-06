@@ -13,6 +13,9 @@ class GitAuthSettings(BaseSettings):
     )
 
 
+git_auth_settings = GitAuthSettings()
+
+
 class Settings(BaseSettings):
     database_url: str = Field(repr=False)
 
