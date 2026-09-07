@@ -62,7 +62,7 @@ def exchange_code_for_token(code: str) -> str:
             GITHUB_TOKEN_URL,
             data={
                 "client_id": git_auth_settings.github_client_id,
-                "client_secret": git_auth_settings.github_client_secret,
+                "client_secret": git_auth_settings.github_client_secret.get_secret_value(),
                 "code": code,
                 "redirect_uri": git_auth_settings.github_redirect_uri,
             },
