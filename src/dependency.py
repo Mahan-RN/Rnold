@@ -19,3 +19,6 @@ def get_current_user(request: Request, db: DbSession) -> User:
         raise HTTPException(status.HTTP_401_UNAUTHORIZED, "not authenticated")
 
     return user
+
+
+CurrentUser = Annotated[User, Depends(get_current_user)]
