@@ -41,7 +41,7 @@ def github_callback(
         raise HTTPException(status.HTTP_400_BAD_REQUEST, str(exc)) from exc
 
     user = _get_or_create_user(db, profile)
-    request.session["user_id"] = user.github_id
+    request.session["github_id"] = user.github_id
 
     return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
 

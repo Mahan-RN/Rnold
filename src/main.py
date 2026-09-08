@@ -21,6 +21,7 @@ app.add_middleware(
     SessionMiddleware,
     secret_key=git_auth_settings.session_secret_key.get_secret_value(),
     same_site="lax",
+    max_age=30 * 60,
     # Set to True in production
     https_only=False,
 )
