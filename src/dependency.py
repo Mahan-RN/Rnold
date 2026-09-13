@@ -22,3 +22,7 @@ def get_current_user(request: Request, db: DbSession) -> User:
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
+
+
+def logout(request: Request) -> None:
+    request.session.clear()

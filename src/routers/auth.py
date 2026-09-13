@@ -10,6 +10,7 @@ from src.database import get_db
 from src.models.user import User
 from src.services import github_oauth
 from src.services.github_oauth import GithubOAuthError, GithubProfile
+from src.dependency import logout
 
 router = APIRouter(prefix="/auth/github", tags=["auth"])
 
@@ -48,7 +49,7 @@ def github_callback(
 
 @router.post("/logout")
 def github_logout(request: Request) -> Response:
-    request.session.clear()
+    logout(request)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 

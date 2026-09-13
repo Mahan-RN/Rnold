@@ -6,7 +6,7 @@ from src.exceptions.user_exceptions import UserNotFoundError, LastAdminDeletionE
 from sqlalchemy.orm import Session
 
 
-def get_one(github_id: int, session: Session) -> User | None:
+def get_one(github_id: int, session: Session) -> User:
     user = user_repository.get_one(github_id, session)
     if user is None:
         raise UserNotFoundError(f"User with github ID {github_id} not found")
