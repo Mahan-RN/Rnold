@@ -45,13 +45,5 @@ def update_one(
 def delete_one(github_id: int, session: Session) -> None:
     user: User | None = session.get(User, github_id)
     if user is not None:
-        if user.role == Role.USER:
-            session.delete(user)
-            session.flush()
-        else:
-            results = session.query(User).where(User.role == Role.ADMIN).all()
-            if len(results) > 1:
-                session.delete(user)
-                session.flush()
-            else:
-                return None
+        session.delete(user)
+        session.flush()

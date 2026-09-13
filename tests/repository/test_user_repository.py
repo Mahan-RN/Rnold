@@ -22,12 +22,6 @@ class TestUserRepository:
             "username": "admin1",
             "role": Role.ADMIN,
         }
-        self.admin2 = {
-            "github_id": 123_123,
-            "github_email": "mahanrn@gmail.com",
-            "username": "mahanrn",
-            "role": Role.ADMIN,
-        }
 
     def test_get_one_no_match(self, db_session: Session):
         user = user_repository.get_one(1, db_session)
@@ -116,16 +110,3 @@ class TestUserRepository:
         assert len(user_repository.get_all(db_session)) == 1
         user_repository.delete_one(self.user1["github_id"], db_session)
         assert len(user_repository.get_all(db_session)) == 0
-
-    def test_delete_one_admin(self, db_session: Session):
-        user_repository.insert_one(**self.admin1, session=db_session)
-        assert len(user_repository.get_all(db_session)) == 1
-        user_repository.delete_one(self.admin1["github_id"], db_session)
-        assert len(user_repository.get_all(db_session)) == 1
-
-    def test_delete_two_admin(self, db_session: Session):
-        user_repository.insert_one(**self.admin1, session=db_session)
-        user_repository.insert_one(**self.admin2, session=db_session)
-        assert len(user_repository.get_all(db_session)) == 2
-        user_repository.delete_one(self.admin1["github_id"], db_session)
-        assert len(user_repository.get_all(db_session)) == 1

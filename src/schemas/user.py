@@ -19,3 +19,9 @@ class PostUser(BaseModel):
     github_id: int
     github_email: EmailStr
     username: str
+    role: Role = Role.USER
+
+
+class PutUser(BaseModel):
+    github_id: int
+    username: str
