@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from sqlalchemy import select
 from sqlalchemy.orm import Session
-from src.models import User
+from src.models import User, Role
 
 
 def get_one(github_id: int, session: Session) -> User | None:
@@ -14,20 +14,27 @@ def get_all(session: Session) -> Sequence[User]:
 
 
 def insert_one(
-    github_id: int, github_email: str, username: str, session: Session
+    github_id: int,
+    github_email: str,
+    username: str,
+    session: Session,
+    role: Role = Role.USER,
 ) -> User:
-    user = User(github_id, github_email, username)
+    user = User(github_id, github_email, username, role)
     session.add(user)
     session.flush()
     return user
 
 
 def update_one(
-    github_id: int, github_email: str | None, username: str | None, session: Session
-) -> User:
+    github_id: int,
+    session: Session,
+    github_email: str | None = None,
+    username: str | None = None,
+) -> User | None:
     user = session.get(User, github_id)
     if user is None:
-        raise Exception(f"User with github ID {github_id} not found")
+        return None
     if github_email is not None:
         user.github_email = github_email
     if username is not None:
@@ -36,5 +43,15 @@ def update_one(
 
 
 def delete_one(github_id: int, session: Session) -> None:
-    user = session.get(User, github_id)
-    session.delete(user)
+    user: User | None = session.get(User, github_id)
+    if user is not None:
+        if user.role == Role.USER:
+            session.delete(user)
+            session.flush()
+        else:
+            results = session.query(User).where(User.role == Role.ADMIN).all()
+            if len(results) > 1:
+                session.delete(user)
+                session.flush()
+            else:
+                return None

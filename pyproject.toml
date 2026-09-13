@@ -8,7 +8,6 @@ dependencies = [
     "alembic>=1.18.4",
     "email-validator>=2.3.0",
     "fastapi[standard]>=0.136.3",
-    "httpx>=0.28.1",
     "itsdangerous>=2.2.0",
     "psycopg2>=2.9.12",
     "pydantic-settings>=2.14.1",
@@ -17,7 +16,14 @@ dependencies = [
 ]
 
 [dependency-groups]
-dev = ["mypy>=2.1.0", "pre-commit>=4.6.0", "pytest>=9.1.0", "ruff>=0.15.16"]
+dev = [
+    "httpx2>=2.12.0",
+    "mypy>=2.1.0",
+    "pre-commit>=4.6.0",
+    "pytest>=9.1.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.16",
+]
 
 [tool.mypy]
 disallow_untyped_defs = true
@@ -33,3 +39,7 @@ plugins = "pydantic.mypy"
 
 [tool.fastapi]
 entrypoint = "src.main:app"
+
+[tool.pytest.ini_options]
+pythonpath = "."
+testpaths = ["tests"]
