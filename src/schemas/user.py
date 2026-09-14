@@ -22,6 +22,9 @@ class PostUser(BaseModel):
     role: Role = Role.USER
 
 
-class PutUser(BaseModel):
-    github_id: int
+class UpdateUsernameRequest(BaseModel):
     username: str
+
+
+class UpdateRoleRequest(BaseModel):
+    role: Role = Role.USER

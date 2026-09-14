@@ -1,4 +1,4 @@
-from src.schemas.user import PostUser, PutUser
+from src.schemas.user import PostUser
 from sqlalchemy.orm import Session
 from src.exceptions.user_exceptions import UserNotFoundError, LastAdminDeletionError
 from src.services import user_services
@@ -44,15 +44,24 @@ class TestUserServices:
         assert admin_result.role == Role.ADMIN
 
     def test_update_one_no_match(self, db_session: Session):
-        put_user = PutUser(github_id=5000, username="new_user")
         with pytest.raises(UserNotFoundError):
-            user_services.update_one(put_user, db_session)
+            user_services.update_one(5000, db_session, None, "new_user")
 
-    def test_updated_one_match(self, db_session: Session):
+    def test_updated_one_match_username(self, db_session: Session):
         user_services.insert_one(self.post_user1, db_session)
-        put_user = PutUser(github_id=self.post_user1.github_id, username="new_username")
-        result = user_services.update_one(put_user, db_session)
+        result = user_services.update_one(
+            self.post_user1.github_id, db_session, None, "new_username"
+        )
         assert result.username == "new_username"
+
+    def test_update_one_match_role(self, db_session: Session):
+        user_services.insert_one(self.post_user1, db_session)
+        before = user_services.get_one(self.post_user1.github_id, db_session)
+        assert before.role == Role.USER
+        after = user_services.update_one(
+            self.post_user1.github_id, db_session, Role.ADMIN, None
+        )
+        assert after.role == Role.ADMIN
 
     def test_delete_one_no_match(self, db_session: Session):
         with pytest.raises(UserNotFoundError):

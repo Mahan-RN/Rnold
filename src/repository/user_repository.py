@@ -29,16 +29,17 @@ def insert_one(
 def update_one(
     github_id: int,
     session: Session,
-    github_email: str | None = None,
     username: str | None = None,
+    role: Role | None = None,
 ) -> User | None:
     user = session.get(User, github_id)
     if user is None:
         return None
-    if github_email is not None:
-        user.github_email = github_email
     if username is not None:
         user.username = username
+    if role is not None:
+        user.role = role
+    session.flush()
     return user
 
 

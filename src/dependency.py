@@ -2,7 +2,7 @@ from typing import Annotated
 from fastapi import Depends, HTTPException, Request, status
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.models import User
+from src.models import User, Role
 
 
 DbSession = Annotated[Session, Depends(get_db)]
@@ -22,6 +22,17 @@ def get_current_user(request: Request, db: DbSession) -> User:
 
 
 CurrentUser = Annotated[User, Depends(get_current_user)]
+
+
+def get_current_admin(current_user: CurrentUser) -> User:
+    if current_user.role != Role.ADMIN:
+        raise HTTPException(
+            status.HTTP_403_FORBIDDEN, detail="Admin privileges required"
+        )
+    return current_user
+
+
+CurrentAdmin = Annotated[User, Depends(get_current_admin)]
 
 
 def logout(request: Request) -> None:

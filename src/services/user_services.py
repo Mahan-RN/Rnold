@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from src.models import User, Role
-from src.schemas.user import PostUser, PutUser
+from src.schemas.user import PostUser
 from src.repository import user_repository
 from src.exceptions.user_exceptions import UserNotFoundError, LastAdminDeletionError
 from sqlalchemy.orm import Session
@@ -24,10 +24,15 @@ def insert_one(user: PostUser, session: Session) -> User:
     )
 
 
-def update_one(user: PutUser, session: Session) -> User | None:
-    result = user_repository.update_one(user.github_id, session, username=user.username)
+def update_one(
+    github_id: int,
+    session: Session,
+    role: Role | None = None,
+    username: str | None = None,
+) -> User:
+    result = user_repository.update_one(github_id, session, username, role)
     if result is None:
-        raise UserNotFoundError(f"User with github ID {user.github_id} not found")
+        raise UserNotFoundError(f"User with github ID {github_id} not found")
     else:
         return result
 
