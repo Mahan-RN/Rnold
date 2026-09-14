@@ -1,5 +1,9 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from src.models import Problem
 
 
 class Topic(Base):
@@ -9,6 +13,13 @@ class Topic(Base):
     name: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str]
     sort_order: Mapped[int | None] = mapped_column(unique=True)
+    problems: Mapped[list["Problem"]] = relationship(
+        back_populates="topic",
+        cascade="all, delete-orphan",
+        passive_deletes=True,
+        init=False,
+        default_factory=list,
+    )
 
     def __repr__(self) -> str:
         return f"""

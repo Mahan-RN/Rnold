@@ -6,8 +6,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 
 if TYPE_CHECKING:
-    from src.models.submission import Submission
-    from src.models.test_case import TestCase
+    from src.models import Submission
+    from src.models import TestCase
+    from src.models import Topic
 
 
 class Difficulty(IntEnum):
@@ -20,7 +21,7 @@ class Problem(Base):
     __tablename__ = "problems"
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
-    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"), init=False)
+    topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
     sort_order: Mapped[int | None]
     title: Mapped[str] = mapped_column(Text, unique=True)
     description: Mapped[str] = mapped_column(Text)
@@ -40,6 +41,7 @@ class Problem(Base):
         init=False,
         default_factory=list,
     )
+    topic: Mapped["Topic"] = relationship(back_populates="problems", init=False)
 
     def __repr__(self) -> str:
         return f"""
