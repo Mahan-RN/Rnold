@@ -1,8 +1,7 @@
 from collections.abc import Sequence
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from src.models import Problem
-from src.models import Topic
+from src.models import Problem, Topic
 
 
 def get_one(id: int, session: Session) -> Problem | None:
