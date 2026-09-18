@@ -24,15 +24,17 @@ class Submission(Base):
     user_id: Mapped[int] = mapped_column(
         ForeignKey("users.github_id", ondelete="CASCADE")
     )
-    problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
+    problem_id: Mapped[int] = mapped_column(
+        ForeignKey("problems.id", ondelete="CASCADE")
+    )
     status: Mapped[int]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), init=False
     )
     runtime_ms: Mapped[int]
     code: Mapped[str] = mapped_column(Text)
-    user: Mapped["User"] = relationship(back_populates="submissions")
-    problem: Mapped["Problem"] = relationship(back_populates="submissions")
+    user: Mapped["User"] = relationship(back_populates="submissions", init=False)
+    problem: Mapped["Problem"] = relationship(back_populates="submissions", init=False)
 
     def __repr__(self) -> str:
         return f"""
