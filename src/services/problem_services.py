@@ -1,9 +1,8 @@
 from sqlalchemy.orm import Session
 from src.repository import problem_repository
 from src.models import Problem
-from src.exceptions.problem_exceptions import ProblemNotFoundError
+from src.exceptions.problem_exceptions import ProblemNotFoundError, DuplicateTitleError
 from collections.abc import Sequence
-from src.exceptions.database import UniqueConstraintViolationError
 
 
 def get_one(id: int, session: Session) -> Problem:
@@ -30,9 +29,7 @@ def insert_one(
 ) -> Problem:
     result = session.query(Problem).filter(Problem.title == title).all()
     if len(result) != 0:
-        raise UniqueConstraintViolationError(
-            f"Problem with title {title} already exists"
-        )
+        raise DuplicateTitleError(f"Problem with title {title} already exists")
     else:
         return problem_repository.insert_one(
             topic_id=topic_id,

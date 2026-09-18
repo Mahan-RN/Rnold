@@ -8,8 +8,7 @@ from src.models import Problem
 from src.dependency import CurrentAdmin
 
 from src.services import problem_services
-from src.exceptions.database import UniqueConstraintViolationError
-from src.exceptions.problem_exceptions import ProblemNotFoundError
+from src.exceptions.problem_exceptions import ProblemNotFoundError, DuplicateTitleError
 from src.schemas.problem import (
     ProblemsResponse,
     CreateProblemRequest,
@@ -43,7 +42,7 @@ def add_problem(
         result = problem_services.insert_one(**request.model_dump(), session=session)
         session.commit()
         return result
-    except UniqueConstraintViolationError as e:
+    except DuplicateTitleError as e:
         raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
 
 
