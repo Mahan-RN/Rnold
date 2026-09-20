@@ -13,6 +13,17 @@ def get_all(session: Session) -> Sequence[Submission]:
     return session.scalars(stmt).all()
 
 
+def get_per_problem_per_user(
+    user_id: int, problem_id: int, session: Session
+) -> Sequence[Submission]:
+    stmt = (
+        select(Submission)
+        .where(Submission.user_id == user_id, Submission.problem_id == problem_id)
+        .order_by(Submission.created_at.desc())
+    )
+    return session.scalars(stmt).all()
+
+
 def insert_one(
     *,
     user_id: int,
