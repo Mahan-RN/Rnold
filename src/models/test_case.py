@@ -13,9 +13,10 @@ class TestCase(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"), primary_key=True)
+    sort_order: Mapped[int]
     code: Mapped[str] = mapped_column(Text)
     expected_output: Mapped[str] = mapped_column(Text)
-    problem: Mapped["Problem"] = relationship(back_populates="test_cases")
+    problem: Mapped["Problem"] = relationship(back_populates="test_cases", init=False)
     is_hidden: Mapped[bool] = mapped_column(default=True)
 
     def __repr__(self) -> str:
