@@ -68,15 +68,14 @@ class TestUserRepository:
         user = user_repository.update_one(1, db_session)
         assert user is None
 
-    def test_update_one_match_email(self, db_session: Session):
+    def test_update_one_match_role(self, db_session: Session):
         user = user_repository.insert_one(**self.user1, session=db_session)
         assert user.username == "Conan"
-        assert user.github_email == "conan_barbarian@gmail.com"
+        assert user.role == Role.USER
         user = user_repository.update_one(
-            self.user1["github_id"], db_session, "conan@gmail.com"
+            github_id=self.user1["github_id"], session=db_session, role=Role.ADMIN
         )
-        assert user.github_email == "conan@gmail.com"
-        assert user.username == "Conan"
+        assert user.role == Role.ADMIN
 
     def test_update_one_match_username(self, db_session: Session):
         user = user_repository.insert_one(**self.user1, session=db_session)
@@ -88,17 +87,17 @@ class TestUserRepository:
         assert user.github_email == "conan_barbarian@gmail.com"
         assert user.username == "ConanBarbarian"
 
-    def test_update_one_match_email_username(self, db_session: Session):
+    def test_update_one_match_role_username(self, db_session: Session):
         user = user_repository.insert_one(**self.user1, session=db_session)
         assert user.username == "Conan"
-        assert user.github_email == "conan_barbarian@gmail.com"
+        assert user.role == Role.USER
         user = user_repository.update_one(
-            self.user1["github_id"],
-            db_session,
-            github_email="conan@gmail.com",
+            github_id=self.user1["github_id"],
+            session=db_session,
             username="ConanBarbarian",
+            role=Role.ADMIN,
         )
-        assert user.github_email == "conan@gmail.com"
+        assert user.role == Role.ADMIN
         assert user.username == "ConanBarbarian"
 
     def test_delete_one_no_match(self, db_session: Session):
