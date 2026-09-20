@@ -18,7 +18,7 @@ def insert_one(
     *, name: str, description: str, sort_order: int, session: Session
 ) -> Topic:
     topic = Topic(name, description, sort_order)
-    session.add(Topic)
+    session.add(topic)
     session.flush()
     return topic
 
