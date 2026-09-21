@@ -12,7 +12,7 @@ class TestCase(Base):
     __tablename__ = "test_cases"
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
-    problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"), primary_key=True)
+    problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
     sort_order: Mapped[int]
     code: Mapped[str] = mapped_column(Text)
     expected_output: Mapped[str] = mapped_column(Text)
