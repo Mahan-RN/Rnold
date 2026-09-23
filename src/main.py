@@ -4,7 +4,14 @@ from contextlib import asynccontextmanager
 import src.models  # noqa: F401
 from fastapi import FastAPI
 from src.database import Base, engine
-from src.routers import users_router, auth_router
+from src.routers import (
+    users_router,
+    auth_router,
+    problems_router,
+    submissions_router,
+    topics_router,
+    test_cases_router,
+)
 from starlette.middleware.sessions import SessionMiddleware
 from src.config import git_auth_settings
 
@@ -28,6 +35,10 @@ app.add_middleware(
 
 app.include_router(users_router)
 app.include_router(auth_router)
+app.include_router(problems_router)
+app.include_router(submissions_router)
+app.include_router(topics_router)
+app.include_router(test_cases_router)
 
 
 @app.get("/")
