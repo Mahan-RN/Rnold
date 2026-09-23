@@ -8,13 +8,9 @@ from sqlalchemy.orm import Session
 def get_one(id: int, session: Session) -> TestCase:
     result = test_case_repository.get_one(id, session)
     if result is None:
-        raise TestCaseNotFoundError(f"Test Case with ID {id} not found")
+        raise TestCaseNotFoundError(f"Test case with ID {id} not found")
     else:
         return result
-
-
-def get_all_per_problem(problem_id: int, session: Session) -> Sequence[TestCase]:
-    return test_case_repository.get_all_per_problem(problem_id, session)
 
 
 def get_all(session: Session) -> Sequence[TestCase]:
@@ -49,7 +45,7 @@ def update_one(
     code: str | None = None,
     expected_output: str | None = None,
     is_hidden: bool | None = None,
-) -> TestCase | None:
+) -> TestCase:
     result = test_case_repository.update_one(
         id=id,
         session=session,
@@ -60,7 +56,7 @@ def update_one(
         is_hidden=is_hidden,
     )
     if result is None:
-        raise TestCaseNotFoundError(f"Test Case with ID {id} not found")
+        raise TestCaseNotFoundError(f"Test case with ID {id} not found")
     else:
         return result
 
@@ -68,6 +64,6 @@ def update_one(
 def delete_one(id: int, session: Session) -> None:
     result = test_case_repository.get_one(id, session)
     if result is None:
-        raise TestCaseNotFoundError(f"Test Case with ID {id} not found")
+        raise TestCaseNotFoundError(f"Test case with ID {id} not found")
     else:
         test_case_repository.delete_one(id, session)

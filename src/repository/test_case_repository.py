@@ -8,15 +8,6 @@ def get_one(id: int, session: Session) -> TestCase | None:
     return session.get(TestCase, id)
 
 
-def get_all_per_problem(problem_id: int, session: Session) -> Sequence[TestCase]:
-    stmt = (
-        select(TestCase)
-        .where(TestCase.problem_id == problem_id)
-        .order_by(TestCase.sort_order)
-    )
-    return session.scalars(stmt).all()
-
-
 def get_all(session: Session) -> Sequence[TestCase]:
     stmt = select(TestCase).order_by(TestCase.sort_order)
     return session.scalars(stmt).all()

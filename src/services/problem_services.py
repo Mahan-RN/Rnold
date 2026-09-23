@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from src.repository import problem_repository
-from src.models import Problem
+from src.models import Problem, TestCase
 from src.exceptions.problem_exceptions import ProblemNotFoundError, DuplicateTitleError
 from collections.abc import Sequence
 
@@ -11,6 +11,14 @@ def get_one(id: int, session: Session) -> Problem:
         raise ProblemNotFoundError(f"Problem with ID {id} not found")
     else:
         return problem
+
+
+def get_test_cases(problem_id: int, session: Session) -> Sequence[TestCase]:
+    result = problem_repository.get_test_cases(problem_id, session)
+    if result is None:
+        raise ProblemNotFoundError(f"Problem with ID {problem_id} not found")
+    else:
+        return result
 
 
 def get_all(session: Session) -> Sequence[Problem]:

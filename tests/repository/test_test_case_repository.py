@@ -67,27 +67,6 @@ class TestTestCaseRepository:
         assert test_cases[0] == test_case1
         assert test_cases[1] == test_case2
 
-    def test_get_all_per_problem(self, db_session: Session):
-        db_session.add(self.problem_1)
-        db_session.add(self.problem_2)
-        db_session.flush()
-        test_case1 = test_case_repository.insert_one(
-            **self.test_case_1_dict, session=db_session
-        )
-        test_case2 = test_case_repository.insert_one(
-            **self.test_case_2_dict, session=db_session
-        )
-        problem_1_test_cases = test_case_repository.get_all_per_problem(
-            problem_id=1, session=db_session
-        )
-        problem_2_test_cases = test_case_repository.get_all_per_problem(
-            problem_id=2, session=db_session
-        )
-        assert len(problem_1_test_cases) == 1
-        assert problem_1_test_cases[0] == test_case1
-        assert len(problem_2_test_cases) == 1
-        assert problem_2_test_cases[0] == test_case2
-
     def test_update_one_no_match(self, db_session: Session):
         result = test_case_repository.update_one(id=1, session=db_session)
         assert result is None

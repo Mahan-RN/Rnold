@@ -1,11 +1,24 @@
 from collections.abc import Sequence
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from src.models import Problem, Topic
+from src.models import Problem, Topic, TestCase
 
 
 def get_one(id: int, session: Session) -> Problem | None:
     return session.get(Problem, id)
+
+
+def get_test_cases(problem_id: int, session: Session) -> Sequence[TestCase] | None:
+    result = session.get(Problem, problem_id)
+    if result is None:
+        return None
+    else:
+        stmt = (
+            select(TestCase)
+            .where(TestCase.problem_id == problem_id)
+            .order_by(TestCase.sort_order)
+        )
+        return session.scalars(stmt).all()
 
 
 def get_all(session: Session) -> Sequence[Problem]:

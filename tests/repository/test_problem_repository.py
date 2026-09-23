@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from src.models import Topic, Difficulty
-from src.repository import problem_repository
+from src.repository import problem_repository, test_case_repository
 
 
 class TestProblemRepository:
@@ -62,6 +62,55 @@ class TestProblemRepository:
         assert len(problem.test_cases) == 0
         assert len(problem.submissions) == 0
         assert problem.topic == self.topic_1
+
+    def test_get_all_test_cases(self, db_session: Session):
+        problem_repository.insert_one(
+            topic_id=1,
+            sort_order=1,
+            title="summation",
+            description="some string",
+            difficulty=Difficulty.EASY,
+            starter_code="some starter code",
+            session=db_session,
+        )
+        problem_repository.insert_one(
+            topic_id=1,
+            sort_order=10,
+            title="subtraction",
+            description="some string",
+            difficulty=Difficulty.EASY,
+            starter_code="some starter code",
+            session=db_session,
+        )
+        test_case_1_dict = {
+            "problem_id": 1,
+            "sort_order": 0,
+            "code": "some code",
+            "expected_output": "some output",
+        }
+        test_case_2_dict = {
+            "problem_id": 2,
+            "sort_order": 10,
+            "code": "some other code",
+            "expected_output": "some other output",
+            "is_hidden": False,
+        }
+        test_case1 = test_case_repository.insert_one(
+            **test_case_1_dict, session=db_session
+        )
+        test_case2 = test_case_repository.insert_one(
+            **test_case_2_dict, session=db_session
+        )
+        problem_1_test_cases = problem_repository.get_test_cases(
+            problem_id=1, session=db_session
+        )
+        problem_2_test_cases = problem_repository.get_test_cases(
+            problem_id=2, session=db_session
+        )
+        assert len(problem_1_test_cases) == 1
+        assert problem_1_test_cases[0] == test_case1
+        assert len(problem_2_test_cases) == 1
+        assert problem_2_test_cases[0] == test_case2
 
     def test_update_one_no_match(self, db_session: Session):
         db_session.add(self.topic_1)

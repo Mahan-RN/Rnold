@@ -4,7 +4,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from src.database import get_db
-from src.models import Problem
+from src.models import Problem, TestCase
 from src.dependency import CurrentAdmin
 
 from src.services import problem_services
@@ -14,6 +14,7 @@ from src.schemas.problem import (
     CreateProblemRequest,
     PatchProblemRequest,
 )
+from src.schemas.test_case import TestCaseResponse
 
 router = APIRouter(prefix="/problems", tags=["problems"])
 
@@ -30,6 +31,19 @@ def get_problem(problem_id: int, session: DbSession) -> Problem:
     try:
         problem = problem_services.get_one(problem_id, session)
         return problem
+    except ProblemNotFoundError as e:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.get(
+    "/{problem_id}/test-cases",
+    response_model=list[TestCaseResponse],
+    responses={404: {"description": "Problem not found"}},
+)
+def get_test_cases(problem_id: int, session: DbSession) -> Sequence[TestCase]:
+    try:
+        result = problem_services.get_test_cases(problem_id, session)
+        return result
     except ProblemNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
 
@@ -54,7 +68,9 @@ def update_problem(
     admin: CurrentAdmin,
 ) -> Problem:
     try:
-        result = problem_services.update_one(id=problem_id, **request.model_dump())
+        result = problem_services.update_one(
+            id=problem_id, **request.model_dump(), session=session
+        )
         session.commit()
         return result
     except ProblemNotFoundError as e:
