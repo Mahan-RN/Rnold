@@ -12,6 +12,18 @@ class ProblemsResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
 
+class ProblemResponse(BaseModel):
+    id: int
+    topic_id: int
+    sort_order: int
+    title: str
+    description: str
+    difficulty: int
+    starter_code: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
 class CreateProblemRequest(BaseModel):
     topic_id: int
     sort_order: int

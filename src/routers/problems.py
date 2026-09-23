@@ -11,6 +11,7 @@ from src.services import problem_services
 from src.exceptions.problem_exceptions import ProblemNotFoundError, DuplicateTitleError
 from src.schemas.problem import (
     ProblemsResponse,
+    ProblemResponse,
     CreateProblemRequest,
     PatchProblemRequest,
 )
@@ -26,7 +27,11 @@ def get_problems(session: DbSession) -> Sequence[Problem]:
     return problem_services.get_all(session)
 
 
-@router.get("/{problem_id}", responses={404: {"description": "Problem not found"}})
+@router.get(
+    "/{problem_id}",
+    response_model=ProblemResponse,
+    responses={404: {"description": "Problem not found"}},
+)
 def get_problem(problem_id: int, session: DbSession) -> Problem:
     try:
         problem = problem_services.get_one(problem_id, session)
@@ -48,7 +53,11 @@ def get_test_cases(problem_id: int, session: DbSession) -> Sequence[TestCase]:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
 
 
-@router.post("", responses={403: {"description": "Title already exists"}})
+@router.post(
+    "",
+    response_model=ProblemResponse,
+    responses={403: {"description": "Title already exists"}},
+)
 def add_problem(
     request: CreateProblemRequest, session: DbSession, admin: CurrentAdmin
 ) -> Problem:
@@ -60,7 +69,11 @@ def add_problem(
         raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
 
 
-@router.patch("/{problem_id}", responses={404: {"description": "Problem not found"}})
+@router.patch(
+    "/{problem_id}",
+    response_model=ProblemResponse,
+    responses={404: {"description": "Problem not found"}},
+)
 def update_problem(
     problem_id: int,
     request: PatchProblemRequest,
