@@ -13,6 +13,10 @@ def get_one(id: int, session: Session) -> TestCase:
         return result
 
 
+def get_all_per_problem(problem_id: int, session: Session) -> Sequence[TestCase]:
+    return test_case_repository.get_all_per_problem(problem_id, session)
+
+
 def get_all(session: Session) -> Sequence[TestCase]:
     return test_case_repository.get_all(session)
 
