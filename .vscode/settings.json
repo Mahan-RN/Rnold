@@ -1,10 +1,16 @@
 {
-    "python.testing.pytestArgs": [
-        "tests"
-    ],
+    // Interpreter and language server
+    "python.languageServer": "Pylance",
+    "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+    "python.terminal.activateEnvironment": true,
+
+    // Testing
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
-    "python.languageServer": "Pylance",
+    "python.testing.cwd": "${workspaceFolder}/backend",
+    "python.testing.pytestArgs": ["tests"],
+
+    // Formatting and linting
     "[python]": {
         "editor.defaultFormatter": "charliermarsh.ruff",
         "editor.formatOnSave": true,
@@ -12,6 +18,5 @@
             "source.fixAll.ruff": "explicit",
             "source.organizeImports.ruff": "explicit"
         }
-    },
-    "python.terminal.activateEnvironment": true,
+    }
 }
