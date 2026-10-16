@@ -43,3 +43,6 @@ entrypoint = "src.main:app"
 [tool.pytest.ini_options]
 pythonpath = "."
 testpaths = ["tests"]
+
+[tool.coverage.run]
+omit = ["*/tests/*"]
