@@ -33,12 +33,12 @@ app.add_middleware(
     https_only=False,
 )
 
-app.include_router(users_router)
-app.include_router(auth_router)
-app.include_router(problems_router)
-app.include_router(submissions_router)
-app.include_router(topics_router)
-app.include_router(test_cases_router)
+app.include_router(users_router, prefix="/api")
+app.include_router(auth_router, prefix="/api")
+app.include_router(problems_router, prefix="/api")
+app.include_router(submissions_router, prefix="/api")
+app.include_router(topics_router, prefix="/api")
+app.include_router(test_cases_router, prefix="/api")
 
 
 @app.get("/")

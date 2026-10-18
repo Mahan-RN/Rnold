@@ -44,7 +44,7 @@ def github_callback(
     user = _get_or_create_user(db, profile)
     request.session["github_id"] = user.github_id
 
-    return RedirectResponse("/", status_code=status.HTTP_303_SEE_OTHER)
+    return RedirectResponse("/api/", status_code=status.HTTP_303_SEE_OTHER)
 
 
 @router.post("/logout")
