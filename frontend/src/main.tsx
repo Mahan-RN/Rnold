@@ -14,7 +14,7 @@ const router = createBrowserRouter([
         errorElement: <NotFoundPage />,
     },
     {
-        path: "/problems/:id",
+        path: "/problems/:problemID",
         element: <ProblemPage />,
     },
 ]);

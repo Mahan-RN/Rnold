@@ -1,3 +1,7 @@
+import { useParams } from "react-router";
+
 export default function Path() {
-    return <h1>Problem page</h1>;
+    const params = useParams();
+    const problemID = params.problemID;
+    return <h1>Problem {problemID}</h1>;
 }
