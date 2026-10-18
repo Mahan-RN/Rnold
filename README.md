@@ -1,17 +1,40 @@
-# Rnold
+<p align="center">
+  <img width="400" src="assets/Rnold_logo.jpg" alt="Rnold logo">
+</p>
+<br/>
+<p align="center">
+    <a href="https://fastapi.tiangolo.com/" target="_blank">
+    <img src="https://img.shields.io/badge/fastapi-109989?style=for-the-badge&logo=FASTAPI&logoColor=white" alt="FastAPI badge">
+    </a>
+    <a href="https://www.postgresql.org/" target="_blank">
+    <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL badge">
+    </a>
+    <a href="https://react.dev/" target="_blank">
+    <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React badge">
+    </a>
+    <br/>
+    <br/>
+    <a href="https://www.python.org/" target="_blank">
+    <img src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue" alt="Python badge">
+    </a>
+    <a href="https://www.sqlalchemy.org/" target="_blank">
+    <img src="https://img.shields.io/badge/sqlalchemy-%23D71F00.svg?style=for-the-badge&logo=sqlalchemy&logoColor=white" alt="SQLAlchemy badge">
+    </a>
+    <a href="https://docs.pytest.org/en/stable/" target="_blank">
+    <img src="https://img.shields.io/badge/PyTest-0A9EDC?style=for-the-badge&logo=pytest&logoColor=white" alt="Pytest badge">
+    </a>
+    <a href="https://pydantic.dev/" target="_blank">
+    <img src="https://img.shields.io/badge/pydantic-%23E92063.svg?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic badge">
+    </a>
+    <a href="https://vite.dev/" target="_blank">
+    <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" alt="Vite badge">
+    </a>
+    <a href="https://www.typescriptlang.org/" target="_blank">
+    <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript badge">
+    </a>
+</p>
+<br/>
 
-LeetCode-style website for basics of programming in R language
+# Rnold 💪
 
-## Developer Commands
-
-- **Activating Virtual Environment:** `source .venv/bin/activate`
-- **Running development server:** in the root directory run `uv run fastapi dev`
-  - **SwaggerUI:** use `/doc`
-  - **Redoc:** use `/redoc`
-
-### FastAPI & Python Jargon
-
-- Endpoint = path
-- HTTP method = operation/path operation
-- `@something` syntax is called a decorator in python
-  - `@app.get()` is an example of a path operation decorator. The function that comes below it is called a *path operation function*
+Rnold is an interactive, browser-based platform for learning [R programming language](https://www.r-project.org/about.html).
