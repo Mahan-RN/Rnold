@@ -6,6 +6,7 @@ import "./index.css";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProblemPage from "./pages/ProblemPage";
+import AboutPage from "./pages/AboutPage";
 
 const router = createBrowserRouter([
     {
@@ -14,8 +15,14 @@ const router = createBrowserRouter([
         errorElement: <NotFoundPage />,
     },
     {
+        path: "/about",
+        element: <AboutPage />,
+        errorElement: <NotFoundPage />,
+    },
+    {
         path: "/problems/:problemID",
         element: <ProblemPage />,
+        errorElement: <NotFoundPage />,
     },
 ]);
 
