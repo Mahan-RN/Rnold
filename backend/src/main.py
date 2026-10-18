@@ -11,6 +11,7 @@ from src.routers import (
     submissions_router,
     topics_router,
     test_cases_router,
+    curriculum_router,
 )
 from starlette.middleware.sessions import SessionMiddleware
 from src.config import git_auth_settings
@@ -35,6 +36,7 @@ app.add_middleware(
 
 app.include_router(users_router, prefix="/api")
 app.include_router(auth_router, prefix="/api")
+app.include_router(curriculum_router, prefix="/api")
 app.include_router(problems_router, prefix="/api")
 app.include_router(submissions_router, prefix="/api")
 app.include_router(topics_router, prefix="/api")

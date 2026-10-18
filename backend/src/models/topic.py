@@ -19,6 +19,7 @@ class Topic(Base):
         passive_deletes=True,
         init=False,
         default_factory=list,
+        order_by="Problem.sort_order",
     )
 
     def __repr__(self) -> str:

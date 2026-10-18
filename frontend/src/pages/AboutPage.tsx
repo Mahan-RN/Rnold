@@ -6,6 +6,8 @@ export default function AboutPage() {
             <p>...</p>
             <h2>What Rnold Is Not</h2>
             <p>...</p>
+            <h2>Reporting Issues</h2>
+            <p>...</p>
             <h3>About me</h3>
             <p>
                 Created and maintained by Mahan Rafieenaini. I'm a Bachelor of Computer Science student at UBC with a prior 
