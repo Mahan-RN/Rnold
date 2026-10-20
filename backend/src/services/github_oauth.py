@@ -43,17 +43,32 @@ class GithubProfile(TypedDict):
 
 
 def generate_state() -> str:
+    """Generates `state` query parameter for Github authorization request to help
+       prevent cross-site request forgery attacks
+
+    Returns:
+        str: 32-bit random string encoded in base64 format
+    """
     return secrets.token_urlsafe(32)
 
 
 def build_authorize_url(state: str) -> str:
-    params = {
+    """Builds the authorization URL required to request a user's Github
+       identity.
+
+    Args:
+        state (str): unguessable random string to be used for the state query parameter
+
+    Returns:
+        str: Github authorization URL, with all the required query parameters
+    """
+    query_params = {
         "client_id": git_auth_settings.github_client_id,
         "redirect_uri": git_auth_settings.github_redirect_uri,
         "scope": SCOPES,
         "state": state,
     }
-    return f"{GITHUB_AUTHORIZE_URL}?{urlencode(params)}"
+    return f"{GITHUB_AUTHORIZE_URL}?{urlencode(query_params)}"
 
 
 def exchange_code_for_token(code: str) -> str:
