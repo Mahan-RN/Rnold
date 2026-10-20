@@ -26,8 +26,12 @@
     <a href="https://pydantic.dev/">
     <img src="https://img.shields.io/badge/pydantic-%23E92063.svg?style=for-the-badge&logo=pydantic&logoColor=white" alt="Pydantic badge">
     </a>
+    <br/>
     <a href="https://vite.dev/">
     <img src="https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white" alt="Vite badge">
+    </a>
+    <a href="https://reactrouter.com/">
+    <img src="https://img.shields.io/badge/React_Router-%23CA4245.svg?style=for-the-badge&logo=react-router&logoColor=white" alt="React Router badge">
     </a>
     <a href="https://www.typescriptlang.org/">
     <img src="https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript badge">

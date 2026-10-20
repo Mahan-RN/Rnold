@@ -7,11 +7,14 @@ import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProblemPage from "./pages/ProblemPage";
 import AboutPage from "./pages/AboutPage";
+import homePageLoader from "./loaders/HomePageLoader";
 
 const router = createBrowserRouter([
     {
         path: "/",
         element: <HomePage />,
+        loader: homePageLoader,
+        HydrateFallback: () => <p>Loading...</p>,
         errorElement: <NotFoundPage />,
     },
     {
