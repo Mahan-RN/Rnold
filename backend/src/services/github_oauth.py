@@ -5,6 +5,7 @@ from urllib.parse import urlencode
 import httpx
 
 from src.config import git_auth_settings
+from src.exceptions.github_oauth_exceptions import GithubOAuthError
 
 GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
@@ -12,10 +13,6 @@ GITHUB_USER_URL = "https://api.github.com/user"
 GITHUB_EMAILS_URL = "https://api.github.com/user/emails"
 
 SCOPES = "read:user user:email"
-
-
-class GithubOAuthError(Exception):
-    pass
 
 
 class GithubTokenResponse(TypedDict, total=False):
