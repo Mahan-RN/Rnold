@@ -47,7 +47,7 @@ def generate_state() -> str:
        prevent cross-site request forgery attacks
 
     Returns:
-        str: 32-bit random string encoded in base64 format
+        str: random string encoded in base64 format
     """
     return secrets.token_urlsafe(32)
 
@@ -153,6 +153,9 @@ def get_or_create_user(profile: GithubProfile, session: Session) -> User:
             session=session,
         )
     else:
+        user.github_email = profile["email"]
+        user.username = profile["username"]
         user.last_login = datetime.now(timezone.utc)
 
+    session.commit()
     return user

@@ -5,10 +5,10 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
+from src.exceptions.github_oauth_exceptions import GithubOAuthError
 from src.database import get_db
 from src.services import github_oauth
 from src.services.github_oauth import (
-    GithubOAuthError,
     get_or_create_user,
 )
 from src.dependency import logout
