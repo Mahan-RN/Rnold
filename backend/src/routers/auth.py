@@ -1,5 +1,4 @@
 import secrets
-from datetime import datetime, timezone
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
@@ -7,9 +6,11 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 from src.database import get_db
-from src.models.user import User
 from src.services import github_oauth
-from src.services.github_oauth import GithubOAuthError, GithubProfile
+from src.services.github_oauth import (
+    GithubOAuthError,
+    get_or_create_user,
+)
 from src.dependency import logout
 
 router = APIRouter(prefix="/auth/github", tags=["auth"])
@@ -29,7 +30,7 @@ def github_callback(
     request: Request,
     code: str,
     state: str,
-    db: DbSession,
+    db_session: DbSession,
 ) -> RedirectResponse:
     expected_state = request.session.pop("oauth_state", None)
     if expected_state is None or not secrets.compare_digest(expected_state, state):
@@ -41,7 +42,7 @@ def github_callback(
     except GithubOAuthError as exc:
         raise HTTPException(status.HTTP_400_BAD_REQUEST, str(exc)) from exc
 
-    user = _get_or_create_user(db, profile)
+    user = get_or_create_user(profile, db_session)
     request.session["github_id"] = user.github_id
 
     return RedirectResponse("/api/", status_code=status.HTTP_303_SEE_OTHER)
@@ -51,23 +52,3 @@ def github_callback(
 def github_logout(request: Request) -> Response:
     logout(request)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
-
-
-def _get_or_create_user(db: DbSession, profile: GithubProfile) -> User:
-    user: User | None = db.get(User, profile["github_id"])
-
-    if user is None:
-        user = User(
-            github_id=profile["github_id"],
-            github_email=profile["email"],
-            username=profile["username"],
-        )
-        db.add(user)
-    else:
-        user.github_email = profile["email"]
-        user.username = profile["username"]
-        user.last_login = datetime.now(timezone.utc)
-
-    db.commit()
-    db.refresh(user)
-    return user

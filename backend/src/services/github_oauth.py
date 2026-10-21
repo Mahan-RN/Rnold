@@ -1,9 +1,12 @@
+from datetime import datetime, timezone
 import secrets
 from typing import TypedDict, cast
 from urllib.parse import urlencode
 
 import httpx
-
+from sqlalchemy.orm import Session
+from src.models.user import User
+from src.repository import user_repository
 from src.config import git_auth_settings
 from src.exceptions.github_oauth_exceptions import GithubOAuthError
 
@@ -69,6 +72,18 @@ def build_authorize_url(state: str) -> str:
 
 
 def exchange_code_for_token(code: str) -> str:
+    """Exchanges code provided by Github authorization server to the callback
+       endpoint for an access token
+
+    Args:
+        code (str): code provided by Github authorization server
+
+    Raises:
+        GithubOAuthError: thrown if the exchange fails
+
+    Returns:
+        str: user's Github profile access token
+    """
     with httpx.Client(timeout=10.0) as client:
         response = client.post(
             GITHUB_TOKEN_URL,
@@ -90,6 +105,14 @@ def exchange_code_for_token(code: str) -> str:
 
 
 def fetch_github_profile(access_token: str) -> GithubProfile:
+    """Uses user's Github profile access token to retrieve user's profile data
+
+    Args:
+        access_token (str): user's Github profile access token
+
+    Returns:
+        GithubProfile: user's Github ID, primary email, & username as a dictionary
+    """
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Accept": "application/vnd.github+json",
@@ -118,3 +141,18 @@ def _select_primary_email(entries: list[GithubEmailEntry]) -> str:
         if entry["primary"] and entry["verified"]:
             return entry["email"]
     raise GithubOAuthError("no verified primary email on this GitHub account")
+
+
+def get_or_create_user(profile: GithubProfile, session: Session) -> User:
+    user: User | None = user_repository.get_one(profile["github_id"], session)
+    if user is None:
+        user = user_repository.insert_one(
+            github_id=profile["github_id"],
+            github_email=profile["email"],
+            username=profile["username"],
+            session=session,
+        )
+    else:
+        user.last_login = datetime.now(timezone.utc)
+
+    return user
