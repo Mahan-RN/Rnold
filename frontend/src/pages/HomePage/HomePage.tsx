@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router";
-import type homePageLoader from "../loaders/HomePageLoader";
-import TopicBox from "../components/TopicBox";
+import type homePageLoader from "src/loaders/HomePageLoader";
+import TopicBox from "src/components/TopicBox/TopicBox";
 
 export default function HomePage() {
     const curriculum = useLoaderData<typeof homePageLoader>();

@@ -1,5 +1,5 @@
-import type { CurriculumResponse } from "../loaders/HomePageLoader";
-import ViewProblemButton from "./ViewProblemButton";
+import type { CurriculumResponse } from "../../loaders/HomePageLoader";
+import ViewProblemButton from "../ViewProblemButton/ViewProblemButton";
 
 export default function TopicBox(props: CurriculumResponse) {
     // const topicID = props.id;

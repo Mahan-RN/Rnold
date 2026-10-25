@@ -1,6 +1,6 @@
 import { Link, NavLink, useRouteLoaderData } from "react-router";
-import type { CurrentUser } from "../loaders/RootLayoutLoader";
-import logo from "../assets/logo.svg";
+import type { CurrentUser } from "src/loaders/RootLayoutLoader";
+import logo from "src/assets/logo.svg";
 
 export default function Header() {
     const user = useRouteLoaderData<CurrentUser | null>("root");
