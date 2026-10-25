@@ -6,11 +6,12 @@ export default function HomePage() {
     const curriculum = useLoaderData<typeof homePageLoader>();
     const topicBoxes = curriculum.map((topic) => (
         <TopicBox
+            key={topic.id}
             id={topic.id}
             name={topic.name}
             description={topic.description}
             problems={topic.problems}
         />
     ));
-    return topicBoxes;
+    return topicBoxes.length === 0 ? <h1>0 Topics</h1> : <>{topicBoxes}</>;
 }

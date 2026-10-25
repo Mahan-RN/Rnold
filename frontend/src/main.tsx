@@ -8,24 +8,34 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ProblemPage from "./pages/ProblemPage";
 import AboutPage from "./pages/AboutPage";
 import homePageLoader from "./loaders/HomePageLoader";
+import rootLayoutLoader from "./loaders/RootLayoutLoader";
+import RootLayout from "./layouts/RootLayout";
 
 const router = createBrowserRouter([
     {
+        id: "root",
         path: "/",
-        element: <HomePage />,
-        loader: homePageLoader,
-        HydrateFallback: () => <p>Loading...</p>,
-        errorElement: <NotFoundPage />,
-    },
-    {
-        path: "/about",
-        element: <AboutPage />,
-        errorElement: <NotFoundPage />,
-    },
-    {
-        path: "/problems/:problemID",
-        element: <ProblemPage />,
-        errorElement: <NotFoundPage />,
+        loader: rootLayoutLoader,
+        element: <RootLayout />,
+        children: [
+            {
+                index: true,
+                element: <HomePage />,
+                loader: homePageLoader,
+                HydrateFallback: () => <p>Loading...</p>,
+                errorElement: <NotFoundPage />,
+            },
+            {
+                path: "/about",
+                element: <AboutPage />,
+                errorElement: <NotFoundPage />,
+            },
+            {
+                path: "/problems/:problemID",
+                element: <ProblemPage />,
+                errorElement: <NotFoundPage />,
+            },
+        ],
     },
 ]);
 
