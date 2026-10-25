@@ -1,0 +1,35 @@
+.rootHeader {
+    display: flex;
+    flex-direction: column;
+    font-size: 24px;
+}
+
+.rootLogo {
+    align-self: flex-start;
+}
+
+.rootLogo img {
+    width: 400px;
+    padding: 10px;
+}
+
+.navigationBar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    border: 3px solid #E6E6E6;
+    border-radius: 10px;
+    padding: 8px 10px;
+}
+
+.navigationBar nav {
+    grid-column: 2;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.login {
+    grid-column: 3;
+    justify-self: end;
+}
