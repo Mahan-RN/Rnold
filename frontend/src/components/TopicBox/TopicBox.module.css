@@ -4,6 +4,9 @@
     align-items: flex-start;
     padding: 5px;
     margin-top: 10px;
+    width: 100%;
+    gap: 10px;
+    box-sizing: border-box;
 }
 
 .flexContainer h2 {
@@ -12,4 +15,28 @@
 
 .flexContainer p {
     font-size: large;
+}
+
+.flexContainer ol {
+    align-self: stretch;
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: problem;
+}
+
+.flexContainer li {
+    counter-increment: problem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    margin: 10px;
+    text-align: left;
+}
+
+.flexContainer li::before {
+    content: counter(problem) ".";
 }
