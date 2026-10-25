@@ -11,22 +11,56 @@ export default function Header() {
                 <img src={logo} alt="Rnold home" />
             </Link>
             <div className={styles.navigationBar}>
-                <nav>
-                    <NavLink to="/" end>
+                <nav className={styles.pages}>
+                    <NavLink
+                        to="/"
+                        end
+                        className={({ isActive }) =>
+                            isActive
+                                ? `${styles.navLink} ${styles.active}`
+                                : styles.navLink
+                        }
+                    >
                         Home
                     </NavLink>
-                    <NavLink to="/about">About</NavLink>
+                    <NavLink
+                        to="/about"
+                        className={({ isActive }) =>
+                            isActive
+                                ? `${styles.navLink} ${styles.active}`
+                                : styles.navLink
+                        }
+                    >
+                        About
+                    </NavLink>
                 </nav>
                 <div className={styles.login}>
                     {user !== undefined && user !== null && user.role === 2 && (
-                        <NavLink to="/admin" end>
+                        <NavLink
+                            to="/admin"
+                            end
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${styles.navLink} ${styles.active}`
+                                    : styles.navLink
+                            }
+                        >
                             Admin Dashboard
                         </NavLink>
                     )}
                     {user !== undefined && user !== null ? (
                         <span>{user.username}</span>
                     ) : (
-                        <NavLink to="/login">Log in</NavLink>
+                        <NavLink
+                            to="/login"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${styles.navLink} ${styles.active}`
+                                    : styles.navLink
+                            }
+                        >
+                            Log in
+                        </NavLink>
                     )}
                 </div>
             </div>
