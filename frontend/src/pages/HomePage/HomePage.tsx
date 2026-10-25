@@ -1,6 +1,7 @@
 import { useLoaderData } from "react-router";
 import type homePageLoader from "src/loaders/HomePageLoader";
 import TopicBox from "src/components/TopicBox/TopicBox";
+import styles from "src/pages/HomePage/HomePage.module.css"
 
 export default function HomePage() {
     const curriculum = useLoaderData<typeof homePageLoader>();
@@ -13,5 +14,9 @@ export default function HomePage() {
             problems={topic.problems}
         />
     ));
-    return topicBoxes.length === 0 ? <h1>0 Topics</h1> : <>{topicBoxes}</>;
+    return (
+        <div className={styles.root}>
+            {topicBoxes.length === 0 ? <h1>0 Topics</h1> : topicBoxes}
+        </div>
+    );
 }
