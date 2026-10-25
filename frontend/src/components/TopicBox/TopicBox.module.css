@@ -1,0 +1,15 @@
+.flexContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5px;
+    margin-top: 10px;
+}
+
+.flexContainer h2 {
+    font-size: xx-large;
+}
+
+.flexContainer p {
+    font-size: large;
+}

@@ -1,5 +1,6 @@
-import type { CurriculumResponse } from "../../loaders/HomePageLoader";
-import ViewProblemButton from "../ViewProblemButton/ViewProblemButton";
+import type { CurriculumResponse } from "src/loaders/HomePageLoader";
+import ViewProblemButton from "src/components/ViewProblemButton/ViewProblemButton";
+import styles from "src/components/TopicBox/TopicBox.module.css";
 
 export default function TopicBox(props: CurriculumResponse) {
     // const topicID = props.id;
@@ -16,7 +17,7 @@ export default function TopicBox(props: CurriculumResponse) {
         </li>
     ));
     return (
-        <>
+        <div className={styles.flexContainer}>
             <h2>{topicName}</h2>
             <p>{topicDescription}</p>
             {viewProblemButtons.length === 0 ? (
@@ -24,6 +25,6 @@ export default function TopicBox(props: CurriculumResponse) {
             ) : (
                 <ol>{viewProblemButtons}</ol>
             )}
-        </>
+        </div>
     );
 }
