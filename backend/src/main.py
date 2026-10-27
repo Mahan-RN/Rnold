@@ -46,11 +46,3 @@ app.include_router(test_cases_router, prefix="/api")
 @app.get("/")
 async def root() -> dict[str, str]:
     return {"message": "Hllo World"}
-
-
-# def main() -> None:
-#     print("Hello from rnold!")
-
-
-# if __name__ == "__main__":
-#     main()
