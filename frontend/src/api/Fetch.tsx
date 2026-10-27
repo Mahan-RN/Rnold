@@ -21,5 +21,9 @@ export default async function apiFetch<T>(
             statusText: response.statusText,
         });
     }
-    return response.json() as Promise<T>;
+    if (response.status === 204) {
+        return undefined as T;
+    } else {
+        return response.json() as Promise<T>;
+    }
 }
