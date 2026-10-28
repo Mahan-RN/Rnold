@@ -18,7 +18,6 @@ export default async function rootLayoutLoader({
         const user = await apiFetch<CurrentUser>("/users/me", {
             signal,
         });
-        console.log(user);
         return user;
     } catch (error) {
         if (error instanceof Response && error.status === 401) {

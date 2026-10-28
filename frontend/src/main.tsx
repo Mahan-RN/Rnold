@@ -10,6 +10,8 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import homePageLoader from "./loaders/HomePageLoader";
 import rootLayoutLoader from "./loaders/RootLayoutLoader";
 import RootLayout from "./layouts/RootLayout";
+import logoutLoader from "./loaders/logoutLoader";
+import logoutAction from "./actions/logoutAction";
 
 const router = createBrowserRouter([
     {
@@ -36,6 +38,11 @@ const router = createBrowserRouter([
                 errorElement: <NotFoundPage />,
             },
         ],
+    },
+    {
+        path: "/logout",
+        action: logoutAction,
+        loader: logoutLoader,
     },
 ]);
 
