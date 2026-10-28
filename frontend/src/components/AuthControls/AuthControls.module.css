@@ -1,0 +1,23 @@
+.usernameText {
+    font-weight: bold;
+    background: linear-gradient(135deg, #8a2be2, #00ffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.loginLink {
+    color: #1f2028;
+    font-weight: medium;
+    background-color: #fff6dc;
+    padding: 3px 5px;
+    text-decoration: none;
+}
+
+.logoutBtn {
+    font-size: large;
+    margin-top: 8px;
+    padding: 5px 8px;
+    background-color: #ff0b0b;
+    border-radius: 5px;
+}

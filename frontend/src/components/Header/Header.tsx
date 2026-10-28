@@ -1,10 +1,9 @@
-import { Link, NavLink, useRouteLoaderData } from "react-router";
-import type { CurrentUser } from "src/loaders/RootLayoutLoader";
+import { Link, NavLink } from "react-router";
 import logo from "src/assets/logo.svg";
 import styles from "src/components/Header/Header.module.css";
+import AuthControls from "../AuthControls/AuthControls";
 
 export default function Header() {
-    const user = useRouteLoaderData<CurrentUser | null>("root");
     return (
         <header className={styles.rootHeader}>
             <Link to="/" className={styles.rootLogo}>
@@ -35,33 +34,7 @@ export default function Header() {
                     </NavLink>
                 </nav>
                 <div className={styles.login}>
-                    {user !== undefined && user !== null && user.role === 2 && (
-                        <NavLink
-                            to="/admin"
-                            end
-                            className={({ isActive }) =>
-                                isActive
-                                    ? `${styles.navLink} ${styles.active}`
-                                    : styles.navLink
-                            }
-                        >
-                            Admin Dashboard
-                        </NavLink>
-                    )}
-                    {user !== undefined && user !== null ? (
-                        <span>{user.username}</span>
-                    ) : (
-                        <NavLink
-                            to="/login"
-                            className={({ isActive }) =>
-                                isActive
-                                    ? `${styles.navLink} ${styles.active}`
-                                    : styles.navLink
-                            }
-                        >
-                            Log in
-                        </NavLink>
-                    )}
+                    <AuthControls />
                 </div>
             </div>
         </header>
