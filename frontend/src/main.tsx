@@ -12,6 +12,7 @@ import rootLayoutLoader from "./loaders/RootLayoutLoader";
 import RootLayout from "./layouts/RootLayout";
 import logoutLoader from "./loaders/logoutLoader";
 import logoutAction from "./actions/logoutAction";
+import problemPageLoader from "./loaders/ProblemPageLoader";
 
 const router = createBrowserRouter([
     {
@@ -35,6 +36,7 @@ const router = createBrowserRouter([
             {
                 path: "/problems/:problemID",
                 element: <ProblemPage />,
+                loader: problemPageLoader,
                 errorElement: <NotFoundPage />,
             },
         ],
