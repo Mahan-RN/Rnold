@@ -29,7 +29,7 @@ export default function Path() {
             </div>
             <h2>Description:</h2>
             <Markdown>{problem.description}</Markdown>
-            <CodeEditor starterCode={problem.starterCode} />
+            <CodeEditor starterCode={problem.starter_code} />
         </div>
     );
 }
