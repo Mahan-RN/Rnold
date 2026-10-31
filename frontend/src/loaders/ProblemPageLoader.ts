@@ -5,7 +5,7 @@ export interface ProblemResponse {
     title: string;
     description: string;
     difficulty: number;
-    starter_code: string;
+    starterCode: string;
 }
 
 export default async function problemPageLoader({

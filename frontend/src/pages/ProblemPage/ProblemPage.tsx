@@ -2,6 +2,7 @@ import { useLoaderData, useParams } from "react-router";
 import type problemPageLoader from "src/loaders/ProblemPageLoader";
 import Markdown from "react-markdown";
 import styles from "src/pages/ProblemPage/ProblemPage.module.css";
+import CodeEditor from "src/components/CodeEditor/CodeEditor";
 
 export default function Path() {
     const params = useParams();
@@ -28,6 +29,7 @@ export default function Path() {
             </div>
             <h2>Description:</h2>
             <Markdown>{problem.description}</Markdown>
+            <CodeEditor starterCode={problem.starterCode} />
         </div>
     );
 }
