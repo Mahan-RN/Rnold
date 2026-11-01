@@ -3,3 +3,21 @@
     width: 100%;
     text-align: left;
 }
+
+.controlBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: gray;
+    padding: 5px;
+    gap: 5px;
+}
+
+.controlBar p {
+    color: white;
+}
+
+.controlBar button {
+    font-size: medium;
+    padding: 6px 12px;
+}

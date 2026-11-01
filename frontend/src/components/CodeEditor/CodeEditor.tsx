@@ -65,12 +65,17 @@ export default function CodeEditor({ starterCode }: CodeEditorProps) {
 
     return (
         <div className={styles.codeEditor}>
-            <button type="submit" onClick={handleClickSubmit}>
-                Submit
-            </button>
-            <button type="submit" onClick={handleClickReset}>
-                Reset
-            </button>
+            <div className={styles.controlBar}>
+                <p>R Code</p>
+                <div>
+                    <button type="submit" onClick={handleClickSubmit}>
+                        Submit
+                    </button>
+                    <button type="submit" onClick={handleClickReset}>
+                        Reset
+                    </button>
+                </div>
+            </div>
             <CodeMirror
                 value={code}
                 extensions={extensions}
@@ -78,6 +83,7 @@ export default function CodeEditor({ starterCode }: CodeEditorProps) {
                 minHeight="200px"
                 maxHeight="500px"
                 theme={materialDark}
+                basicSetup={{ autocompletion: false }}
             />
             {output !== "" && <OutputTerminal output={output} />}
         </div>
