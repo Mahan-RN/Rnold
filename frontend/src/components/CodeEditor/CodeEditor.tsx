@@ -60,6 +60,7 @@ export default function CodeEditor({ starterCode }: CodeEditorProps) {
 
     function handleClickReset() {
         setCode(starterCode);
+        setOutput("");
     }
 
     return (
@@ -78,7 +79,7 @@ export default function CodeEditor({ starterCode }: CodeEditorProps) {
                 maxHeight="500px"
                 theme={materialDark}
             />
-            <OutputTerminal output={output} />
+            {output !== "" && <OutputTerminal output={output} />}
         </div>
     );
 }
