@@ -7,7 +7,8 @@ import CodeEditor from "src/components/CodeEditor/CodeEditor";
 export default function Path() {
     const params = useParams();
     const problemID = params.problemID;
-    const problem = useLoaderData<typeof problemPageLoader>();
+    const loaderData = useLoaderData<typeof problemPageLoader>();
+    const problem = loaderData.problem;
     const difficulty = problem.difficulty;
 
     let difficultyElm;

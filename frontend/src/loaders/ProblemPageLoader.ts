@@ -8,14 +8,28 @@ export interface ProblemResponse {
     starter_code: string;
 }
 
+export interface TestCasesResponse {
+    id: number;
+    problem_id: number;
+    sort_order: number;
+    code: string;
+    expected_output: string;
+    is_hidden: boolean;
+}
+
 export default async function problemPageLoader({
     request,
     params,
 }: LoaderFunctionArgs) {
     const signal = request.signal;
     const problemID = params.problemID;
-    const problem = await apiFetch<ProblemResponse>(`/problems/${problemID}`, {
-        signal,
-    });
-    return problem;
+    const [problem, testCases] = await Promise.all([
+        apiFetch<ProblemResponse>(`/problems/${problemID}`, {
+            signal,
+        }),
+        apiFetch<TestCasesResponse[]>(`/problems/${problemID}/test-cases`, {
+            signal,
+        }),
+    ]);
+    return { problem, testCases };
 }
