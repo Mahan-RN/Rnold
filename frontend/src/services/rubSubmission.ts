@@ -39,12 +39,11 @@ export async function runSubmission(
         const env = (await shelter.evalR(
             "new.env(parent = globalenv())",
         )) as REnvironment;
-        const options = { env: env, captureConditions: false };
 
         let output: string;
         try {
             const result = await shelter.captureR(code, {
-                ...options,
+                env: env,
                 withAutoprint: true,
             });
             output = parseOutput(result.output);
@@ -55,7 +54,7 @@ export async function runSubmission(
         const testResults: TestResult[] = [];
         for (const testCode of testCodes) {
             try {
-                await shelter.captureR(testCode, options);
+                await shelter.captureR(testCode, { env: env });
                 testResults.push({ passed: true });
             } catch (err) {
                 testResults.push({ passed: false, message: errorText(err) });

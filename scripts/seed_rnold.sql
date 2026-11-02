@@ -7,8 +7,17 @@
   Notes
   * Foreign keys are resolved by topic name and problem title, so no ids are hardcoded.
   * Difficulty values follow the Difficulty IntEnum: 1 = EASY, 2 = MEDIUM, 3 = HARD.
-  * test_cases.code is an R expression evaluated after the learner's code.
-    expected_output is the canonical deparse() form of the correct result.
+  * test_cases.code is a complete testthat assertion, evaluated after the
+    learner's code in the same R environment. A failed expectation raises an R
+    error and a passing one does not, so "ran without error" means "passed".
+    Do not wrap these in stopifnot(): expect_*() returns its input invisibly,
+    so stopifnot(expect_equal(f(x), y)) would fail correct answers whenever f(x)
+    is not TRUE.
+  * expect_equal() is used everywhere except Count Vowels, which uses
+    expect_identical() because that problem requires an integer result.
+  * expected_output is the canonical deparse() form of the correct result. It
+    duplicates the expected argument inside code and is kept for display.
+  * The webR instance needs the testthat package installed.
   * Run once on an empty database. test_cases has no unique constraint, so a
     second run would duplicate them. To reset, uncomment the line below.
     CASCADE also empties submissions, because it references problems.
@@ -337,81 +346,81 @@ SELECT p.id, v.sort_order, v.code, v.expected_output, v.is_hidden
 FROM (VALUES
 
   /* Is Even */
-  ($$Is Even$$, 1, $$is_even(4)$$,  $$TRUE$$,  FALSE),
-  ($$Is Even$$, 2, $$is_even(7)$$,  $$FALSE$$, FALSE),
-  ($$Is Even$$, 3, $$is_even(0)$$,  $$TRUE$$,  TRUE),
-  ($$Is Even$$, 4, $$is_even(-3)$$, $$FALSE$$, TRUE),
-  ($$Is Even$$, 5, $$is_even(-10)$$, $$TRUE$$, TRUE),
+  ($$Is Even$$, 1, $$testthat::expect_equal(is_even(4), TRUE)$$, $$TRUE$$, FALSE),
+  ($$Is Even$$, 2, $$testthat::expect_equal(is_even(7), FALSE)$$, $$FALSE$$, FALSE),
+  ($$Is Even$$, 3, $$testthat::expect_equal(is_even(0), TRUE)$$, $$TRUE$$, TRUE),
+  ($$Is Even$$, 4, $$testthat::expect_equal(is_even(-3), FALSE)$$, $$FALSE$$, TRUE),
+  ($$Is Even$$, 5, $$testthat::expect_equal(is_even(-10), TRUE)$$, $$TRUE$$, TRUE),
 
   /* Leap Year */
-  ($$Leap Year$$, 1, $$is_leap_year(2024)$$, $$TRUE$$,  FALSE),
-  ($$Leap Year$$, 2, $$is_leap_year(2023)$$, $$FALSE$$, FALSE),
-  ($$Leap Year$$, 3, $$is_leap_year(1900)$$, $$FALSE$$, TRUE),
-  ($$Leap Year$$, 4, $$is_leap_year(2000)$$, $$TRUE$$,  TRUE),
-  ($$Leap Year$$, 5, $$is_leap_year(2100)$$, $$FALSE$$, TRUE),
+  ($$Leap Year$$, 1, $$testthat::expect_equal(is_leap_year(2024), TRUE)$$, $$TRUE$$, FALSE),
+  ($$Leap Year$$, 2, $$testthat::expect_equal(is_leap_year(2023), FALSE)$$, $$FALSE$$, FALSE),
+  ($$Leap Year$$, 3, $$testthat::expect_equal(is_leap_year(1900), FALSE)$$, $$FALSE$$, TRUE),
+  ($$Leap Year$$, 4, $$testthat::expect_equal(is_leap_year(2000), TRUE)$$, $$TRUE$$, TRUE),
+  ($$Leap Year$$, 5, $$testthat::expect_equal(is_leap_year(2100), FALSE)$$, $$FALSE$$, TRUE),
 
   /* Valid Triangle */
-  ($$Valid Triangle$$, 1, $$is_valid_triangle(3, 4, 5)$$, $$TRUE$$,  FALSE),
-  ($$Valid Triangle$$, 2, $$is_valid_triangle(1, 2, 3)$$, $$FALSE$$, FALSE),
-  ($$Valid Triangle$$, 3, $$is_valid_triangle(5, 1, 1)$$, $$FALSE$$, TRUE),
-  ($$Valid Triangle$$, 4, $$is_valid_triangle(0, 4, 4)$$, $$FALSE$$, TRUE),
-  ($$Valid Triangle$$, 5, $$is_valid_triangle(2, 2, 2)$$, $$TRUE$$,  TRUE),
+  ($$Valid Triangle$$, 1, $$testthat::expect_equal(is_valid_triangle(3, 4, 5), TRUE)$$, $$TRUE$$, FALSE),
+  ($$Valid Triangle$$, 2, $$testthat::expect_equal(is_valid_triangle(1, 2, 3), FALSE)$$, $$FALSE$$, FALSE),
+  ($$Valid Triangle$$, 3, $$testthat::expect_equal(is_valid_triangle(5, 1, 1), FALSE)$$, $$FALSE$$, TRUE),
+  ($$Valid Triangle$$, 4, $$testthat::expect_equal(is_valid_triangle(0, 4, 4), FALSE)$$, $$FALSE$$, TRUE),
+  ($$Valid Triangle$$, 5, $$testthat::expect_equal(is_valid_triangle(2, 2, 2), TRUE)$$, $$TRUE$$, TRUE),
 
   /* Sum of Squares */
-  ($$Sum of Squares$$, 1, $$sum_of_squares(c(1, 2, 3))$$, $$14$$, FALSE),
-  ($$Sum of Squares$$, 2, $$sum_of_squares(c(-2, 2))$$,   $$8$$,  FALSE),
-  ($$Sum of Squares$$, 3, $$sum_of_squares(5)$$,          $$25$$, TRUE),
-  ($$Sum of Squares$$, 4, $$sum_of_squares(numeric(0))$$, $$0$$,  TRUE),
+  ($$Sum of Squares$$, 1, $$testthat::expect_equal(sum_of_squares(c(1, 2, 3)), 14)$$, $$14$$, FALSE),
+  ($$Sum of Squares$$, 2, $$testthat::expect_equal(sum_of_squares(c(-2, 2)), 8)$$, $$8$$, FALSE),
+  ($$Sum of Squares$$, 3, $$testthat::expect_equal(sum_of_squares(5), 25)$$, $$25$$, TRUE),
+  ($$Sum of Squares$$, 4, $$testthat::expect_equal(sum_of_squares(numeric(0)), 0)$$, $$0$$, TRUE),
 
   /* Running Total */
-  ($$Running Total$$, 1, $$running_total(c(1, 2, 3, 4))$$, $$c(1, 3, 6, 10)$$, FALSE),
-  ($$Running Total$$, 2, $$running_total(c(5, -2, 4))$$,   $$c(5, 3, 7)$$,     FALSE),
-  ($$Running Total$$, 3, $$running_total(c(7))$$,          $$7$$,              TRUE),
-  ($$Running Total$$, 4, $$running_total(numeric(0))$$,    $$numeric(0)$$,     TRUE),
+  ($$Running Total$$, 1, $$testthat::expect_equal(running_total(c(1, 2, 3, 4)), c(1, 3, 6, 10))$$, $$c(1, 3, 6, 10)$$, FALSE),
+  ($$Running Total$$, 2, $$testthat::expect_equal(running_total(c(5, -2, 4)), c(5, 3, 7))$$, $$c(5, 3, 7)$$, FALSE),
+  ($$Running Total$$, 3, $$testthat::expect_equal(running_total(c(7)), 7)$$, $$7$$, TRUE),
+  ($$Running Total$$, 4, $$testthat::expect_equal(running_total(numeric(0)), numeric(0))$$, $$numeric(0)$$, TRUE),
 
   /* Second Largest */
-  ($$Second Largest$$, 1, $$second_largest(c(3, 1, 4, 1, 5))$$, $$4$$,    FALSE),
-  ($$Second Largest$$, 2, $$second_largest(c(10, 20))$$,        $$10$$,   FALSE),
-  ($$Second Largest$$, 3, $$second_largest(c(5, 5, 5))$$,       $$NULL$$, TRUE),
-  ($$Second Largest$$, 4, $$second_largest(c(-1, -5, -3))$$,    $$-3$$,   TRUE),
-  ($$Second Largest$$, 5, $$second_largest(c(2, 9, 9, 8))$$,    $$8$$,    TRUE),
+  ($$Second Largest$$, 1, $$testthat::expect_equal(second_largest(c(3, 1, 4, 1, 5)), 4)$$, $$4$$, FALSE),
+  ($$Second Largest$$, 2, $$testthat::expect_equal(second_largest(c(10, 20)), 10)$$, $$10$$, FALSE),
+  ($$Second Largest$$, 3, $$testthat::expect_equal(second_largest(c(5, 5, 5)), NULL)$$, $$NULL$$, TRUE),
+  ($$Second Largest$$, 4, $$testthat::expect_equal(second_largest(c(-1, -5, -3)), -3)$$, $$-3$$, TRUE),
+  ($$Second Largest$$, 5, $$testthat::expect_equal(second_largest(c(2, 9, 9, 8)), 8)$$, $$8$$, TRUE),
 
   /* Rotate Vector Left */
-  ($$Rotate Vector Left$$, 1, $$rotate_left(c(1, 2, 3, 4, 5), 2)$$, $$c(3, 4, 5, 1, 2)$$, FALSE),
-  ($$Rotate Vector Left$$, 2, $$rotate_left(c(1, 2, 3), 4)$$,       $$c(2, 3, 1)$$,       FALSE),
-  ($$Rotate Vector Left$$, 3, $$rotate_left(c(1, 2, 3, 4), -1)$$,   $$c(4, 1, 2, 3)$$,    TRUE),
-  ($$Rotate Vector Left$$, 4, $$rotate_left(c(9), 5)$$,             $$9$$,                TRUE),
-  ($$Rotate Vector Left$$, 5, $$rotate_left(numeric(0), 3)$$,       $$numeric(0)$$,       TRUE),
+  ($$Rotate Vector Left$$, 1, $$testthat::expect_equal(rotate_left(c(1, 2, 3, 4, 5), 2), c(3, 4, 5, 1, 2))$$, $$c(3, 4, 5, 1, 2)$$, FALSE),
+  ($$Rotate Vector Left$$, 2, $$testthat::expect_equal(rotate_left(c(1, 2, 3), 4), c(2, 3, 1))$$, $$c(2, 3, 1)$$, FALSE),
+  ($$Rotate Vector Left$$, 3, $$testthat::expect_equal(rotate_left(c(1, 2, 3, 4), -1), c(4, 1, 2, 3))$$, $$c(4, 1, 2, 3)$$, TRUE),
+  ($$Rotate Vector Left$$, 4, $$testthat::expect_equal(rotate_left(c(9), 5), 9)$$, $$9$$, TRUE),
+  ($$Rotate Vector Left$$, 5, $$testthat::expect_equal(rotate_left(numeric(0), 3), numeric(0))$$, $$numeric(0)$$, TRUE),
 
   /* Reverse a String */
-  ($$Reverse a String$$, 1, $$reverse_string("hello")$$,        $$"olleh"$$,        FALSE),
-  ($$Reverse a String$$, 2, $$reverse_string("R")$$,            $$"R"$$,            FALSE),
-  ($$Reverse a String$$, 3, $$reverse_string("")$$,             $$""$$,             TRUE),
-  ($$Reverse a String$$, 4, $$reverse_string("A man a plan")$$, $$"nalp a nam A"$$, TRUE),
+  ($$Reverse a String$$, 1, $$testthat::expect_equal(reverse_string("hello"), "olleh")$$, $$"olleh"$$, FALSE),
+  ($$Reverse a String$$, 2, $$testthat::expect_equal(reverse_string("R"), "R")$$, $$"R"$$, FALSE),
+  ($$Reverse a String$$, 3, $$testthat::expect_equal(reverse_string(""), "")$$, $$""$$, TRUE),
+  ($$Reverse a String$$, 4, $$testthat::expect_equal(reverse_string("A man a plan"), "nalp a nam A")$$, $$"nalp a nam A"$$, TRUE),
 
   /* Count Vowels */
-  ($$Count Vowels$$, 1, $$count_vowels("hello")$$,     $$2L$$, FALSE),
-  ($$Count Vowels$$, 2, $$count_vowels("RHYTHM")$$,    $$0L$$, FALSE),
-  ($$Count Vowels$$, 3, $$count_vowels("Education")$$, $$5L$$, TRUE),
-  ($$Count Vowels$$, 4, $$count_vowels("")$$,          $$0L$$, TRUE),
+  ($$Count Vowels$$, 1, $$testthat::expect_identical(count_vowels("hello"), 2L)$$, $$2L$$, FALSE),
+  ($$Count Vowels$$, 2, $$testthat::expect_identical(count_vowels("RHYTHM"), 0L)$$, $$0L$$, FALSE),
+  ($$Count Vowels$$, 3, $$testthat::expect_identical(count_vowels("Education"), 5L)$$, $$5L$$, TRUE),
+  ($$Count Vowels$$, 4, $$testthat::expect_identical(count_vowels(""), 0L)$$, $$0L$$, TRUE),
 
   /* Palindrome Check */
-  ($$Palindrome Check$$, 1, $$is_palindrome("racecar")$$,                         $$TRUE$$,  FALSE),
-  ($$Palindrome Check$$, 2, $$is_palindrome("hello")$$,                           $$FALSE$$, FALSE),
-  ($$Palindrome Check$$, 3, $$is_palindrome("A man, a plan, a canal: Panama")$$,  $$TRUE$$,  TRUE),
-  ($$Palindrome Check$$, 4, $$is_palindrome("No lemon, no melon")$$,              $$TRUE$$,  TRUE),
-  ($$Palindrome Check$$, 5, $$is_palindrome("")$$,                                $$TRUE$$,  TRUE),
+  ($$Palindrome Check$$, 1, $$testthat::expect_equal(is_palindrome("racecar"), TRUE)$$, $$TRUE$$, FALSE),
+  ($$Palindrome Check$$, 2, $$testthat::expect_equal(is_palindrome("hello"), FALSE)$$, $$FALSE$$, FALSE),
+  ($$Palindrome Check$$, 3, $$testthat::expect_equal(is_palindrome("A man, a plan, a canal: Panama"), TRUE)$$, $$TRUE$$, TRUE),
+  ($$Palindrome Check$$, 4, $$testthat::expect_equal(is_palindrome("No lemon, no melon"), TRUE)$$, $$TRUE$$, TRUE),
+  ($$Palindrome Check$$, 5, $$testthat::expect_equal(is_palindrome(""), TRUE)$$, $$TRUE$$, TRUE),
 
   /* Caesar Cipher */
-  ($$Caesar Cipher$$, 1, $$caesar_cipher("abc", 1)$$,           $$"bcd"$$,           FALSE),
-  ($$Caesar Cipher$$, 2, $$caesar_cipher("xyz", 3)$$,           $$"abc"$$,           FALSE),
-  ($$Caesar Cipher$$, 3, $$caesar_cipher("Hello, World!", 5)$$, $$"Mjqqt, Btwqi!"$$, TRUE),
-  ($$Caesar Cipher$$, 4, $$caesar_cipher("abc", -1)$$,          $$"zab"$$,           TRUE),
-  ($$Caesar Cipher$$, 5, $$caesar_cipher("abc", 27)$$,          $$"bcd"$$,           TRUE),
+  ($$Caesar Cipher$$, 1, $$testthat::expect_equal(caesar_cipher("abc", 1), "bcd")$$, $$"bcd"$$, FALSE),
+  ($$Caesar Cipher$$, 2, $$testthat::expect_equal(caesar_cipher("xyz", 3), "abc")$$, $$"abc"$$, FALSE),
+  ($$Caesar Cipher$$, 3, $$testthat::expect_equal(caesar_cipher("Hello, World!", 5), "Mjqqt, Btwqi!")$$, $$"Mjqqt, Btwqi!"$$, TRUE),
+  ($$Caesar Cipher$$, 4, $$testthat::expect_equal(caesar_cipher("abc", -1), "zab")$$, $$"zab"$$, TRUE),
+  ($$Caesar Cipher$$, 5, $$testthat::expect_equal(caesar_cipher("abc", 27), "bcd")$$, $$"bcd"$$, TRUE),
 
   /* Anagram Check (draft problem) */
-  ($$Anagram Check$$, 1, $$are_anagrams("listen", "silent")$$, $$TRUE$$,  FALSE),
-  ($$Anagram Check$$, 2, $$are_anagrams("hello", "world")$$,   $$FALSE$$, TRUE)
+  ($$Anagram Check$$, 1, $$testthat::expect_equal(are_anagrams("listen", "silent"), TRUE)$$, $$TRUE$$, FALSE),
+  ($$Anagram Check$$, 2, $$testthat::expect_equal(are_anagrams("hello", "world"), FALSE)$$, $$FALSE$$, TRUE)
 
 ) AS v(title, sort_order, code, expected_output, is_hidden)
 JOIN problems p ON p.title = v.title;

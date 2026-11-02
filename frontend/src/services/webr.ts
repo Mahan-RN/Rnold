@@ -7,6 +7,7 @@ export default async function getWebR(): Promise<WebR> {
         const webR = new WebR();
         instance = (async () => {
             await webR.init();
+            await webR.installPackages(["testthat"]);
             return webR;
         })();
         instance.catch(() => {
