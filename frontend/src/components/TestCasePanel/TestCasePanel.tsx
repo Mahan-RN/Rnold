@@ -4,14 +4,21 @@ import { r } from "@codemirror/legacy-modes/mode/r";
 import CodeMirror from "@uiw/react-codemirror";
 import { materialDark } from "@uiw/codemirror-theme-material";
 import styles from "src/components/TestCasePanel/TestCasePanel.module.css";
+import type { TestResult } from "src/services/rubSubmission";
+
 interface TestCasePanelProps {
     testCase: TestCasesResponse;
     num: number;
+    result?: TestResult;
 }
 
 const extensions = [StreamLanguage.define(r)];
 
-export default function TestCasePanel({ testCase, num }: TestCasePanelProps) {
+export default function TestCasePanel({
+    testCase,
+    num,
+    result,
+}: TestCasePanelProps) {
     const code = testCase.code;
 
     return (
@@ -25,6 +32,9 @@ export default function TestCasePanel({ testCase, num }: TestCasePanelProps) {
                 theme={materialDark}
                 readOnly={true}
             />
+            {result &&
+                (result.passed ? <p>" ✅ Passed"</p> : <p>" ❌ Failed"</p>)}
+            {result && !result.passed && <pre>{result.message}</pre>}
         </div>
     );
 }

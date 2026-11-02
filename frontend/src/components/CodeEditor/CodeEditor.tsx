@@ -4,56 +4,42 @@ import styles from "src/components/CodeEditor/CodeEditor.module.css";
 import { StreamLanguage } from "@codemirror/language";
 import { r } from "@codemirror/legacy-modes/mode/r";
 import { useState } from "react";
-import getWebR from "src/services/webr";
 import OutputTerminal from "src/components/OutputTerminal/OutputTerminal";
-import { WebRError, Shelter } from "webr";
-import type { REnvironment } from "webr";
+import { runSubmission } from "src/services/rubSubmission";
+import type { TestResult } from "src/services/rubSubmission";
+import type { TestCasesResponse } from "src/loaders/ProblemPageLoader";
 
 interface CodeEditorProps {
     starterCode: string;
-}
-
-interface RawOutputEntry {
-    type: string;
-    data: unknown;
+    testCases: TestCasesResponse[];
+    onTestResults: (results: TestResult[] | null) => void;
 }
 
 const extensions = [StreamLanguage.define(r)];
 
-export default function CodeEditor({ starterCode }: CodeEditorProps) {
+export default function CodeEditor({
+    starterCode,
+    testCases,
+    onTestResults,
+}: CodeEditorProps) {
     const [code, setCode] = useState(starterCode);
     const [output, setOutput] = useState("");
     const [isRunning, setIsRunning] = useState(false);
 
-    function parseOutput(output: RawOutputEntry[]) {
-        const text = output
-            .filter((e) => e.type === "stdout" || e.type === "stderr")
-            .map((e) => String(e.data))
-            .join("\n");
-
-        return text === "" ? "Code Successfully Submitted ✨" : text;
-    }
-
     async function handleClickSubmit() {
         setIsRunning(true);
         setOutput("");
-        let shelter: Shelter | undefined;
+        onTestResults(null);
         try {
-            const webR = await getWebR();
-            shelter = await new webR.Shelter();
-            const env = (await shelter.evalR(
-                "new.env(parent = globalenv())",
-            )) as REnvironment;
-            const result = await shelter.captureR(code, {
-                env: env,
-                withAutoprint: true,
-                captureConditions: false,
-            });
-            setOutput(parseOutput(result.output));
+            const result = await runSubmission(
+                code,
+                testCases.map((t) => t.code),
+            );
+            setOutput(result.output);
+            onTestResults(result.testResults);
         } catch (err) {
-            setOutput(err instanceof WebRError ? err.message : String(err));
+            setOutput(String(err));
         } finally {
-            await shelter?.purge();
             setIsRunning(false);
         }
     }
@@ -61,6 +47,7 @@ export default function CodeEditor({ starterCode }: CodeEditorProps) {
     function handleClickReset() {
         setCode(starterCode);
         setOutput("");
+        onTestResults(null);
     }
 
     return (
