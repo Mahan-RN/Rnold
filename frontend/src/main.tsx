@@ -13,6 +13,8 @@ import RootLayout from "./layouts/RootLayout";
 import logoutLoader from "./loaders/logoutLoader";
 import logoutAction from "./actions/logoutAction";
 import problemPageLoader from "./loaders/ProblemPageLoader";
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import profilePageLoader from "./loaders/ProfilePageLoader";
 
 const router = createBrowserRouter([
     {
@@ -39,6 +41,12 @@ const router = createBrowserRouter([
                 loader: problemPageLoader,
                 errorElement: <NotFoundPage />,
             },
+            {
+                path: "/profile",
+                element: <ProfilePage />,
+                loader: profilePageLoader,
+                errorElement: <NotFoundPage />,
+            },
         ],
     },
     {
@@ -51,5 +59,5 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <RouterProvider router={router} />
-    </StrictMode>
+    </StrictMode>,
 );

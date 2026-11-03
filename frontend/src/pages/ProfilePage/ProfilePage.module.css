@@ -1,0 +1,145 @@
+.profilePage {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    width: 100%;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.profileCard {
+    width: 100%;
+    max-width: 650px;
+    padding: 28px;
+
+    color: #c9d1d9;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+}
+
+/* Profile header */
+
+.profileHeader {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding-bottom: 24px;
+    border-bottom: 1px solid #30363d;
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+
+    color: #ffffff;
+    background-color: #30363d;
+    border: 1px solid #484f58;
+    border-radius: 50%;
+
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.profileHeading {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.profileHeading h1 {
+    margin: 0;
+    color: #f0f6fc;
+    font-size: 26px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.roleBadge {
+    padding: 4px 10px;
+
+    color: #79c0ff;
+    background-color: #1f2937;
+    border: 1px solid #388bfd;
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Profile sections */
+
+.profileSection {
+    margin-top: 26px;
+}
+
+.profileSection h2 {
+    margin: 0 0 14px;
+
+    color: #f0f6fc;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.infoList {
+    display: flex;
+    flex-direction: column;
+}
+
+.infoRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+    padding: 14px 0;
+    border-bottom: 1px solid #21262d;
+}
+
+.infoRow:last-child {
+    border-bottom: none;
+}
+
+.infoLabel {
+    color: #8b949e;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.infoValue {
+    color: #c9d1d9;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+
+/* Responsive layout */
+
+@media (max-width: 480px) {
+    .profilePage {
+        padding: 24px 12px;
+    }
+
+    .profileCard {
+        padding: 20px 16px;
+    }
+
+    .infoRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .infoValue {
+        text-align: left;
+    }
+}
