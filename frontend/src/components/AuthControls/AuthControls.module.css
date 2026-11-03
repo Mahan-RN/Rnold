@@ -7,11 +7,47 @@
 }
 
 .loginLink {
-    color: #1f2028;
-    font-weight: medium;
-    background-color: #fff6dc;
-    padding: 3px 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 18px;
+    gap: 8px;
+
+    color: #ffffff;
+    background-color: #24292f;
+    border: 1px solid #444c56;
+    border-radius: 6px;
+
+    font-size: 14px;
+    font-weight: 600;
     text-decoration: none;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.loginLink:hover {
+    background-color: #32383f;
+    border-color: #8b949e;
+}
+
+.loginLink:active {
+    background-color: #1c2128;
+    transform: translateY(1px);
+}
+
+.loginLink:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 3px;
+}
+
+.githubIcon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
 }
 
 .logoutBtn {
@@ -20,4 +56,47 @@
     padding: 5px 8px;
     background-color: #ff0b0b;
     border-radius: 5px;
+}
+
+.logoutBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 14px;
+
+    color: #c9d1d9;
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.logoutBtn:hover {
+    color: #ff7b72;
+    background-color: #2d1f20;
+    border-color: #f85149;
+}
+
+.logoutBtn:active {
+    background-color: #3d2022;
+}
+
+.logoutBtn:focus-visible {
+    outline: 2px solid #f85149;
+    outline-offset: 3px;
+}
+
+.usernameText {
+    color: #c9d1d9;
+    font-size: 22px;
+    font-weight: 500;
 }
