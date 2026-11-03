@@ -1,14 +1,25 @@
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useRouteLoaderData } from "react-router";
 import logo from "src/assets/logo.svg";
 import styles from "src/components/Header/Header.module.css";
+import type rootLayoutLoader from "src/loaders/RootLayoutLoader";
 import AuthControls from "../AuthControls/AuthControls";
 
+const ADMIN_ROLE = 2;
+
 export default function Header() {
+    const user = useRouteLoaderData<typeof rootLayoutLoader>("root");
     return (
         <header className={styles.rootHeader}>
-            <Link to="/" className={styles.rootLogo}>
-                <img src={logo} alt="Rnold home" />
-            </Link>
+            <div className={styles.gridContainer}>
+                <div className={styles.gridItem1}>
+                    <Link to="/" className={styles.rootLogo}>
+                        <img src={logo} alt="Rnold home" />
+                    </Link>
+                </div>
+                <div className={styles.gridItem2}>
+                    <AuthControls />
+                </div>
+            </div>
             <div className={styles.navigationBar}>
                 <nav className={styles.pages}>
                     <NavLink
@@ -34,7 +45,9 @@ export default function Header() {
                     </NavLink>
                 </nav>
                 <div className={styles.login}>
-                    <AuthControls />
+                    {user && user.role === ADMIN_ROLE && (
+                        <a href="/admin">Admin Dashboard</a>
+                    )}
                 </div>
             </div>
         </header>

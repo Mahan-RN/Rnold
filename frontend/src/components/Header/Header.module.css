@@ -4,13 +4,24 @@
     font-size: 24px;
 }
 
-.rootLogo {
-    align-self: flex-start;
-}
-
 .rootLogo img {
     width: 400px;
     padding: 10px;
+}
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.gridItem1 {
+    justify-self: start;
+}
+
+.gridItem2 {
+    justify-self: end;
+    margin-top: 15px;
+    margin-right: 5px;
 }
 
 .navigationBar {
