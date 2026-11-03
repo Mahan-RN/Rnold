@@ -1,4 +1,4 @@
-import { Form, useRouteLoaderData } from "react-router";
+import { Form, Link, useRouteLoaderData } from "react-router";
 import type rootLayoutLoader from "src/loaders/RootLayoutLoader";
 import styles from "src/components/AuthControls/AuthControls.module.css";
 
@@ -25,12 +25,19 @@ export default function AuthControls() {
     } else {
         return (
             <>
-                <span className={styles.usernameText}>{user.username}</span>
-                <Form method="post" action="/logout">
-                    <button className={styles.logoutBtn} type="submit">
-                        Log out
-                    </button>
-                </Form>
+                <div className={styles.authControls}>
+                    <Link to="/profile" className={styles.profileLink}>
+                        <span>{user.username}</span>
+                        <span className={styles.editIndicator}>
+                            Edit profile
+                        </span>
+                    </Link>
+                    <Form method="post" action="/logout">
+                        <button className={styles.logoutBtn} type="submit">
+                            Log out
+                        </button>
+                    </Form>
+                </div>
             </>
         );
     }

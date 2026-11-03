@@ -1,17 +1,20 @@
-.usernameText {
-    font-weight: bold;
-    background: linear-gradient(135deg, #8a2be2, #00ffff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+.authControls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
+.authControls form {
+    margin: 0;
+}
+
+/* GitHub login link */
 .loginLink {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 18px;
     gap: 8px;
+    padding: 10px 18px;
 
     color: #ffffff;
     background-color: #24292f;
@@ -50,26 +53,64 @@
     flex-shrink: 0;
 }
 
-.logoutBtn {
-    font-size: large;
-    margin-top: 8px;
-    padding: 5px 8px;
-    background-color: #ff0b0b;
-    border-radius: 5px;
+/* Profile link */
+.profileLink {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    padding: 7px 12px;
+
+    color: #c9d1d9;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
 }
 
+.profileLink span:first-child {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.editIndicator {
+    color: #8b949e;
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.profileLink:hover {
+    color: #58a6ff;
+    background-color: #21262d;
+    border-color: #30363d;
+}
+
+.profileLink:hover .editIndicator {
+    color: #58a6ff;
+}
+
+.profileLink:focus-visible {
+    outline: 2px solid #58a6ff;
+    outline-offset: 3px;
+}
+
+/* Logout button */
 .logoutBtn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 8px 14px;
+    padding: 9px 15px;
 
     color: #c9d1d9;
     background-color: #21262d;
     border: 1px solid #30363d;
     border-radius: 6px;
 
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     font-family: inherit;
 
@@ -93,10 +134,4 @@
 .logoutBtn:focus-visible {
     outline: 2px solid #f85149;
     outline-offset: 3px;
-}
-
-.usernameText {
-    color: #c9d1d9;
-    font-size: 22px;
-    font-weight: 500;
 }
