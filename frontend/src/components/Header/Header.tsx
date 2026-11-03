@@ -4,7 +4,7 @@ import styles from "src/components/Header/Header.module.css";
 import type rootLayoutLoader from "src/loaders/RootLayoutLoader";
 import AuthControls from "../AuthControls/AuthControls";
 
-const ADMIN_ROLE = 2;
+const ADMIN_ROLE = 1;
 
 export default function Header() {
     const user = useRouteLoaderData<typeof rootLayoutLoader>("root");
@@ -44,9 +44,18 @@ export default function Header() {
                         About
                     </NavLink>
                 </nav>
-                <div className={styles.login}>
+                <div className={styles.adminDashboard}>
                     {user && user.role === ADMIN_ROLE && (
-                        <a href="/admin">Admin Dashboard</a>
+                        <NavLink
+                            to="/admin"
+                            className={({ isActive }) =>
+                                isActive
+                                    ? `${styles.navLink} ${styles.active}`
+                                    : styles.navLink
+                            }
+                        >
+                            Admin Dashboard
+                        </NavLink>
                     )}
                 </div>
             </div>
