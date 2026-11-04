@@ -1,10 +1,10 @@
 .Collapsible {
     display: flex;
-    min-height: 9rem;
+    min-height: 3rem;
     flex-direction: column;
     justify-content: center;
     color: oklch(14.5% 0 0deg);
-    margin: 10px 50px;
+    margin: 0px 10px;
 
     @media (prefers-color-scheme: dark) {
         color: white;
