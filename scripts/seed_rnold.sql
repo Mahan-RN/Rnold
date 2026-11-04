@@ -1,5 +1,5 @@
 /*
-  Rnold sample data: topics, problems, test_cases
+  Rnold sample data: users, topics, problems, test_cases
 
   Run with:
     psql -v ON_ERROR_STOP=1 -d <your_database> -f seed_rnold.sql
@@ -18,6 +18,15 @@
   * expected_output is the canonical deparse() form of the correct result. It
     duplicates the expected argument inside code and is kept for display.
   * The webR instance needs the testthat package installed.
+  * users.github_id is the primary key and normally comes from GitHub. The
+    sample users use negative ids, which GitHub never issues, so a real account
+    signing in through OAuth can never match a sample row and inherit its role.
+    To remove only the sample users: DELETE FROM users WHERE github_id < 0;
+  * users.role follows the Role IntEnum: 1 = USER, 2 = ADMIN. The model's default
+    is applied by Python and not by the database, so raw SQL must always set it.
+  * created_at and last_login have server defaults, but explicit values are used
+    so the sample data has a spread of dates. last_login is never earlier than
+    created_at. Sample emails use example.com, which is reserved for documentation.
   * Run once on an empty database. test_cases has no unique constraint, so a
     second run would duplicate them. To reset, uncomment the line below.
     CASCADE also empties submissions, because it references problems.
@@ -26,6 +35,27 @@
 */
 
 BEGIN;
+
+/* ------------------------------------------------------------------ */
+/* Users                                                               */
+/* ------------------------------------------------------------------ */
+
+/* role: 1 = USER, 2 = ADMIN (the Role IntEnum) */
+INSERT INTO users (github_id, github_email, username, role, created_at, last_login) VALUES
+  (-1, $$rnoldadmin@example.com$$, $$rnoldadmin$$, 2, now() - interval '180 days', now() - interval '1 hour'),
+  (-2, $$tidytess@example.com$$, $$tidytess$$, 2, now() - interval '150 days', now() - interval '2 days'),
+  (-3, $$vectorvic@example.com$$, $$vectorvic$$, 1, now() - interval '120 days', now() - interval '3 hours'),
+  (-4, $$pipedream@example.com$$, $$pipedream$$, 1, now() - interval '100 days', now() - interval '10 days'),
+  (-5, $$factorfran@example.com$$, $$factorfran$$, 1, now() - interval '75 days', now() - interval '36 hours'),
+  (-6, $$narmnora@example.com$$, $$narmnora$$, 1, now() - interval '60 days', now() - interval '5 days'),
+  (-7, $$lazyevallee@example.com$$, $$lazyevallee$$, 1, now() - interval '45 days', now() - interval '12 hours'),
+  /* Edge case: has not logged in since signing up (last_login equals created_at) */
+  (-8, $$forloopfinn@example.com$$, $$forloopfinn$$, 1, now() - interval '30 days', now() - interval '30 days'),
+  /* Edge case: signed up today */
+  (-9, $$newbieneil@example.com$$, $$newbieneil$$, 1, now() - interval '3 hours', now() - interval '3 hours'),
+  /* Edge case: 39 character username, the GitHub maximum */
+  (-10, $$longusernamelongusernamelongusername123@example.com$$, $$longusernamelongusernamelongusername123$$, 1, now() - interval '20 days', now() - interval '1 day')
+ON CONFLICT (github_id) DO NOTHING;
 
 /* ------------------------------------------------------------------ */
 /* Topics                                                              */
@@ -436,3 +466,6 @@ LEFT JOIN problems p ON p.topic_id = t.id
 LEFT JOIN test_cases tc ON tc.problem_id = p.id
 GROUP BY t.name, t.sort_order, p.id, p.sort_order, p.title, p.difficulty
 ORDER BY t.sort_order NULLS LAST, p.sort_order NULLS LAST;
+
+/* Users by role */
+SELECT role, COUNT(*) AS users FROM users GROUP BY role ORDER BY role;
