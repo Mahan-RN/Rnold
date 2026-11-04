@@ -4,7 +4,7 @@ import styles from "src/components/Header/Header.module.css";
 import type rootLayoutLoader from "src/loaders/RootLayoutLoader";
 import AuthControls from "../AuthControls/AuthControls";
 
-const ADMIN_ROLE = 1;
+const ADMIN_ROLE = 2;
 
 export default function Header() {
     const user = useRouteLoaderData<typeof rootLayoutLoader>("root");

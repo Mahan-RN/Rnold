@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@base-ui/react": "^1.9.0",
     "@codemirror/language": "^6.13.1",
     "@codemirror/legacy-modes": "^6.5.5",
     "@uiw/codemirror-theme-material": "^4.25.12",
