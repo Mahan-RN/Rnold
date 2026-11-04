@@ -15,6 +15,9 @@ import logoutAction from "./actions/logoutAction";
 import problemPageLoader from "./loaders/ProblemPageLoader";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
 import profilePageLoader from "./loaders/ProfilePageLoader";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage/AdminDashboardPage";
+import UserManagementPage from "./pages/admin/UserManagementPage/UserManagementPage";
+import userManagementPageLoader from "./loaders/admin/UserManagementPageLoader";
 
 const router = createBrowserRouter([
     {
@@ -46,6 +49,17 @@ const router = createBrowserRouter([
                 element: <ProfilePage />,
                 loader: profilePageLoader,
                 errorElement: <NotFoundPage />,
+            },
+            {
+                path: "/admin",
+                element: <AdminDashboardPage />,
+                children: [
+                    {
+                        path: "/admin/users",
+                        element: <UserManagementPage />,
+                        loader: userManagementPageLoader,
+                    },
+                ],
             },
         ],
     },
