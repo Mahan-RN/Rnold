@@ -1,6 +1,6 @@
 import { Collapsible } from "@base-ui/react/collapsible";
-import apiFetch from "src/api/Fetch";
 import styles from "src/components/admin/UserCollapsible/UserCollapsible.module.css";
+import { Form } from "react-router";
 
 interface UserCollapsibleProps {
     github_id: number;
@@ -19,12 +19,10 @@ export default function UserCollapsible({
     last_login,
     role,
 }: UserCollapsibleProps) {
-    async function handleDelete() {
-        const isConfirmed = window.confirm(
-            `Are you sure you want to delete user ${username}?`,
-        );
-        if (isConfirmed) {
-            await apiFetch("/users/me", { method: "DELETE" });
+    function confirmSubmit(event: React.SubmitEvent<HTMLFormElement>) {
+        const isConfirmed = window.confirm(`Delete ${username}?`);
+        if (!isConfirmed) {
+            event.preventDefault();
         }
     }
     return (
@@ -49,12 +47,23 @@ export default function UserCollapsible({
                         <strong>Last Login:</strong> {last_login}
                     </p>
                     <div className={styles.Actions}>
-                        <button
-                            className={styles.DeleteButton}
-                            onClick={handleDelete}
+                        <Form
+                            action="/admin/users"
+                            method="DELETE"
+                            onSubmit={confirmSubmit}
                         >
-                            Delete User
-                        </button>
+                            <input
+                                type="hidden"
+                                name="github_id"
+                                value={github_id}
+                            />
+                            <button
+                                type="submit"
+                                className={styles.DeleteButton}
+                            >
+                                Delete User
+                            </button>
+                        </Form>
                     </div>
                 </div>
             </Collapsible.Panel>

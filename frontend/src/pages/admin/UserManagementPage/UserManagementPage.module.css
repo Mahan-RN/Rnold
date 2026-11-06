@@ -7,3 +7,21 @@
     align-self: flex-start;
     margin-left: 10px;
 }
+
+.SuccessMessage {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #276749;
+    border-radius: 6px;
+    background-color: #e6fffa;
+    color: #276749;
+}
+
+.ErrorMessage {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border: 1px solid #c53030;
+    border-radius: 6px;
+    background-color: #fff5f5;
+    color: #c53030;
+}

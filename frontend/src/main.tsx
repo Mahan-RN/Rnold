@@ -18,6 +18,7 @@ import profilePageLoader from "./loaders/ProfilePageLoader";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage/AdminDashboardPage";
 import UserManagementPage from "./pages/admin/UserManagementPage/UserManagementPage";
 import userManagementPageLoader from "./loaders/admin/UserManagementPageLoader";
+import deleteUserAction from "./actions/admin/deleteUserAction";
 
 const router = createBrowserRouter([
     {
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
                         path: "/admin/users",
                         element: <UserManagementPage />,
                         loader: userManagementPageLoader,
+                        action: deleteUserAction,
                     },
                 ],
             },

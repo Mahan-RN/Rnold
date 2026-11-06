@@ -44,7 +44,7 @@ def get_user(db: DbSession, current_user: CurrentUser) -> User:
         403: {"description": "Last admin cannot be deleted"},
     },
 )
-def delete_user(db: DbSession, current_user: CurrentUser, request: Request) -> Response:
+def delete_me(db: DbSession, current_user: CurrentUser, request: Request) -> Response:
     try:
         user_services.delete_one(current_user.github_id, db)
         db.commit()
@@ -93,3 +93,22 @@ def update_user_role(
         return updated_user
     except UserNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+
+
+@router.delete(
+    "/{github_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={
+        404: {"description": "User not found"},
+        403: {"description": "Last admin cannot be deleted"},
+    },
+)
+def delete_user(github_id: int, db: DbSession, current_admin: CurrentAdmin) -> Response:
+    try:
+        user_services.delete_one(github_id, db)
+        db.commit()
+    except UserNotFoundError as e:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+    except LastAdminDeletionError as e:
+        raise HTTPException(status.HTTP_403_FORBIDDEN, detail=str(e))
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
