@@ -22,7 +22,7 @@ dev = [
     "pre-commit>=4.6.0",
     "pytest>=9.1.0",
     "pytest-cov>=7.1.0",
-    "ruff>=0.15.16",
+    "ruff>=0.16",
 ]
 
 [tool.mypy]
@@ -46,3 +46,6 @@ testpaths = ["tests"]
 
 [tool.coverage.run]
 omit = ["*/tests/*"]
+
+[tool.ruff.lint]
+extend-select = ["I"]
