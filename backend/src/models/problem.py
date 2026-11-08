@@ -1,7 +1,7 @@
 from enum import IntEnum, auto
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Text
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 
@@ -22,11 +22,11 @@ class Problem(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     topic_id: Mapped[int] = mapped_column(ForeignKey("topics.id"))
-    sort_order: Mapped[int | None]
-    title: Mapped[str] = mapped_column(Text, unique=True)
-    description: Mapped[str] = mapped_column(Text)
+    sort_order: Mapped[int]
+    title: Mapped[str] = mapped_column(unique=True)
+    description: Mapped[str]
     difficulty: Mapped[int]
-    starter_code: Mapped[str] = mapped_column(Text)
+    starter_code: Mapped[str]
     test_cases: Mapped[list["TestCase"]] = relationship(
         back_populates="problem",
         cascade="all, delete-orphan",
