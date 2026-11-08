@@ -8,7 +8,7 @@ from src.models import Problem, TestCase
 from src.dependency import CurrentAdmin
 
 from src.services import problem_services
-from src.exceptions.problem_exceptions import ProblemNotFoundError, DuplicateTitleError
+from src.exceptions.problem_exceptions import ProblemNotFoundError, ProblemConflictError
 from src.schemas.problem import (
     ProblemsResponse,
     ProblemResponse,
@@ -35,9 +35,10 @@ def get_problems(session: DbSession) -> Sequence[Problem]:
 def get_problem(problem_id: int, session: DbSession) -> Problem:
     try:
         problem = problem_services.get_one(problem_id, session)
-        return problem
     except ProblemNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+
+    return problem
 
 
 @router.get(
@@ -48,15 +49,16 @@ def get_problem(problem_id: int, session: DbSession) -> Problem:
 def get_test_cases(problem_id: int, session: DbSession) -> Sequence[TestCase]:
     try:
         result = problem_services.get_test_cases(problem_id, session)
-        return result
     except ProblemNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+
+    return result
 
 
 @router.post(
     "",
     response_model=ProblemResponse,
-    responses={403: {"description": "Title already exists"}},
+    responses={409: {"description": "Conflict error"}},
 )
 def add_problem(
     request: CreateProblemRequest, session: DbSession, admin: CurrentAdmin
@@ -64,15 +66,19 @@ def add_problem(
     try:
         result = problem_services.insert_one(**request.model_dump(), session=session)
         session.commit()
-        return result
-    except DuplicateTitleError as e:
+    except ProblemConflictError as e:
         raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
+
+    return result
 
 
 @router.patch(
     "/{problem_id}",
     response_model=ProblemResponse,
-    responses={404: {"description": "Problem not found"}},
+    responses={
+        404: {"description": "Problem not found"},
+        409: {"description": "Conflict error"},
+    },
 )
 def update_problem(
     problem_id: int,
@@ -85,9 +91,11 @@ def update_problem(
             id=problem_id, **request.model_dump(), session=session
         )
         session.commit()
-        return result
     except ProblemNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+    except ProblemConflictError as e:
+        raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
+    return result
 
 
 @router.delete("/{problem_id}", responses={404: {"description": "Problem not found"}})
@@ -97,6 +105,7 @@ def delete_problem(
     try:
         problem_services.delete_one(problem_id, session)
         session.commit()
-        return Response(status.HTTP_204_NO_CONTENT)
     except ProblemNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+
+    return Response(status.HTTP_204_NO_CONTENT)

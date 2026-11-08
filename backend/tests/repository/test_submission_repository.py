@@ -1,8 +1,11 @@
+import pytest
+
 from datetime import datetime
 from sqlalchemy.orm import Session
 
 from src.models import Difficulty, Problem, Role, Topic, User
 from src.repository import submission_repository
+from src.exceptions.repository_exceptions import NotFoundError
 
 
 class TestSubmissionRepository:
@@ -26,8 +29,8 @@ class TestSubmissionRepository:
         )
 
     def test_get_one_no_match(self, db_session: Session):
-        result = submission_repository.get_one(1, db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            submission_repository.get_one(1, db_session)
 
     def test_insert_one(self, db_session: Session):
         db_session.add(self.admin1)
@@ -187,7 +190,8 @@ class TestSubmissionRepository:
             code="hello",
             session=db_session,
         )
-        submission_repository.delete_one(111, db_session)
+        with pytest.raises(NotFoundError):
+            submission_repository.delete_one(111, db_session)
         get_result = submission_repository.get_one(insert_result.id, db_session)
         assert get_result == insert_result
 
@@ -205,5 +209,5 @@ class TestSubmissionRepository:
             session=db_session,
         )
         submission_repository.delete_one(insert_result.id, db_session)
-        get_result = submission_repository.get_one(insert_result.id, db_session)
-        assert get_result is None
+        with pytest.raises(NotFoundError):
+            submission_repository.get_one(insert_result.id, db_session)

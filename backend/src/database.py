@@ -5,7 +5,7 @@ from sqlalchemy.orm import DeclarativeBase, MappedAsDataclass, Session, sessionm
 
 from src.config import Settings
 
-settings = Settings()
+settings = Settings()  # pyright: ignore[reportCallIssue]
 
 
 class Base(MappedAsDataclass, DeclarativeBase):

@@ -1,6 +1,8 @@
+import pytest
 from sqlalchemy.orm import Session
 from src.models import Topic, Difficulty
 from src.repository import problem_repository, test_case_repository
+from src.exceptions.repository_exceptions import NotFoundError
 
 
 class TestProblemRepository:
@@ -26,8 +28,8 @@ class TestProblemRepository:
         }
 
     def test_get_one_no_match(self, db_session: Session):
-        result = problem_repository.get_one(1, db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            problem_repository.get_one(1, db_session)
 
     def test_get_all_empty(self, db_session: Session):
         result = problem_repository.get_all(db_session)
@@ -112,8 +114,8 @@ class TestProblemRepository:
     def test_update_one_no_match(self, db_session: Session):
         db_session.add(self.topic_1)
         db_session.flush()
-        result = problem_repository.update_one(id=1, session=db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            problem_repository.update_one(id=1, session=db_session)
 
     def test_update_one_match(self, db_session: Session):
         db_session.add(self.topic_1)
@@ -132,8 +134,8 @@ class TestProblemRepository:
         assert result.topic == self.topic_1
 
     def test_delete_one_no_match(self, db_session: Session):
-        result = problem_repository.delete_one(1, db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            problem_repository.delete_one(1, db_session)
 
     def test_delete_one_match(self, db_session: Session):
         db_session.add(self.topic_1)
@@ -142,5 +144,5 @@ class TestProblemRepository:
         result = problem_repository.get_one(problem.id, db_session)
         assert result == problem
         problem_repository.delete_one(problem.id, db_session)
-        result_after_delete = problem_repository.get_one(problem.id, db_session)
-        assert result_after_delete is None
+        with pytest.raises(NotFoundError):
+            problem_repository.get_one(problem.id, db_session)

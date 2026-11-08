@@ -65,7 +65,7 @@ class TestUserServices:
 
     def test_delete_one_no_match(self, db_session: Session):
         with pytest.raises(UserNotFoundError):
-            user_services.delete_one("111", db_session)
+            user_services.delete_one(111, db_session)
 
     def test_delete_match_user(self, db_session: Session):
         user_services.insert_one(self.post_user1, db_session)

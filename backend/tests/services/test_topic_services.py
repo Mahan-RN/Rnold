@@ -1,5 +1,5 @@
 from src.services import topic_services
-from src.exceptions.topic_exceptions import TopicNotFoundError, DuplicateTitleError
+from src.exceptions.topic_exceptions import TopicNotFoundError, TopicConflictError
 from sqlalchemy.orm import Session
 import pytest
 
@@ -35,7 +35,7 @@ class TestTopicServices:
     def test_update_one_duplicate_name(self, db_session: Session):
         topic_services.insert_one(**self.topic_1_dict, session=db_session)
         self.topic_2_dict["name"] = self.topic_1_dict["name"]
-        with pytest.raises(DuplicateTitleError):
+        with pytest.raises(TopicConflictError):
             topic_services.insert_one(**self.topic_2_dict, session=db_session)
 
     def test_update_one_match_name(self, db_session: Session):

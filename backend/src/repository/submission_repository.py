@@ -1,11 +1,16 @@
 from src.models import Submission
 from collections.abc import Sequence
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, exc
+from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 
 
-def get_one(id: int, session: Session) -> Submission | None:
-    return session.get(Submission, id)
+def get_one(id: int, session: Session) -> Submission:
+    submission = session.get(Submission, id)
+    if submission is None:
+        raise NotFoundError(f"Submission with ID {id} not found")
+
+    return submission
 
 
 def get_all(session: Session) -> Sequence[Submission]:
@@ -41,12 +46,16 @@ def insert_one(
         code=code,
     )
     session.add(submission)
-    session.flush()
+    try:
+        session.flush()
+    except exc.IntegrityError as e:
+        session.rollback()
+        raise ConflictError("Failed to insert submission") from e
     return submission
 
 
 def delete_one(id: int, session: Session) -> None:
-    submission: Submission | None = session.get(Submission, id)
-    if submission is not None:
-        session.delete(submission)
-        session.flush()
+    submission = get_one(id, session)
+
+    session.delete(submission)
+    session.flush()

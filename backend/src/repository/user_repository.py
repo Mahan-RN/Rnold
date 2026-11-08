@@ -1,11 +1,16 @@
 from collections.abc import Sequence
-from sqlalchemy import select
+from sqlalchemy import select, exc
 from sqlalchemy.orm import Session
 from src.models import User, Role
+from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 
 
-def get_one(github_id: int, session: Session) -> User | None:
-    return session.get(User, github_id)
+def get_one(github_id: int, session: Session) -> User:
+    user = session.get(User, github_id)
+    if user is None:
+        raise NotFoundError(f"User with GitHUb ID {github_id} not found")
+
+    return user
 
 
 def get_all(session: Session) -> Sequence[User]:
@@ -22,7 +27,12 @@ def insert_one(
 ) -> User:
     user = User(github_id, github_email, username, role)
     session.add(user)
-    session.flush()
+    try:
+        session.flush()
+    except exc.IntegrityError as e:
+        session.rollback()
+        raise ConflictError("Faield to insert user") from e
+
     return user
 
 
@@ -31,20 +41,24 @@ def update_one(
     session: Session,
     username: str | None = None,
     role: Role | None = None,
-) -> User | None:
-    user = session.get(User, github_id)
-    if user is None:
-        return None
+) -> User:
+    user = get_one(github_id, session)
+
     if username is not None:
         user.username = username
     if role is not None:
         user.role = role
-    session.flush()
+
+    try:
+        session.flush()
+    except exc.IntegrityError as e:
+        session.rollback()
+        raise ConflictError("Failed to update user") from e
+
     return user
 
 
 def delete_one(github_id: int, session: Session) -> None:
-    user: User | None = session.get(User, github_id)
-    if user is not None:
-        session.delete(user)
-        session.flush()
+    user = get_one(github_id, session)
+    session.delete(user)
+    session.flush()

@@ -8,7 +8,7 @@ from src.models import Topic
 from src.dependency import CurrentAdmin
 
 from src.services import topic_services
-from src.exceptions.topic_exceptions import TopicNotFoundError, DuplicateTitleError
+from src.exceptions.topic_exceptions import TopicNotFoundError, TopicConflictError
 from src.schemas.topic import TopicResponse, UpdateTopicRequest, CreateTopicRequest
 
 router = APIRouter(prefix="/topics", tags=["topics"])
@@ -52,7 +52,7 @@ def update_topic(
         return result
     except TopicNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
-    except DuplicateTitleError as e:
+    except TopicConflictError as e:
         raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
 
 
@@ -68,7 +68,7 @@ def add_topic(
         result = topic_services.insert_one(**request.model_dump(), session=session)
         session.commit()
         return result
-    except DuplicateTitleError as e:
+    except TopicConflictError as e:
         raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
 
 

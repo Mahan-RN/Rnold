@@ -2,16 +2,22 @@ from collections.abc import Sequence
 from src.models import User, Role
 from src.schemas.user import PostUser
 from src.repository import user_repository
-from src.exceptions.user_exceptions import UserNotFoundError, LastAdminDeletionError
+from src.exceptions.user_exceptions import (
+    UserNotFoundError,
+    LastAdminDeletionError,
+    UserConflictError,
+)
+from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 from sqlalchemy.orm import Session
 
 
 def get_one(github_id: int, session: Session) -> User:
-    user = user_repository.get_one(github_id, session)
-    if user is None:
-        raise UserNotFoundError(f"User with github ID {github_id} not found")
-    else:
-        return user
+    try:
+        user = user_repository.get_one(github_id, session)
+    except NotFoundError as e:
+        raise UserNotFoundError from e
+
+    return user
 
 
 def get_all(session: Session) -> Sequence[User]:
@@ -19,9 +25,14 @@ def get_all(session: Session) -> Sequence[User]:
 
 
 def insert_one(user: PostUser, session: Session) -> User:
-    return user_repository.insert_one(
-        user.github_id, user.github_email, user.username, session, user.role
-    )
+    try:
+        result = user_repository.insert_one(
+            user.github_id, user.github_email, user.username, session, user.role
+        )
+    except ConflictError as e:
+        raise UserConflictError from e
+
+    return result
 
 
 def update_one(
@@ -30,23 +41,34 @@ def update_one(
     role: Role | None = None,
     username: str | None = None,
 ) -> User:
-    result = user_repository.update_one(github_id, session, username, role)
-    if result is None:
-        raise UserNotFoundError(f"User with github ID {github_id} not found")
-    else:
-        return result
+    try:
+        result = user_repository.update_one(github_id, session, username, role)
+    except NotFoundError as e:
+        raise UserNotFoundError from e
+    except ConflictError as e:
+        raise UserConflictError from e
+
+    return result
 
 
 def delete_one(github_id: int, session: Session) -> None:
-    user = user_repository.get_one(github_id, session)
-    if user is None:
-        raise UserNotFoundError(f"User with github ID {github_id} not found")
-    elif user.role == Role.USER:
-        user_repository.delete_one(user.github_id, session)
+    try:
+        user = user_repository.get_one(github_id, session)
+    except NotFoundError as e:
+        raise UserNotFoundError from e
+
+    if user.role == Role.USER:
+        try:
+            user_repository.delete_one(user.github_id, session)
+        except NotFoundError as e:
+            raise UserNotFoundError from e
     else:
         users = list(user_repository.get_all(session))
         admins = list(filter(lambda user: user.role == Role.ADMIN, users))
         if len(admins) > 1:
-            user_repository.delete_one(user.github_id, session)
+            try:
+                user_repository.delete_one(user.github_id, session)
+            except NotFoundError as e:
+                raise UserNotFoundError from e
         else:
             raise LastAdminDeletionError("Last admin cannot be deleted")

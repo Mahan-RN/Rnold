@@ -1,24 +1,27 @@
 from sqlalchemy.orm import Session
 from src.repository import problem_repository
 from src.models import Problem, TestCase
-from src.exceptions.problem_exceptions import ProblemNotFoundError, DuplicateTitleError
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
+from src.exceptions.problem_exceptions import ProblemNotFoundError, ProblemConflictError
 from collections.abc import Sequence
 
 
 def get_one(id: int, session: Session) -> Problem:
-    problem = problem_repository.get_one(id, session)
-    if problem is None:
-        raise ProblemNotFoundError(f"Problem with ID {id} not found")
-    else:
-        return problem
+    try:
+        problem = problem_repository.get_one(id, session)
+    except NotFoundError as e:
+        raise ProblemNotFoundError from e
+
+    return problem
 
 
 def get_test_cases(problem_id: int, session: Session) -> Sequence[TestCase]:
-    result = problem_repository.get_test_cases(problem_id, session)
-    if result is None:
-        raise ProblemNotFoundError(f"Problem with ID {problem_id} not found")
-    else:
-        return result
+    try:
+        result = problem_repository.get_test_cases(problem_id, session)
+    except NotFoundError as e:
+        raise ProblemNotFoundError from e
+
+    return result
 
 
 def get_all(session: Session) -> Sequence[Problem]:
@@ -35,11 +38,8 @@ def insert_one(
     starter_code: str,
     session: Session,
 ) -> Problem:
-    result = session.query(Problem).filter(Problem.title == title).all()
-    if len(result) != 0:
-        raise DuplicateTitleError(f"Problem with title {title} already exists")
-    else:
-        return problem_repository.insert_one(
+    try:
+        problem = problem_repository.insert_one(
             topic_id=topic_id,
             sort_order=sort_order,
             title=title,
@@ -48,6 +48,10 @@ def insert_one(
             starter_code=starter_code,
             session=session,
         )
+    except ConflictError as e:
+        raise ProblemConflictError from e
+
+    return problem
 
 
 def update_one(
@@ -61,25 +65,27 @@ def update_one(
     starter_code: str | None = None,
     session: Session,
 ) -> Problem:
-    result = problem_repository.update_one(
-        id=id,
-        topic_id=topic_id,
-        sort_order=sort_order,
-        title=title,
-        description=description,
-        difficulty=difficulty,
-        starter_code=starter_code,
-        session=session,
-    )
-    if result is None:
-        raise ProblemNotFoundError(f"Problem with ID {id} not found")
-    else:
-        return result
+    try:
+        result = problem_repository.update_one(
+            id=id,
+            topic_id=topic_id,
+            sort_order=sort_order,
+            title=title,
+            description=description,
+            difficulty=difficulty,
+            starter_code=starter_code,
+            session=session,
+        )
+    except NotFoundError as e:
+        raise ProblemNotFoundError from e
+    except ConflictError as e:
+        raise ProblemConflictError from e
+
+    return result
 
 
 def delete_one(id: int, session: Session) -> None:
-    result = problem_repository.get_one(id, session)
-    if result is None:
-        raise ProblemNotFoundError(f"Problem with ID {id} not found")
-    else:
+    try:
         problem_repository.delete_one(id, session)
+    except NotFoundError as e:
+        raise ProblemNotFoundError from e

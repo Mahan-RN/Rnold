@@ -1,24 +1,26 @@
 from collections.abc import Sequence
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, exc
 from src.models import Problem, Topic, TestCase
+from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 
 
-def get_one(id: int, session: Session) -> Problem | None:
-    return session.get(Problem, id)
+def get_one(id: int, session: Session) -> Problem:
+    problem = session.get(Problem, id)
+    if problem is None:
+        raise NotFoundError(f"Problem with ID {id} not found")
+
+    return problem
 
 
-def get_test_cases(problem_id: int, session: Session) -> Sequence[TestCase] | None:
-    result = session.get(Problem, problem_id)
-    if result is None:
-        return None
-    else:
-        stmt = (
-            select(TestCase)
-            .where(TestCase.problem_id == problem_id)
-            .order_by(TestCase.sort_order)
-        )
-        return session.scalars(stmt).all()
+def get_test_cases(problem_id: int, session: Session) -> Sequence[TestCase]:
+    get_one(problem_id, session)  # First check if problem ID exists
+    stmt = (
+        select(TestCase)
+        .where(TestCase.problem_id == problem_id)
+        .order_by(TestCase.sort_order)
+    )
+    return session.scalars(stmt).all()
 
 
 def get_all(session: Session) -> Sequence[Problem]:
@@ -49,7 +51,12 @@ def insert_one(
         starter_code=starter_code,
     )
     session.add(problem)
-    session.flush()
+    try:
+        session.flush()
+    except exc.IntegrityError as e:
+        session.rollback()
+        raise ConflictError("Failed to insert problem") from e
+
     return problem
 
 
@@ -63,10 +70,9 @@ def update_one(
     difficulty: int | None = None,
     starter_code: str | None = None,
     session: Session,
-) -> Problem | None:
-    problem = session.get(Problem, id)
-    if problem is None:
-        return None
+) -> Problem:
+    problem = get_one(id, session)
+
     if topic_id is not None:
         problem.topic_id = topic_id
     if sort_order is not None:
@@ -79,12 +85,17 @@ def update_one(
         problem.difficulty = difficulty
     if starter_code is not None:
         problem.starter_code = starter_code
-    session.flush()
+
+    try:
+        session.flush()
+    except exc.IntegrityError as e:
+        session.rollback()
+        raise ConflictError("Failed to update problem") from e
     return problem
 
 
 def delete_one(id: int, session: Session) -> None:
-    problem: Problem | None = session.get(Problem, id)
-    if problem is not None:
-        session.delete(problem)
-        session.flush()
+    problem = get_one(id, session)
+
+    session.delete(problem)
+    session.flush()

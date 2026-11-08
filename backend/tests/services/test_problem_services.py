@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 
 from src.services import problem_services, test_case_services
 from src.models import Topic, Difficulty
-from src.exceptions.problem_exceptions import ProblemNotFoundError, DuplicateTitleError
+from src.exceptions.problem_exceptions import ProblemNotFoundError, ProblemConflictError
 import pytest
 
 
@@ -49,7 +49,7 @@ class TestProblemServices:
         db_session.add(self.topic_1)
         db_session.flush()
         problem_services.insert_one(**self.problem_1, session=db_session)
-        with pytest.raises(DuplicateTitleError):
+        with pytest.raises(ProblemConflictError):
             self.problem_2["title"] = self.problem_1["title"]
             problem_services.insert_one(**self.problem_2, session=db_session)
 

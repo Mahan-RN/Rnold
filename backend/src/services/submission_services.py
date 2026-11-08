@@ -1,16 +1,21 @@
 from src.models import Submission
 from src.repository import submission_repository
-from src.exceptions.submission_exceptions import SubmissionNotFoundError
+from src.exceptions.submission_exceptions import (
+    SubmissionNotFoundError,
+    SubmissionConflictError,
+)
+from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 from collections.abc import Sequence
 from sqlalchemy.orm import Session
 
 
 def get_one(id: int, session: Session) -> Submission:
-    result = submission_repository.get_one(id, session)
-    if result is None:
-        raise SubmissionNotFoundError(f"Submission with ID {id} not found")
-    else:
-        return result
+    try:
+        result = submission_repository.get_one(id, session)
+    except NotFoundError as e:
+        raise SubmissionNotFoundError from e
+
+    return result
 
 
 def get_per_problem_per_user(
@@ -35,19 +40,23 @@ def insert_one(
     code: str,
     session: Session,
 ) -> Submission:
-    return submission_repository.insert_one(
-        user_id=user_id,
-        problem_id=problem_id,
-        status=status,
-        runtime_ms=runtime_ms,
-        code=code,
-        session=session,
-    )
+    try:
+        submission = submission_repository.insert_one(
+            user_id=user_id,
+            problem_id=problem_id,
+            status=status,
+            runtime_ms=runtime_ms,
+            code=code,
+            session=session,
+        )
+    except ConflictError as e:
+        raise SubmissionConflictError from e
+
+    return submission
 
 
 def delete_one(id: int, session: Session) -> None:
-    result = submission_repository.get_one(id, session)
-    if result is None:
-        raise SubmissionNotFoundError(f"Submission with ID {id} not found")
-    else:
+    try:
         submission_repository.delete_one(id, session)
+    except NotFoundError as e:
+        raise SubmissionNotFoundError from e

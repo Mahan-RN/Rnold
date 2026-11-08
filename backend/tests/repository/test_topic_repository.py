@@ -1,5 +1,8 @@
+import pytest
+
 from sqlalchemy.orm import Session
 from src.repository import topic_respository
+from src.exceptions.repository_exceptions import NotFoundError
 
 
 class TestTopicRepository:
@@ -16,8 +19,8 @@ class TestTopicRepository:
         }
 
     def test_get_one_no_match(self, db_session: Session):
-        result = topic_respository.get_one(1, db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            topic_respository.get_one(1, db_session)
 
     def test_insert_one(self, db_session: Session):
         result = topic_respository.insert_one(**self.topic_1_dict, session=db_session)
@@ -27,8 +30,8 @@ class TestTopicRepository:
         assert result.sort_order == self.topic_1_dict["sort_order"]
 
     def test_update_one_no_match(self, db_session: Session):
-        result = topic_respository.update_one(id=1, session=db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            topic_respository.update_one(id=1, session=db_session)
 
     def test_update_one_match_name(self, db_session: Session):
         insert_result = topic_respository.insert_one(
@@ -88,14 +91,12 @@ class TestTopicRepository:
 
     def test_delete_one_no_match(self, db_session: Session):
         topic_respository.insert_one(**self.topic_1_dict, session=db_session)
-        result = topic_respository.delete_one(2, db_session)
-        assert result is None
-        get_result = topic_respository.get_one(1, db_session)
-        assert get_result is not None
+        with pytest.raises(NotFoundError):
+            topic_respository.delete_one(2, db_session)
 
     def test_delete_one_match(self, db_session: Session):
         topic_respository.insert_one(**self.topic_1_dict, session=db_session)
         result = topic_respository.delete_one(1, db_session)
         assert result is None
-        get_result = topic_respository.get_one(1, db_session)
-        assert get_result is None
+        with pytest.raises(NotFoundError):
+            topic_respository.get_one(1, db_session)

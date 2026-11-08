@@ -1,11 +1,16 @@
 from collections.abc import Sequence
 from src.models import TestCase
+from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 from sqlalchemy.orm import Session
-from sqlalchemy import select
+from sqlalchemy import select, exc
 
 
-def get_one(id: int, session: Session) -> TestCase | None:
-    return session.get(TestCase, id)
+def get_one(id: int, session: Session) -> TestCase:
+    result = session.get(TestCase, id)
+    if result is None:
+        raise NotFoundError(f"Test Case with ID {id} not found")
+
+    return result
 
 
 def get_all(session: Session) -> Sequence[TestCase]:
@@ -26,7 +31,12 @@ def insert_one(
         code=code,
     )
     session.add(test_case)
-    session.flush()
+    try:
+        session.flush()
+    except exc.IntegrityError as e:
+        session.rollback()
+        raise ConflictError("Failed to insert submission") from e
+
     return test_case
 
 
@@ -37,23 +47,27 @@ def update_one(
     problem_id: int | None = None,
     sort_order: int | None = None,
     code: str | None = None,
-) -> TestCase | None:
-    test_case = session.get(TestCase, id)
-    if test_case is None:
-        return None
-    else:
-        if problem_id is not None:
-            test_case.problem_id = problem_id
-        if sort_order is not None:
-            test_case.sort_order = sort_order
-        if code is not None:
-            test_case.code = code
+) -> TestCase:
+    test_case = get_one(id, session)
+
+    if problem_id is not None:
+        test_case.problem_id = problem_id
+    if sort_order is not None:
+        test_case.sort_order = sort_order
+    if code is not None:
+        test_case.code = code
+
+    try:
         session.flush()
-        return test_case
+    except exc.IntegrityError as e:
+        session.rollback()
+        raise ConflictError("Failed to update test case") from e
+
+    return test_case
 
 
 def delete_one(id: int, session: Session) -> None:
-    test_case = session.get(TestCase, id)
-    if test_case is not None:
-        session.delete(test_case)
-        session.flush()
+    test_case = get_one(id, session)
+
+    session.delete(test_case)
+    session.flush()

@@ -13,7 +13,7 @@ class GitAuthSettings(BaseSettings):
     )
 
 
-git_auth_settings = GitAuthSettings()
+git_auth_settings = GitAuthSettings()  # pyright: ignore[reportCallIssue]
 
 
 class Settings(BaseSettings):

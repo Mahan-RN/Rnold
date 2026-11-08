@@ -2,15 +2,17 @@ from collections.abc import Sequence
 from sqlalchemy.orm import Session
 from src.models import Topic
 from src.repository import topic_respository
-from src.exceptions.topic_exceptions import TopicNotFoundError, DuplicateTitleError
+from src.exceptions.topic_exceptions import TopicNotFoundError, TopicConflictError
+from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 
 
 def get_one(id: int, session: Session) -> Topic:
-    result = topic_respository.get_one(id, session)
-    if result is None:
-        raise TopicNotFoundError(f"Topic with ID {id} not found")
-    else:
-        return result
+    try:
+        result = topic_respository.get_one(id, session)
+    except NotFoundError as e:
+        raise TopicNotFoundError from e
+
+    return result
 
 
 def get_all(session: Session) -> Sequence[Topic]:
@@ -20,16 +22,17 @@ def get_all(session: Session) -> Sequence[Topic]:
 def insert_one(
     *, name: str, description: str, sort_order: int, session: Session
 ) -> Topic:
-    result = session.query(Topic).filter(Topic.name == name).all()
-    if len(result) != 0:
-        raise DuplicateTitleError(f"Topic with name `{name}` already exists")
-    else:
-        return topic_respository.insert_one(
+    try:
+        result = topic_respository.insert_one(
             name=name,
             description=description,
             sort_order=sort_order,
             session=session,
         )
+    except ConflictError as e:
+        raise TopicConflictError from e
+
+    return result
 
 
 def update_one(
@@ -40,10 +43,7 @@ def update_one(
     sort_order: int | None = None,
     session: Session,
 ) -> Topic:
-    name_exists = session.query(Topic).filter(Topic.name == name, Topic.id != id).all()
-    if name_exists:
-        raise DuplicateTitleError(f"Topic with name `{name}` already exists")
-    else:
+    try:
         result = topic_respository.update_one(
             id=id,
             name=name,
@@ -51,15 +51,16 @@ def update_one(
             sort_order=sort_order,
             session=session,
         )
-        if result is None:
-            raise TopicNotFoundError(f"Topic with ID {id} not found")
-        else:
-            return result
+    except NotFoundError as e:
+        raise TopicNotFoundError from e
+    except ConflictError as e:
+        raise TopicConflictError from e
+
+    return result
 
 
 def delete_one(id: int, session: Session) -> None:
-    result = topic_respository.get_one(id, session)
-    if result is None:
-        raise TopicNotFoundError(f"Topic with ID {id} not found")
-    else:
+    try:
         topic_respository.delete_one(id, session)
+    except NotFoundError as e:
+        raise TopicNotFoundError from e

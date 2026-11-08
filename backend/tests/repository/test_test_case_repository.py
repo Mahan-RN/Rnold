@@ -1,5 +1,8 @@
+import pytest
+
 from src.models import Problem, Difficulty
 from src.repository import test_case_repository
+from src.exceptions.repository_exceptions import NotFoundError
 from sqlalchemy.orm import Session
 
 
@@ -33,8 +36,8 @@ class TestTestCaseRepository:
         }
 
     def test_get_one_no_match(self, db_session: Session):
-        result = test_case_repository.get_one(1, db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            test_case_repository.get_one(1, db_session)
 
     def test_insert_one(self, db_session: Session):
         db_session.add(self.problem_1)
@@ -64,8 +67,8 @@ class TestTestCaseRepository:
         assert test_cases[1] == test_case2
 
     def test_update_one_no_match(self, db_session: Session):
-        result = test_case_repository.update_one(id=1, session=db_session)
-        assert result is None
+        with pytest.raises(NotFoundError):
+            test_case_repository.update_one(id=1, session=db_session)
 
     def test_update_one_match_problem_id(self, db_session: Session):
         db_session.add(self.problem_1)
@@ -139,10 +142,8 @@ class TestTestCaseRepository:
         db_session.add(self.problem_1)
         db_session.flush()
         test_case_repository.insert_one(**self.test_case_1_dict, session=db_session)
-        result = test_case_repository.delete_one(2, db_session)
-        assert result is None
-        test_case = test_case_repository.get_one(1, db_session)
-        assert test_case is not None
+        with pytest.raises(NotFoundError):
+            test_case_repository.delete_one(2, db_session)
 
     def test_delete_one_match(self, db_session: Session):
         db_session.add(self.problem_1)
@@ -150,5 +151,5 @@ class TestTestCaseRepository:
         test_case_repository.insert_one(**self.test_case_1_dict, session=db_session)
         result = test_case_repository.delete_one(1, db_session)
         assert result is None
-        test_case = test_case_repository.get_one(1, db_session)
-        assert test_case is None
+        with pytest.raises(NotFoundError):
+            test_case_repository.get_one(1, db_session)

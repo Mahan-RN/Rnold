@@ -1,6 +1,9 @@
+import pytest
+
 from sqlalchemy.orm import Session
 from src.models import Role
 from src.repository import user_repository
+from src.exceptions.repository_exceptions import NotFoundError
 from datetime import datetime
 
 
@@ -24,8 +27,8 @@ class TestUserRepository:
         }
 
     def test_get_one_no_match(self, db_session: Session):
-        user = user_repository.get_one(1, db_session)
-        assert user is None
+        with pytest.raises(NotFoundError):
+            user_repository.get_one(1, db_session)
 
     def test_get_all_empty(self, db_session: Session):
         users = user_repository.get_all(db_session)
@@ -65,8 +68,8 @@ class TestUserRepository:
         assert len(users) == 3
 
     def test_update_one_no_match(self, db_session: Session):
-        user = user_repository.update_one(1, db_session)
-        assert user is None
+        with pytest.raises(NotFoundError):
+            user_repository.update_one(1, db_session)
 
     def test_update_one_match_role(self, db_session: Session):
         user = user_repository.insert_one(**self.user1, session=db_session)
@@ -101,8 +104,8 @@ class TestUserRepository:
         assert user.username == "ConanBarbarian"
 
     def test_delete_one_no_match(self, db_session: Session):
-        user = user_repository.delete_one(123456, db_session)
-        assert user is None
+        with pytest.raises(NotFoundError):
+            user_repository.delete_one(123456, db_session)
 
     def test_delete_one_match(self, db_session: Session):
         user_repository.insert_one(**self.user1, session=db_session)
