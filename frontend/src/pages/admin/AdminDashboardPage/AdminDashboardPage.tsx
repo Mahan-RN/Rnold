@@ -16,6 +16,17 @@ export default function AdminDashboardPage() {
                 >
                     Users
                 </NavLink>
+                <NavLink
+                    className={({ isActive }) =>
+                        isActive
+                            ? `${styles.navLink} ${styles.active}`
+                            : styles.navLink
+                    }
+                    to="/admin/topics"
+                    end
+                >
+                    Topics
+                </NavLink>
             </nav>
             <Outlet />
         </>

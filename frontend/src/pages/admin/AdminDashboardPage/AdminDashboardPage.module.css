@@ -5,6 +5,7 @@
     padding: 10px;
     background-color: #171e2b;
     border: 2px solid #e6e6e6;
+    gap: 24px;
 }
 
 .navLink {

@@ -1,0 +1,127 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    width: 100%;
+    max-width: 520px;
+    padding: 1.75rem;
+
+    background-color: #181d25;
+    border: 1px solid #303743;
+    border-radius: 12px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.header h2 {
+    margin: 0;
+    color: #f1f5f9;
+    font-size: 1.35rem;
+    font-weight: 600;
+}
+
+.header p {
+    margin: 0;
+    color: #929ba9;
+    font-size: 0.9rem;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field label {
+    color: #dce2eb;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 0.75rem 0.85rem;
+
+    color: #f1f5f9;
+    background-color: #202630;
+
+    border: 1px solid #394352;
+    border-radius: 7px;
+
+    font: inherit;
+    font-size: 0.9rem;
+
+    transition:
+        border-color 150ms ease,
+        box-shadow 150ms ease;
+}
+
+.field textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+    color: #778292;
+}
+
+.field input:focus,
+.field textarea:focus {
+    outline: none;
+    border-color: #6389ed;
+    box-shadow: 0 0 0 3px rgb(99 137 237 / 15%);
+}
+
+.hint {
+    color: #8792a2;
+    font-size: 0.8rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+}
+
+.actions button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.7rem 1.1rem;
+
+    color: #fff;
+    background-color: #5277db;
+
+    border: none;
+    border-radius: 7px;
+
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: background-color 150ms ease;
+}
+
+.actions button:hover {
+    background-color: #6489ed;
+}
+
+.actions button:focus-visible {
+    outline: 2px solid #91adff;
+    outline-offset: 3px;
+}
+
+.actions button:active {
+    background-color: #4265c5;
+}
