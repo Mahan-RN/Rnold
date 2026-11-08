@@ -1,0 +1,143 @@
+.Collapsible {
+    display: flex;
+    min-height: 3rem;
+    flex-direction: column;
+    justify-content: center;
+    color: oklch(14.5% 0 0deg);
+    margin: 0px 10px;
+
+    @media (prefers-color-scheme: dark) {
+        color: white;
+    }
+}
+
+.Icon {
+    transition: transform 100ms ease-out;
+}
+
+.Trigger {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    height: 2rem;
+    padding: 0 0.5rem 0 0.75rem;
+    margin: 0;
+    border: 1px solid oklch(14.5% 0 0deg);
+    border-radius: 6px;
+    background-color: white;
+    color: oklch(14.5% 0 0deg);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1;
+    white-space: nowrap;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+
+    @media (prefers-color-scheme: dark) {
+        border: 1px solid white;
+        background-color: oklch(14.5% 0 0deg);
+        color: white;
+    }
+
+    @media (hover: hover) {
+        &:hover:not([data-disabled]) {
+            background-color: oklch(97% 0 0deg);
+
+            @media (prefers-color-scheme: dark) {
+                background-color: oklch(26.9% 0 0deg);
+            }
+        }
+    }
+
+    &:active:not([data-disabled]) {
+        background-color: oklch(92.2% 0 0deg);
+
+        @media (prefers-color-scheme: dark) {
+            background-color: oklch(37.1% 0 0deg);
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid oklch(14.5% 0 0deg);
+        outline-offset: -1px;
+
+        @media (prefers-color-scheme: dark) {
+            outline-color: white;
+        }
+    }
+
+    &[data-panel-open] .Icon {
+        transform: rotate(90deg);
+    }
+
+    &[data-disabled] {
+        color: oklch(55.6% 0 0deg);
+        border-color: oklch(55.6% 0 0deg);
+
+        @media (prefers-color-scheme: dark) {
+            color: oklch(70.8% 0 0deg);
+            border-color: oklch(70.8% 0 0deg);
+        }
+    }
+}
+
+.Panel {
+    display: flex;
+    height: var(--collapsible-panel-height);
+    flex-direction: column;
+    align-items: stretch;
+    overflow: hidden;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition: height 150ms ease-out;
+    background-color: #333333;
+
+    &[hidden]:not([hidden="until-found"]) {
+        display: none;
+    }
+
+    &[data-starting-style],
+    &[data-ending-style] {
+        height: 0;
+    }
+}
+
+.Content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem 0.875rem;
+    text-align: left;
+}
+
+.Actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 0.75rem;
+}
+
+.DeleteButton {
+    padding: 0.5rem 0.875rem;
+    border: 1px solid #dc2626;
+    border-radius: 5px;
+    background: transparent;
+    color: #dc2626;
+    font: inherit;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+}
+
+.DeleteButton:hover {
+    background-color: rgb(220 38 38 / 10%);
+}
+
+.DeleteButton:focus-visible {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}

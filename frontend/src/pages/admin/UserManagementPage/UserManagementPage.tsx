@@ -6,14 +6,14 @@ import styles from "src/pages/admin/UserManagementPage/UserManagementPage.module
 
 export default function UserManagementPage() {
     const userProfiles = useLoaderData<typeof userManagementPageLoader>();
-    const actionData = useActionData<typeof deleteUserAction>(); // undefined if successful
+    const actionData = useActionData<typeof deleteUserAction>();
 
     let actionAlertElement;
     if (!actionData) {
         actionAlertElement = <></>;
     } else if (actionData.success) {
         actionAlertElement = (
-            <p className={styles.SuccessMessage}>User delete successfully</p>
+            <p className={styles.SuccessMessage}>User deleted successfully</p>
         );
     } else {
         actionAlertElement = (

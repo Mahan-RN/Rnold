@@ -2,9 +2,10 @@ from pydantic import BaseModel, ConfigDict
 
 
 class TopicResponse(BaseModel):
+    id: int
     name: str
     description: str
-    sort_order: int
+    sort_order: int | None
 
     model_config = ConfigDict(from_attributes=True)
 
