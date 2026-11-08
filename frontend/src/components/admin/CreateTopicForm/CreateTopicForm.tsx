@@ -53,7 +53,7 @@ export default function CreateTopicForm() {
             </div>
 
             <div className={styles.actions}>
-                <button type="submit">
+                <button name="intent" value="create" type="submit">
                     <span>+</span>
                     Create Topic
                 </button>

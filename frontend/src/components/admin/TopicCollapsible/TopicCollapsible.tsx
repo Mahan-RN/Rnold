@@ -24,7 +24,7 @@ export default function TopicCollapsible({
     return (
         <Collapsible.Root className={styles.Collapsible}>
             <Collapsible.Trigger className={styles.Trigger}>
-                Name: {name}
+                {name}
                 <CaretRightIcon className={styles.Icon} />
             </Collapsible.Trigger>
             <Collapsible.Panel className={styles.Panel}>
@@ -49,6 +49,8 @@ export default function TopicCollapsible({
                         >
                             <input type="hidden" name="id" value={id} />
                             <button
+                                name="intent"
+                                value="delete"
                                 type="submit"
                                 className={styles.DeleteButton}
                             >

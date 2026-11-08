@@ -72,10 +72,15 @@ def add_topic(
         raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
 
 
-@router.delete("/{topic_id}", responses={404: {"description": "Topic ID not found"}})
+@router.delete(
+    "/{topic_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    responses={404: {"description": "Topic ID not found"}},
+)
 def delete_topic(topic_id: int, session: DbSession, admin: CurrentAdmin) -> Response:
     try:
         topic_services.delete_one(topic_id, session)
-        return Response(status.HTTP_204_NO_CONTENT)
+        session.commit()
+        return Response(content=None, status_code=status.HTTP_204_NO_CONTENT)
     except TopicNotFoundError as e:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))

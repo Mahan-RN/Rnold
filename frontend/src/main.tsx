@@ -20,7 +20,7 @@ import UserManagementPage from "./pages/admin/UserManagementPage/UserManagementP
 import userManagementPageLoader from "./loaders/admin/UserManagementPageLoader";
 import deleteUserAction from "./actions/admin/deleteUserAction";
 import TopicManagementPage from "./pages/admin/TopicManagementPage/TopicManagementPage";
-import createTopicAction from "./actions/admin/createTopicAction";
+import createTopicAction from "./actions/admin/topicAction";
 import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader";
 
 const router = createBrowserRouter([
