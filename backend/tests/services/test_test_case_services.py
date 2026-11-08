@@ -27,14 +27,11 @@ class TestTestCaseServices:
             "problem_id": 1,
             "sort_order": 0,
             "code": "some code",
-            "expected_output": "some output",
         }
         self.test_case_2_dict = {
             "problem_id": 2,
             "sort_order": 10,
             "code": "some other code",
-            "expected_output": "some other output",
-            "is_hidden": False,
         }
 
     def test_get_one_no_match(self, db_session: Session):
@@ -52,7 +49,6 @@ class TestTestCaseServices:
         assert result.problem_id == 1
         assert result.sort_order == 0
         assert result.code == "some code"
-        assert result.expected_output == "some output"
 
     def test_get_all(self, db_session: Session):
         db_session.add(self.problem_1)
@@ -88,8 +84,6 @@ class TestTestCaseServices:
         assert after_result.id == 1
         assert after_result.sort_order == 0
         assert after_result.code == "some code"
-        assert after_result.expected_output == "some output"
-        assert after_result.is_hidden
 
     def test_update_one_match_sort_order(self, db_session: Session):
         db_session.add(self.problem_1)
@@ -106,8 +100,6 @@ class TestTestCaseServices:
         assert after_result.id == 1
         assert after_result.problem_id == 1
         assert after_result.code == "some code"
-        assert after_result.expected_output == "some output"
-        assert after_result.is_hidden
 
     def test_update_one_match_code(self, db_session: Session):
         db_session.add(self.problem_1)
@@ -124,44 +116,6 @@ class TestTestCaseServices:
         assert after_result.id == 1
         assert after_result.problem_id == 1
         assert after_result.sort_order == 0
-        assert after_result.expected_output == "some output"
-        assert after_result.is_hidden
-
-    def test_update_one_expected_output(self, db_session: Session):
-        db_session.add(self.problem_1)
-        db_session.add(self.problem_2)
-        db_session.flush()
-        before_result = test_case_services.insert_one(
-            **self.test_case_1_dict, session=db_session
-        )
-        assert before_result.problem_id == 1
-        after_result = test_case_services.update_one(
-            id=1, session=db_session, expected_output="new output"
-        )
-        assert after_result.expected_output == "new output"
-        assert after_result.id == 1
-        assert after_result.problem_id == 1
-        assert after_result.sort_order == 0
-        assert after_result.code == "some code"
-        assert after_result.is_hidden
-
-    def test_update_one_is_hidden(self, db_session: Session):
-        db_session.add(self.problem_1)
-        db_session.add(self.problem_2)
-        db_session.flush()
-        before_result = test_case_services.insert_one(
-            **self.test_case_1_dict, session=db_session
-        )
-        assert before_result.problem_id == 1
-        after_result = test_case_services.update_one(
-            id=1, session=db_session, is_hidden=False
-        )
-        assert not after_result.is_hidden
-        assert after_result.id == 1
-        assert after_result.problem_id == 1
-        assert after_result.sort_order == 0
-        assert after_result.code == "some code"
-        assert after_result.expected_output == "some output"
 
     def test_update_one_all(self, db_session: Session):
         db_session.add(self.problem_1)
@@ -177,15 +131,11 @@ class TestTestCaseServices:
             problem_id=2,
             sort_order=10,
             code="new code",
-            expected_output="new output",
-            is_hidden=False,
         )
         assert after_result.id == 1
         assert after_result.problem_id == 2
         assert after_result.sort_order == 10
         assert after_result.code == "new code"
-        assert after_result.expected_output == "new output"
-        assert not after_result.is_hidden
 
     def test_delete_one_no_match(self, db_session: Session):
         db_session.add(self.problem_1)

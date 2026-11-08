@@ -18,16 +18,12 @@ def insert_one(
     problem_id: int,
     sort_order: int,
     code: str,
-    expected_output: str,
-    is_hidden: bool = True,
     session: Session,
 ) -> TestCase:
     test_case = TestCase(
         problem_id=problem_id,
         sort_order=sort_order,
         code=code,
-        expected_output=expected_output,
-        is_hidden=is_hidden,
     )
     session.add(test_case)
     session.flush()
@@ -41,8 +37,6 @@ def update_one(
     problem_id: int | None = None,
     sort_order: int | None = None,
     code: str | None = None,
-    expected_output: str | None = None,
-    is_hidden: bool | None = None,
 ) -> TestCase | None:
     test_case = session.get(TestCase, id)
     if test_case is None:
@@ -54,10 +48,6 @@ def update_one(
             test_case.sort_order = sort_order
         if code is not None:
             test_case.code = code
-        if expected_output is not None:
-            test_case.expected_output = expected_output
-        if is_hidden is not None:
-            test_case.is_hidden = is_hidden
         session.flush()
         return test_case
 

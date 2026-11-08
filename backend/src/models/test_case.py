@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, Text
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 
@@ -13,11 +13,10 @@ class TestCase(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
+    code: Mapped[str]
     sort_order: Mapped[int]
-    code: Mapped[str] = mapped_column(Text)
-    expected_output: Mapped[str] = mapped_column(Text)
+
     problem: Mapped["Problem"] = relationship(back_populates="test_cases", init=False)
-    is_hidden: Mapped[bool] = mapped_column(default=True)
 
     def __repr__(self) -> str:
         return f"""
@@ -25,7 +24,6 @@ class TestCase(Base):
         id: {self.id},
         problem_id: {self.problem_id},
         code: '{self.code}',
-        expected_output: '{self.expected_output}',
-        is_hidden: {self.is_hidden}
+        sort_order: '{self.sort_order}'
         )
         """

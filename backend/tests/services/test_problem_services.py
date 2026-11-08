@@ -80,14 +80,11 @@ class TestProblemServices:
             "problem_id": 1,
             "sort_order": 0,
             "code": "some code",
-            "expected_output": "some output",
         }
         test_case_2_dict = {
             "problem_id": 2,
             "sort_order": 10,
             "code": "some other code",
-            "expected_output": "some other output",
-            "is_hidden": False,
         }
         test_case1 = test_case_services.insert_one(
             **test_case_1_dict, session=db_session
