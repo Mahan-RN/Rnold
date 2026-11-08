@@ -13,8 +13,6 @@ export interface TestCasesResponse {
     problem_id: number;
     sort_order: number;
     code: string;
-    expected_output: string;
-    is_hidden: boolean;
 }
 
 export default async function problemPageLoader({
