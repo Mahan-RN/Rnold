@@ -12,7 +12,7 @@ class Topic(Base):
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     name: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str]
-    sort_order: Mapped[int | None] = mapped_column(unique=True)
+    sort_order: Mapped[int] = mapped_column(unique=True)
     problems: Mapped[list["Problem"]] = relationship(
         back_populates="topic",
         cascade="all, delete-orphan",
