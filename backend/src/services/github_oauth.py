@@ -101,6 +101,9 @@ def exchange_code_for_token(code: str) -> str:
     if "error" in payload:
         raise GithubOAuthError(payload.get("error_description", payload["error"]))
 
+    if "access_token" not in payload:
+        raise GithubOAuthError("token response missing access_token")
+
     return payload["access_token"]
 
 
