@@ -1,10 +1,21 @@
 import { NavLink, Outlet } from "react-router";
+import styles from "src/pages/admin/AdminDashboardPage/AdminDashboardPage.module.css";
 
 export default function AdminDashboardPage() {
     return (
         <>
-            <nav>
-                <NavLink to="/admin/users" end>Users</NavLink>
+            <nav className={styles.navigationBar}>
+                <NavLink
+                    className={({ isActive }) =>
+                        isActive
+                            ? `${styles.navLink} ${styles.active}`
+                            : styles.navLink
+                    }
+                    to="/admin/users"
+                    end
+                >
+                    Users
+                </NavLink>
             </nav>
             <Outlet />
         </>
