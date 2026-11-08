@@ -1,15 +1,15 @@
 from collections.abc import Sequence
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 from sqlalchemy.orm import Session
-from src.database import get_db
-from src.models import Topic
-from src.dependency import CurrentAdmin
 
+from src.database import get_db
+from src.dependency import CurrentAdmin
+from src.exceptions.topic_exceptions import TopicConflictError, TopicNotFoundError
+from src.models import Topic
+from src.schemas.topic import CreateTopicRequest, TopicResponse, UpdateTopicRequest
 from src.services import topic_services
-from src.exceptions.topic_exceptions import TopicNotFoundError, TopicConflictError
-from src.schemas.topic import TopicResponse, UpdateTopicRequest, CreateTopicRequest
 
 router = APIRouter(prefix="/topics", tags=["topics"])
 

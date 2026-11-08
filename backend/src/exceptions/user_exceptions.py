@@ -1,4 +1,4 @@
-from src.exceptions.repository_exceptions import NotFoundError, ConflictError
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
 
 
 class UserNotFoundError(NotFoundError): ...

@@ -1,14 +1,16 @@
 from collections.abc import Sequence
-from src.models import User, Role
-from src.schemas.user import PostUser
-from src.repository import user_repository
+
+from sqlalchemy.orm import Session
+
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
 from src.exceptions.user_exceptions import (
-    UserNotFoundError,
     LastAdminDeletionError,
     UserConflictError,
+    UserNotFoundError,
 )
-from src.exceptions.repository_exceptions import NotFoundError, ConflictError
-from sqlalchemy.orm import Session
+from src.models import Role, User
+from src.repository import user_repository
+from src.schemas.user import PostUser
 
 
 def get_one(github_id: int, session: Session) -> User:

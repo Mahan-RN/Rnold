@@ -1,8 +1,8 @@
 import pytest
-
 from sqlalchemy.orm import Session
-from src.repository import topic_respository
+
 from src.exceptions.repository_exceptions import NotFoundError
+from src.repository import topic_respository
 
 
 class TestTopicRepository:

@@ -1,6 +1,8 @@
 from collections.abc import Sequence
-from sqlalchemy.orm import Session, selectinload
+
 from sqlalchemy import select
+from sqlalchemy.orm import Session, selectinload
+
 from src.models import Topic
 
 

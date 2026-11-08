@@ -1,9 +1,11 @@
 from collections.abc import Sequence
+
 from sqlalchemy.orm import Session
+
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
+from src.exceptions.topic_exceptions import TopicConflictError, TopicNotFoundError
 from src.models import Topic
 from src.repository import topic_respository
-from src.exceptions.topic_exceptions import TopicNotFoundError, TopicConflictError
-from src.exceptions.repository_exceptions import NotFoundError, ConflictError
 
 
 def get_one(id: int, session: Session) -> Topic:

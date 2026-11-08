@@ -1,7 +1,8 @@
-from src.services import topic_services
-from src.exceptions.topic_exceptions import TopicNotFoundError, TopicConflictError
-from sqlalchemy.orm import Session
 import pytest
+from sqlalchemy.orm import Session
+
+from src.exceptions.topic_exceptions import TopicConflictError, TopicNotFoundError
+from src.services import topic_services
 
 
 class TestTopicServices:

@@ -1,8 +1,10 @@
 from collections.abc import Sequence
+
+from sqlalchemy import exc, select
 from sqlalchemy.orm import Session
-from sqlalchemy import select, exc
-from src.models import Problem, Topic, TestCase
-from src.exceptions.repository_exceptions import NotFoundError, ConflictError
+
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
+from src.models import Problem, TestCase, Topic
 
 
 def get_one(id: int, session: Session) -> Problem:

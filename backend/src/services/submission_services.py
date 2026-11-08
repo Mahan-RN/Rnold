@@ -1,12 +1,14 @@
+from collections.abc import Sequence
+
+from sqlalchemy.orm import Session
+
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
+from src.exceptions.submission_exceptions import (
+    SubmissionConflictError,
+    SubmissionNotFoundError,
+)
 from src.models import Submission
 from src.repository import submission_repository
-from src.exceptions.submission_exceptions import (
-    SubmissionNotFoundError,
-    SubmissionConflictError,
-)
-from src.exceptions.repository_exceptions import NotFoundError, ConflictError
-from collections.abc import Sequence
-from sqlalchemy.orm import Session
 
 
 def get_one(id: int, session: Session) -> Submission:

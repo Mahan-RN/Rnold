@@ -1,20 +1,21 @@
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
-import src.models  # noqa: F401
 from fastapi import FastAPI
+from starlette.middleware.sessions import SessionMiddleware
+
+import src.models  # noqa: F401
+from src.config import git_auth_settings
 from src.database import Base, engine
 from src.routers import (
-    users_router,
     auth_router,
+    curriculum_router,
     problems_router,
     submissions_router,
-    topics_router,
     test_cases_router,
-    curriculum_router,
+    topics_router,
+    users_router,
 )
-from starlette.middleware.sessions import SessionMiddleware
-from src.config import git_auth_settings
 
 
 @asynccontextmanager

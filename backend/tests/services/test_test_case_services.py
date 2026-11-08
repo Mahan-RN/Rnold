@@ -1,8 +1,9 @@
-from sqlalchemy.orm import Session
-from src.services import test_case_services
-from src.models import Problem, Difficulty
-from src.exceptions.test_case_exceptions import TestCaseNotFoundError
 import pytest
+from sqlalchemy.orm import Session
+
+from src.exceptions.test_case_exceptions import TestCaseNotFoundError
+from src.models import Difficulty, Problem
+from src.services import test_case_services
 
 
 class TestTestCaseServices:

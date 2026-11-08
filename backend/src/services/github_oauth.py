@@ -1,14 +1,15 @@
-from datetime import datetime, timezone
 import secrets
+from datetime import datetime, timezone
 from typing import TypedDict, cast
 from urllib.parse import urlencode
 
 import httpx
 from sqlalchemy.orm import Session
-from src.models.user import User
-from src.repository import user_repository
+
 from src.config import git_auth_settings
 from src.exceptions.github_oauth_exceptions import GithubOAuthError
+from src.models.user import User
+from src.repository import user_repository
 
 GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"

@@ -1,6 +1,7 @@
 from sqlalchemy.orm import Session
-from src.models import Topic, Difficulty
-from src.repository import problem_repository, curriculum_repository
+
+from src.models import Difficulty, Topic
+from src.repository import curriculum_repository, problem_repository
 
 
 class TestCurriculumRepository:

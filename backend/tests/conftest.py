@@ -1,10 +1,12 @@
 from collections.abc import Generator
+
 import pytest
-from sqlalchemy import create_engine
-from sqlalchemy.pool import StaticPool
-from sqlalchemy.orm import Session, sessionmaker
-from src.database import Base, get_db
 from fastapi.testclient import TestClient
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.pool import StaticPool
+
+from src.database import Base, get_db
 from src.main import app
 
 test_engine = create_engine(

@@ -1,11 +1,11 @@
-import pytest
-
 from datetime import datetime
+
+import pytest
 from sqlalchemy.orm import Session
 
+from src.exceptions.repository_exceptions import NotFoundError
 from src.models import Difficulty, Problem, Role, Topic, User
 from src.repository import submission_repository
-from src.exceptions.repository_exceptions import NotFoundError
 
 
 class TestSubmissionRepository:

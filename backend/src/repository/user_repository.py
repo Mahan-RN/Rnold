@@ -1,8 +1,10 @@
 from collections.abc import Sequence
-from sqlalchemy import select, exc
+
+from sqlalchemy import exc, select
 from sqlalchemy.orm import Session
-from src.models import User, Role
-from src.exceptions.repository_exceptions import NotFoundError, ConflictError
+
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
+from src.models import Role, User
 
 
 def get_one(github_id: int, session: Session) -> User:

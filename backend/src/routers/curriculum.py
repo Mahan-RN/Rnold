@@ -3,11 +3,11 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
+
 from src.database import get_db
 from src.models import Topic
-
-from src.services import curriculum_services
 from src.schemas.curriculum import CurriculumResponse
+from src.services import curriculum_services
 
 router = APIRouter(prefix="/curriculum", tags=["curriculum"])
 

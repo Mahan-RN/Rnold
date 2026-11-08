@@ -1,12 +1,14 @@
 from collections.abc import Sequence
+
+from sqlalchemy.orm import Session
+
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
+from src.exceptions.test_case_exceptions import (
+    TestCaseConflictError,
+    TestCaseNotFoundError,
+)
 from src.models import TestCase
 from src.repository import test_case_repository
-from src.exceptions.test_case_exceptions import (
-    TestCaseNotFoundError,
-    TestCaseConflictError,
-)
-from src.exceptions.repository_exceptions import NotFoundError, ConflictError
-from sqlalchemy.orm import Session
 
 
 def get_one(id: int, session: Session) -> TestCase:

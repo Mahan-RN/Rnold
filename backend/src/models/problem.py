@@ -3,12 +3,11 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+
 from src.database import Base
 
 if TYPE_CHECKING:
-    from src.models import Submission
-    from src.models import TestCase
-    from src.models import Topic
+    from src.models import Submission, TestCase, Topic
 
 
 class Difficulty(IntEnum):

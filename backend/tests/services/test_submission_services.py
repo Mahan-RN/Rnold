@@ -1,9 +1,11 @@
 from datetime import datetime
-from sqlalchemy.orm import Session
-from src.models import User, Problem, Role, Difficulty, Topic
-from src.services import submission_services
-from src.exceptions.submission_exceptions import SubmissionNotFoundError
+
 import pytest
+from sqlalchemy.orm import Session
+
+from src.exceptions.submission_exceptions import SubmissionNotFoundError
+from src.models import Difficulty, Problem, Role, Topic, User
+from src.services import submission_services
 
 
 class TestSubmissionServices:

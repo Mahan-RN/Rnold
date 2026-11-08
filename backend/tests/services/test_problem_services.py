@@ -1,10 +1,10 @@
 # from src.schemas.user import PostUser
+import pytest
 from sqlalchemy.orm import Session
 
+from src.exceptions.problem_exceptions import ProblemConflictError, ProblemNotFoundError
+from src.models import Difficulty, Topic
 from src.services import problem_services, test_case_services
-from src.models import Topic, Difficulty
-from src.exceptions.problem_exceptions import ProblemNotFoundError, ProblemConflictError
-import pytest
 
 
 class TestProblemServices:

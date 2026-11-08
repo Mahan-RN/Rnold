@@ -1,14 +1,15 @@
 from collections.abc import Sequence
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 from sqlalchemy.orm import Session
+
 from src.database import get_db
+from src.dependency import CurrentAdmin, CurrentUser, logout
+from src.exceptions.user_exceptions import LastAdminDeletionError, UserNotFoundError
 from src.models import User
-from src.dependency import CurrentUser, CurrentAdmin, logout
+from src.schemas.user import GetUser, UpdateRoleRequest, UpdateUsernameRequest
 from src.services import user_services
-from src.exceptions.user_exceptions import UserNotFoundError, LastAdminDeletionError
-from src.schemas.user import UpdateUsernameRequest, GetUser, UpdateRoleRequest
 
 router = APIRouter(prefix="/users", tags=["users"])
 

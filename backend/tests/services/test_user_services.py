@@ -1,9 +1,10 @@
-from src.schemas.user import PostUser
-from sqlalchemy.orm import Session
-from src.exceptions.user_exceptions import UserNotFoundError, LastAdminDeletionError
-from src.services import user_services
-from src.models.user import Role
 import pytest
+from sqlalchemy.orm import Session
+
+from src.exceptions.user_exceptions import LastAdminDeletionError, UserNotFoundError
+from src.models.user import Role
+from src.schemas.user import PostUser
+from src.services import user_services
 
 
 class TestUserServices:

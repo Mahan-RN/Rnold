@@ -1,9 +1,11 @@
 from typing import Annotated
+
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import APIKeyCookie
 from sqlalchemy.orm import Session
+
 from src.database import get_db
-from src.models import User, Role
+from src.models import Role, User
 
 # An unused dependency parameter so that API Docs can identify protected endpoints
 cookie_scheme = APIKeyCookie(name="session", auto_error=False)
