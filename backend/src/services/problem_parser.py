@@ -1,0 +1,134 @@
+from typing import TypedDict
+
+from src.schemas.problem_parser import ParsedProblem, ParsedTestCase
+
+
+class ParserOutput(TypedDict):
+    problem: ParsedProblem
+    test_cases: list[ParsedTestCase]
+
+
+class InvalidProblemTemplateFormat(Exception): ...
+
+
+def parse_problem(text: str) -> ParserOutput:
+    sections: list[str] = text.split("#@")
+    _validate_sections(sections)
+    parsed_problem = _problem_parser(sections[2])
+    test_cases: list[ParsedTestCase] = []
+    for i in range(3, len(sections)):
+        test_cases.append(_test_case_parser(sections[i]))
+
+    return {"problem": parsed_problem, "test_cases": test_cases}
+
+
+# -- Private Helpers --
+
+
+def _validate_sections(sections: list[str]) -> None:
+    PREAMBLE_HEADER = "Preamble"
+    PROBLEM_HEADER = "Problem"
+    TEST_CASE_HEADER = "Test Case"
+
+    if len(sections) < 3:
+        raise InvalidProblemTemplateFormat(
+            "A Problem template file must at least have 3 sections: Preamble, Problem, Test Case"
+        )
+    if PREAMBLE_HEADER not in sections[1]:
+        raise InvalidProblemTemplateFormat(
+            "Preamble tag missing from the first section of the template"
+        )
+    if PROBLEM_HEADER not in sections[2]:
+        raise InvalidProblemTemplateFormat(
+            "Problem tag missing from the second section of the template"
+        )
+    for i in range(3, len(sections)):
+        curr_section = sections[i]
+        if TEST_CASE_HEADER not in curr_section:
+            raise InvalidProblemTemplateFormat(
+                "Test Case tag missing from the third section of the template"
+            )
+
+
+def _problem_parser(text: str) -> ParsedProblem:
+
+    TOPIC_NAME_KEY = "topic_name:"
+    SORT_ORDER_KEY = "sort_order:"
+    TITLE_KEY = "title:"
+    DIFFICULTY_KEY = "difficulty:"
+    BEGIN_DESCRIPTION = "--begin_description"
+    END_DESCRIPTION = "--end_descption"
+    BEGIN_CODE = "begin_starter_code"
+    END_CODE = "end_starter_code"
+
+    is_description = False
+    is_code = False
+
+    lines = text.split("\n")
+    data = {
+        "topic_name": "",
+        "sort_order": "",
+        "title": "",
+        "difficulty": "",
+        "description": "",
+        "starter_code": "",
+    }
+
+    for i in range(1, len(lines)):
+        curr_line = lines[i]
+
+        if TOPIC_NAME_KEY in curr_line:
+            data["topic_name"] = _extract_metadata_from_line(curr_line, TOPIC_NAME_KEY)
+        elif SORT_ORDER_KEY in curr_line:
+            data["sort_order"] = _extract_metadata_from_line(curr_line, SORT_ORDER_KEY)
+        elif TITLE_KEY in curr_line:
+            data["title"] = _extract_metadata_from_line(curr_line, TITLE_KEY)
+        elif DIFFICULTY_KEY in curr_line:
+            data["difficulty"] = _extract_metadata_from_line(curr_line, DIFFICULTY_KEY)
+        elif BEGIN_DESCRIPTION in curr_line:
+            is_description = True
+        elif is_description and END_DESCRIPTION not in curr_line:
+            data["description"] += curr_line.strip() + "\n"
+        elif END_DESCRIPTION in curr_line:
+            is_description = False
+        elif BEGIN_CODE in curr_line:
+            is_code = True
+        elif is_code and END_CODE not in curr_line:
+            data["starter_code"] += curr_line.rstrip(" \t")
+        elif END_CODE in curr_line:
+            break
+
+    return ParsedProblem.model_validate(data)
+
+
+def _test_case_parser(text: str) -> ParsedTestCase:
+    SORT_ORDER_KEY = "sort_order:"
+    BEGIN_CODE = "begin_test_case"
+    END_CODE = "end_test_case"
+    is_code = False
+
+    lines = text.split("\n")
+
+    data = {"sort_order": "", "code": ""}
+
+    for i in range(1, len(lines)):
+        curr_line = lines[i]
+
+        if SORT_ORDER_KEY in curr_line:
+            data["sort_order"] = _extract_metadata_from_line(curr_line, SORT_ORDER_KEY)
+        elif BEGIN_CODE in curr_line:
+            is_code = True
+        elif is_code and END_CODE not in curr_line:
+            data["code"] += curr_line.rstrip(" \t")
+        elif END_CODE in curr_line:
+            break
+
+    return ParsedTestCase.model_validate(data)
+
+
+def _extract_metadata_from_line(line: str, key: str) -> str:
+    line = line.lstrip()
+    line = line.replace("#", "", 1)
+    line = line.replace(key, "", 1)
+    result = line.strip().title()
+    return result
