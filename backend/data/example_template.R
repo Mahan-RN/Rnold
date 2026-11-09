@@ -11,11 +11,12 @@ library(testthat)
 # sort_order: 
 # title:
 # difficulty: [choose one of EASY/MEDIUM/HARD]
-# description:
-"
+
+"--begin_description
 Write your description here between the quotation marks.
 This can be a multi-line description, with markdown syntax
-"
+--end_descption"
+
 # begin_starter_code
 my_function <- function(arg1, arg2) {
     sum <- arg1 + arg2
@@ -25,7 +26,9 @@ my_function <- function(arg1, arg2) {
 
 #@ Test Case
 # sort_order: 10
+# begin_test_case
 expect_equal(4, my_function(2, 2))
+#end_test_case
 
 #@ Test Case
 # sort_order: 20
