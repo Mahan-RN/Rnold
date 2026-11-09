@@ -1,5 +1,14 @@
+from pathlib import Path
 from typing import TypedDict
 
+from pydantic import ValidationError
+from sqlalchemy.orm import Session
+
+from src.exceptions.problem_parser_exceptions import (
+    InvalidDataDirectoryError,
+    InvalidPathError,
+    InvalidProblemTemplateFormatError,
+)
 from src.schemas.problem_parser import ParsedProblem, ParsedTestCase
 
 
@@ -8,7 +17,27 @@ class ParserOutput(TypedDict):
     test_cases: list[ParsedTestCase]
 
 
-class InvalidProblemTemplateFormat(Exception): ...
+def parse_problem_directory(db: Session, directory: Path) -> list[ParserOutput]:
+    results: list[ParserOutput] = []
+    if not directory.exists():
+        raise InvalidPathError(f"Path {directory!s} does not exist")
+    elif not directory.is_dir():
+        raise InvalidDataDirectoryError(
+            f"Path {directory!s} does not point to a directory"
+        )
+    else:
+        for file in directory.iterdir():
+            if file.is_file() and file.suffix.upper() == ".R":
+                text = file.read_text()
+                try:
+                    results.append(parse_problem(text))
+                except InvalidProblemTemplateFormatError as err:
+                    print(str(err))
+                    continue
+                except ValidationError as err:
+                    print(str(err))
+                    continue
+        return results
 
 
 def parse_problem(text: str) -> ParserOutput:
@@ -31,21 +60,21 @@ def _validate_sections(sections: list[str]) -> None:
     TEST_CASE_HEADER = "Test Case"
 
     if len(sections) < 3:
-        raise InvalidProblemTemplateFormat(
+        raise InvalidProblemTemplateFormatError(
             "A Problem template file must at least have 3 sections: Preamble, Problem, Test Case"
         )
     if PREAMBLE_HEADER not in sections[1]:
-        raise InvalidProblemTemplateFormat(
+        raise InvalidProblemTemplateFormatError(
             "Preamble tag missing from the first section of the template"
         )
     if PROBLEM_HEADER not in sections[2]:
-        raise InvalidProblemTemplateFormat(
+        raise InvalidProblemTemplateFormatError(
             "Problem tag missing from the second section of the template"
         )
     for i in range(3, len(sections)):
         curr_section = sections[i]
         if TEST_CASE_HEADER not in curr_section:
-            raise InvalidProblemTemplateFormat(
+            raise InvalidProblemTemplateFormatError(
                 "Test Case tag missing from the third section of the template"
             )
 
