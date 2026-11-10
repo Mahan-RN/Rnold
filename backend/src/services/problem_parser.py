@@ -1,3 +1,4 @@
+import logging
 from pathlib import Path
 from typing import TypedDict
 
@@ -10,6 +11,7 @@ from src.exceptions.problem_parser_exceptions import (
     InvalidProblemTemplateFormatError,
 )
 from src.schemas.problem_parser import ParsedProblem, ParsedTestCase
+from src.services import problem_services, test_case_services
 
 
 class ParserOutput(TypedDict):
@@ -17,7 +19,27 @@ class ParserOutput(TypedDict):
     test_cases: list[ParsedTestCase]
 
 
-def parse_problem_directory(db: Session, directory: Path) -> list[ParserOutput]:
+logging.basicConfig(
+    filename="problem_parser.log", encoding="utf-8", level=logging.DEBUG, filemode="w"
+)
+logger = logging.getLogger(__name__)
+
+
+def load_problem_data(db_session: Session, path: Path) -> None:
+    parser_outputs: list[ParserOutput] = parse_problem_directory(path)
+
+    for parser_output in parser_outputs:
+        problem_data = parser_output["problem"].model_dump()
+        problem_id = problem_services.insert_one(**problem_data).id
+
+        for test_case in parser_output["test_cases"]:
+            test_case_data = test_case.model_dump()
+            test_case_services.insert_one(problem_id=problem_id, **test_case_data)
+
+    db_session.commit()
+
+
+def parse_problem_directory(directory: Path) -> list[ParserOutput]:
     results: list[ParserOutput] = []
     if not directory.exists():
         raise InvalidPathError(f"Path {directory!s} does not exist")
@@ -31,11 +53,11 @@ def parse_problem_directory(db: Session, directory: Path) -> list[ParserOutput]:
                 text = file.read_text()
                 try:
                     results.append(parse_problem(text))
-                except InvalidProblemTemplateFormatError as err:
-                    print(str(err))
+                except InvalidProblemTemplateFormatError:
+                    logger.warning(f"File {file!s} has invalid problem template")
                     continue
-                except ValidationError as err:
-                    print(str(err))
+                except ValidationError:
+                    logger.warning(f"File {file!s} has type error in problem template")
                     continue
         return results
 

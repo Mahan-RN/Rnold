@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -14,6 +16,18 @@ class GitAuthSettings(BaseSettings):
 
 
 git_auth_settings = GitAuthSettings()  # pyright: ignore[reportCallIssue]
+
+
+class AppSettings(BaseSettings):
+    problems_dir: Path
+    load_problems_on_startup: bool = True
+
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+    )
+
+
+app_settings = AppSettings()  # pyright: ignore[reportCallIssue]
 
 
 class Settings(BaseSettings):

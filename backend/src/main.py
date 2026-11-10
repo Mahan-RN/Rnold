@@ -1,12 +1,12 @@
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 
 import src.models  # noqa: F401
-from src.config import git_auth_settings
-from src.database import Base, engine
+from src.config import app_settings, git_auth_settings
+from src.database import Base, SessionLocal, engine
 from src.routers import (
     auth_router,
     curriculum_router,
@@ -16,12 +16,16 @@ from src.routers import (
     topics_router,
     users_router,
 )
+from src.services.problem_parser import load_problem_data
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     # Create tables
     Base.metadata.create_all(bind=engine)
+    if app_settings.load_problems_on_startup:
+        with SessionLocal() as db_session:
+            load_problem_data(db_session, app_settings.problems_dir)
     yield
 
 
