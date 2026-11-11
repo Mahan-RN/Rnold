@@ -17,6 +17,15 @@ def get_one(id: int, session: Session) -> Topic:
     return result
 
 
+def get_by_name(name: str, session: Session) -> Topic:
+    try:
+        topic = topic_respository.get_by_name(name, session)
+    except NotFoundError as e:
+        raise TopicNotFoundError from e
+
+    return topic
+
+
 def get_all(session: Session) -> Sequence[Topic]:
     return topic_respository.get_all(session)
 

@@ -15,6 +15,15 @@ def get_one(id: int, session: Session) -> Topic:
     return result
 
 
+def get_by_name(name: str, session: Session) -> Topic:
+    stmt = select(Topic).where(Topic.name == name)
+    topic = session.scalars(stmt).one_or_none()
+    if topic is None:
+        raise NotFoundError(f"Topic with ID {id} not found")
+
+    return topic
+
+
 def get_all(session: Session) -> Sequence[Topic]:
     stmt = select(Topic).order_by(Topic.sort_order)
     return session.scalars(stmt).all()

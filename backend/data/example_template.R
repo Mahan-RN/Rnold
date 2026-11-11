@@ -15,7 +15,7 @@ library(testthat)
 "--begin_description
 Write your description here between the quotation marks.
 This can be a multi-line description, with markdown syntax
---end_descption"
+--end_description"
 
 # begin_starter_code
 my_function <- function(arg1, arg2) {
