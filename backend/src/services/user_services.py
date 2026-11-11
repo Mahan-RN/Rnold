@@ -10,7 +10,6 @@ from src.exceptions.user_exceptions import (
 )
 from src.models import Role, User
 from src.repository import user_repository
-from src.schemas.user import PostUser
 
 
 def get_one(github_id: int, session: Session) -> User:
@@ -26,10 +25,21 @@ def get_all(session: Session) -> Sequence[User]:
     return user_repository.get_all(session)
 
 
-def insert_one(user: PostUser, session: Session) -> User:
+def insert_one(
+    *,
+    github_id: int,
+    github_email: str,
+    username: str,
+    role: Role = Role.USER,
+    session: Session,
+) -> User:
     try:
         result = user_repository.insert_one(
-            user.github_id, user.github_email, user.username, session, user.role
+            github_id=github_id,
+            github_email=github_email,
+            username=username,
+            role=role,
+            session=session,
         )
     except ConflictError as e:
         raise UserConflictError from e

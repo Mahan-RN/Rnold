@@ -4,19 +4,19 @@ from sqlalchemy import exc, select
 from sqlalchemy.orm import Session
 
 from src.exceptions.repository_exceptions import ConflictError, NotFoundError
-from src.models import TestCase
+from src.models import EvaluationCase
 
 
-def get_one(id: int, session: Session) -> TestCase:
-    result = session.get(TestCase, id)
+def get_one(id: int, session: Session) -> EvaluationCase:
+    result = session.get(EvaluationCase, id)
     if result is None:
         raise NotFoundError(f"Test Case with ID {id} not found")
 
     return result
 
 
-def get_all(session: Session) -> Sequence[TestCase]:
-    stmt = select(TestCase).order_by(TestCase.sort_order)
+def get_all(session: Session) -> Sequence[EvaluationCase]:
+    stmt = select(EvaluationCase).order_by(EvaluationCase.sort_order)
     return session.scalars(stmt).all()
 
 
@@ -26,8 +26,8 @@ def insert_one(
     sort_order: int,
     code: str,
     session: Session,
-) -> TestCase:
-    test_case = TestCase(
+) -> EvaluationCase:
+    test_case = EvaluationCase(
         problem_id=problem_id,
         sort_order=sort_order,
         code=code,
@@ -49,7 +49,7 @@ def update_one(
     problem_id: int | None = None,
     sort_order: int | None = None,
     code: str | None = None,
-) -> TestCase:
+) -> EvaluationCase:
     test_case = get_one(id, session)
 
     if problem_id is not None:

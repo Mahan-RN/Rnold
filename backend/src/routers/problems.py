@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from src.database import get_db
 from src.dependency import CurrentAdmin
 from src.exceptions.problem_exceptions import ProblemConflictError, ProblemNotFoundError
-from src.models import Problem, TestCase
+from src.models import EvaluationCase, Problem
 from src.schemas.problem import (
     CreateProblemRequest,
     PatchProblemRequest,
@@ -46,7 +46,7 @@ def get_problem(problem_id: int, session: DbSession) -> Problem:
     response_model=list[TestCaseResponse],
     responses={404: {"description": "Problem not found"}},
 )
-def get_test_cases(problem_id: int, session: DbSession) -> Sequence[TestCase]:
+def get_test_cases(problem_id: int, session: DbSession) -> Sequence[EvaluationCase]:
     try:
         result = problem_services.get_test_cases(problem_id, session)
     except ProblemNotFoundError as e:

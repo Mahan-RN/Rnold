@@ -1,5 +1,5 @@
 import secrets
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import TypedDict, cast
 from urllib.parse import urlencode
 
@@ -8,8 +8,9 @@ from sqlalchemy.orm import Session
 
 from src.config import git_auth_settings
 from src.exceptions.github_oauth_exceptions import GithubOAuthError
+from src.exceptions.user_exceptions import UserNotFoundError
 from src.models.user import User
-from src.repository import user_repository
+from src.services import user_services
 
 GITHUB_AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
 GITHUB_TOKEN_URL = "https://github.com/login/oauth/access_token"
@@ -148,18 +149,17 @@ def _select_primary_email(entries: list[GithubEmailEntry]) -> str:
 
 
 def get_or_create_user(profile: GithubProfile, session: Session) -> User:
-    user: User | None = user_repository.get_one(profile["github_id"], session)
-    if user is None:
-        user = user_repository.insert_one(
+    try:
+        user = user_services.get_one(profile["github_id"], session)
+        user.github_email = profile["email"]
+        user.username = profile["username"]
+        user.last_login = datetime.now(UTC)
+    except UserNotFoundError:
+        user = user_services.insert_one(
             github_id=profile["github_id"],
             github_email=profile["email"],
             username=profile["username"],
             session=session,
         )
-    else:
-        user.github_email = profile["email"]
-        user.username = profile["username"]
-        user.last_login = datetime.now(timezone.utc)
-
     session.commit()
     return user

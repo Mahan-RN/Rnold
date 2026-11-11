@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from src.exceptions.problem_exceptions import ProblemConflictError, ProblemNotFoundError
 from src.models import Difficulty, Topic
-from src.services import problem_services, test_case_services
+from src.services import evaluation_case_services, problem_services
 
 
 class ProblemData(TypedDict):
@@ -18,7 +18,7 @@ class ProblemData(TypedDict):
     starter_code: str
 
 
-class TestCaseData(TypedDict):
+class EvaluationCaseData(TypedDict):
     problem_id: int
     sort_order: int
     code: str
@@ -93,20 +93,20 @@ class TestProblemServices:
             starter_code="some starter code",
             session=db_session,
         )
-        test_case_1_dict: TestCaseData = {
+        test_case_1_dict: EvaluationCaseData = {
             "problem_id": 1,
             "sort_order": 0,
             "code": "some code",
         }
-        test_case_2_dict: TestCaseData = {
+        test_case_2_dict: EvaluationCaseData = {
             "problem_id": 2,
             "sort_order": 10,
             "code": "some other code",
         }
-        test_case1 = test_case_services.insert_one(
+        test_case1 = evaluation_case_services.insert_one(
             **test_case_1_dict, session=db_session
         )
-        test_case2 = test_case_services.insert_one(
+        test_case2 = evaluation_case_services.insert_one(
             **test_case_2_dict, session=db_session
         )
         problem_1_test_cases = problem_services.get_test_cases(

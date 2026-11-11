@@ -21,6 +21,7 @@ def get_all(session: Session) -> Sequence[User]:
 
 
 def insert_one(
+    *,
     github_id: int,
     github_email: str,
     username: str,

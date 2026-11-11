@@ -11,7 +11,7 @@ from src.exceptions.problem_parser_exceptions import (
     InvalidProblemTemplateFormatError,
 )
 from src.schemas.problem_parser import ParsedProblem, ParsedTestCase
-from src.services import problem_services, test_case_services
+from src.services import evaluation_case_services, problem_services
 
 
 class ParserOutput(TypedDict):
@@ -34,7 +34,7 @@ def load_problem_data(db_session: Session, path: Path) -> None:
 
         for test_case in parser_output["test_cases"]:
             test_case_data = test_case.model_dump()
-            test_case_services.insert_one(problem_id=problem_id, **test_case_data)
+            evaluation_case_services.insert_one(problem_id=problem_id, **test_case_data)
 
     db_session.commit()
 

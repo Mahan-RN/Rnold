@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from src.exceptions.repository_exceptions import NotFoundError
 from src.models import Difficulty, Topic
-from src.repository import problem_repository, test_case_repository
+from src.repository import evaluation_case_repository, problem_repository
 
 
 class ProblemData(TypedDict):
@@ -17,7 +17,7 @@ class ProblemData(TypedDict):
     starter_code: str
 
 
-class TestCaseData(TypedDict):
+class EvaluationCaseData(TypedDict):
     problem_id: int
     sort_order: int
     code: str
@@ -64,7 +64,7 @@ class TestProblemRepository:
         assert problem.description == "sum x and y"
         assert problem.difficulty == Difficulty.EASY
         assert problem.starter_code == "some code"
-        assert len(problem.test_cases) == 0
+        assert len(problem.evaluation_cases) == 0
         assert len(problem.submissions) == 0
         assert problem.topic == self.topic_1
 
@@ -79,7 +79,7 @@ class TestProblemRepository:
         assert problem.description == "sum x and y"
         assert problem.difficulty == Difficulty.EASY
         assert problem.starter_code == "some code"
-        assert len(problem.test_cases) == 0
+        assert len(problem.evaluation_cases) == 0
         assert len(problem.submissions) == 0
         assert problem.topic == self.topic_1
 
@@ -102,20 +102,20 @@ class TestProblemRepository:
             starter_code="some starter code",
             session=db_session,
         )
-        test_case_1_dict: TestCaseData = {
+        test_case_1_dict: EvaluationCaseData = {
             "problem_id": 1,
             "sort_order": 0,
             "code": "some code",
         }
-        test_case_2_dict: TestCaseData = {
+        test_case_2_dict: EvaluationCaseData = {
             "problem_id": 2,
             "sort_order": 10,
             "code": "some other code",
         }
-        test_case1 = test_case_repository.insert_one(
+        test_case1 = evaluation_case_repository.insert_one(
             **test_case_1_dict, session=db_session
         )
-        test_case2 = test_case_repository.insert_one(
+        test_case2 = evaluation_case_repository.insert_one(
             **test_case_2_dict, session=db_session
         )
         problem_1_test_cases = problem_repository.get_test_cases(
@@ -147,7 +147,7 @@ class TestProblemRepository:
         assert result.description == "sum x and y"
         assert result.difficulty == Difficulty.EASY
         assert result.starter_code == "some code"
-        assert len(result.test_cases) == 0
+        assert len(result.evaluation_cases) == 0
         assert len(result.submissions) == 0
         assert result.topic == self.topic_1
 

@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from src.exceptions.problem_exceptions import ProblemConflictError, ProblemNotFoundError
 from src.exceptions.repository_exceptions import ConflictError, NotFoundError
-from src.models import Problem, TestCase
+from src.models import EvaluationCase, Problem
 from src.repository import problem_repository
 
 
@@ -17,7 +17,7 @@ def get_one(id: int, session: Session) -> Problem:
     return problem
 
 
-def get_test_cases(problem_id: int, session: Session) -> Sequence[TestCase]:
+def get_test_cases(problem_id: int, session: Session) -> Sequence[EvaluationCase]:
     try:
         result = problem_repository.get_test_cases(problem_id, session)
     except NotFoundError as e:

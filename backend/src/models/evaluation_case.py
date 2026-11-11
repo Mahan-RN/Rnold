@@ -9,15 +9,17 @@ if TYPE_CHECKING:
     from .problem import Problem
 
 
-class TestCase(Base):
-    __tablename__ = "test_cases"
+class EvaluationCase(Base):
+    __tablename__ = "evaluation_cases"
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
     code: Mapped[str]
     sort_order: Mapped[int]
 
-    problem: Mapped["Problem"] = relationship(back_populates="test_cases", init=False)
+    problem: Mapped["Problem"] = relationship(
+        back_populates="evaluation_cases", init=False
+    )
 
     def __repr__(self) -> str:
         return f"""

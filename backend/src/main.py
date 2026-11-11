@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from starlette.middleware.sessions import SessionMiddleware
 
-import src.models  # noqa: F401
+import src.models  # pyright: ignore[reportUnusedImport] # noqa: F401
 from src.config import app_settings, git_auth_settings
 from src.database import Base, SessionLocal, engine
 from src.routers import (

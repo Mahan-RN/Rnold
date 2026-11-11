@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.database import Base
 
 if TYPE_CHECKING:
-    from src.models import Submission, TestCase, Topic
+    from src.models import EvaluationCase, Submission, Topic
 
 
 class Difficulty(IntEnum):
@@ -26,7 +26,7 @@ class Problem(Base):
     description: Mapped[str]
     difficulty: Mapped[int]
     starter_code: Mapped[str]
-    test_cases: Mapped[list["TestCase"]] = relationship(
+    evaluation_cases: Mapped[list["EvaluationCase"]] = relationship(
         back_populates="problem",
         cascade="all, delete-orphan",
         passive_deletes=True,

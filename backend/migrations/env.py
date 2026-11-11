@@ -5,7 +5,7 @@ from alembic import context
 from dotenv import load_dotenv
 from sqlalchemy import engine_from_config, pool
 
-import src.models  # noqa: F401 — imported to register models with Base.metadata
+import src.models  # pyright: ignore[reportUnusedImport] # noqa: F401 — imported to register models with Base.metadata
 from src.database import Base
 
 # Load .env file

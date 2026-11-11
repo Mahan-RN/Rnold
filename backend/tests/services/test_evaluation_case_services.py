@@ -3,18 +3,18 @@ from typing import TypedDict
 import pytest
 from sqlalchemy.orm import Session
 
-from src.exceptions.repository_exceptions import NotFoundError
+from src.exceptions.evaluation_case_exceptions import EvaluationCaseNotFoundError
 from src.models import Difficulty, Problem
-from src.repository import test_case_repository
+from src.services import evaluation_case_services
 
 
-class TestCaseData(TypedDict):
+class EvaluationCaseData(TypedDict):
     problem_id: int
     sort_order: int
     code: str
 
 
-class TestTestCaseRepository:
+class TestTestCaseServices:
     def setup_method(self) -> None:
         self.problem_1 = Problem(
             topic_id=1,
@@ -32,25 +32,25 @@ class TestTestCaseRepository:
             difficulty=Difficulty.EASY,
             starter_code="some starter code",
         )
-        self.test_case_1_dict: TestCaseData = {
+        self.test_case_1_dict: EvaluationCaseData = {
             "problem_id": 1,
             "sort_order": 0,
             "code": "some code",
         }
-        self.test_case_2_dict: TestCaseData = {
+        self.test_case_2_dict: EvaluationCaseData = {
             "problem_id": 2,
             "sort_order": 10,
             "code": "some other code",
         }
 
     def test_get_one_no_match(self, db_session: Session) -> None:
-        with pytest.raises(NotFoundError):
-            test_case_repository.get_one(1, db_session)
+        with pytest.raises(EvaluationCaseNotFoundError):
+            evaluation_case_services.get_one(1, db_session)
 
     def test_insert_one(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.flush()
-        result = test_case_repository.insert_one(
+        result = evaluation_case_services.insert_one(
             **self.test_case_1_dict, session=db_session
         )
         assert result is not None
@@ -63,30 +63,30 @@ class TestTestCaseRepository:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
-        test_case1 = test_case_repository.insert_one(
+        test_case1 = evaluation_case_services.insert_one(
             **self.test_case_1_dict, session=db_session
         )
-        test_case2 = test_case_repository.insert_one(
+        test_case2 = evaluation_case_services.insert_one(
             **self.test_case_2_dict, session=db_session
         )
-        test_cases = test_case_repository.get_all(db_session)
+        test_cases = evaluation_case_services.get_all(db_session)
         assert len(test_cases) == 2
         assert test_cases[0] == test_case1
         assert test_cases[1] == test_case2
 
     def test_update_one_no_match(self, db_session: Session) -> None:
-        with pytest.raises(NotFoundError):
-            test_case_repository.update_one(id=1, session=db_session)
+        with pytest.raises(EvaluationCaseNotFoundError):
+            evaluation_case_services.update_one(id=1, session=db_session)
 
     def test_update_one_match_problem_id(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
-        before_result = test_case_repository.insert_one(
+        before_result = evaluation_case_services.insert_one(
             **self.test_case_1_dict, session=db_session
         )
         assert before_result.problem_id == 1
-        after_result = test_case_repository.update_one(
+        after_result = evaluation_case_services.update_one(
             id=1, session=db_session, problem_id=2
         )
         assert after_result.problem_id == 2
@@ -98,11 +98,11 @@ class TestTestCaseRepository:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
-        before_result = test_case_repository.insert_one(
+        before_result = evaluation_case_services.insert_one(
             **self.test_case_1_dict, session=db_session
         )
         assert before_result.problem_id == 1
-        after_result = test_case_repository.update_one(
+        after_result = evaluation_case_services.update_one(
             id=1, session=db_session, sort_order=10
         )
         assert after_result.sort_order == 10
@@ -114,11 +114,11 @@ class TestTestCaseRepository:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
-        before_result = test_case_repository.insert_one(
+        before_result = evaluation_case_services.insert_one(
             **self.test_case_1_dict, session=db_session
         )
         assert before_result.problem_id == 1
-        after_result = test_case_repository.update_one(
+        after_result = evaluation_case_services.update_one(
             id=1, session=db_session, code="new code"
         )
         assert after_result.code == "new code"
@@ -130,11 +130,11 @@ class TestTestCaseRepository:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
-        before_result = test_case_repository.insert_one(
+        before_result = evaluation_case_services.insert_one(
             **self.test_case_1_dict, session=db_session
         )
         assert before_result.problem_id == 1
-        after_result = test_case_repository.update_one(
+        after_result = evaluation_case_services.update_one(
             id=1,
             session=db_session,
             problem_id=2,
@@ -149,14 +149,16 @@ class TestTestCaseRepository:
     def test_delete_one_no_match(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.flush()
-        test_case_repository.insert_one(**self.test_case_1_dict, session=db_session)
-        with pytest.raises(NotFoundError):
-            test_case_repository.delete_one(2, db_session)
+        evaluation_case_services.insert_one(**self.test_case_1_dict, session=db_session)
+        with pytest.raises(EvaluationCaseNotFoundError):
+            evaluation_case_services.delete_one(2, db_session)
+        test_case = evaluation_case_services.get_one(1, db_session)
+        assert test_case is not None
 
     def test_delete_one_match(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.flush()
-        test_case_repository.insert_one(**self.test_case_1_dict, session=db_session)
-        test_case_repository.delete_one(1, db_session)
-        with pytest.raises(NotFoundError):
-            test_case_repository.get_one(1, db_session)
+        evaluation_case_services.insert_one(**self.test_case_1_dict, session=db_session)
+        evaluation_case_services.delete_one(1, db_session)
+        with pytest.raises(EvaluationCaseNotFoundError):
+            evaluation_case_services.get_one(1, db_session)
