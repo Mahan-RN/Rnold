@@ -7,10 +7,10 @@ library(testthat)
 # Note: all lines beween the two preabmle tags will be ignored by Rnold
 
 #@ Problem
-# topic_name:
-# sort_order: 
-# title:
-# difficulty: [choose one of EASY/MEDIUM/HARD]
+# topic_name: Boolean Logic
+# sort_order: 200
+# title: Do You Trust the Natural Recursion?
+# difficulty: 1
 
 "--begin_description
 Write your description here between the quotation marks.
