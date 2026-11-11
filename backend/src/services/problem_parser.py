@@ -26,7 +26,15 @@ logger = logging.getLogger(__name__)
 
 
 def load_problem_data(db_session: Session, path: Path) -> None:
-    parser_outputs: list[ParserOutput] = parse_problem_directory(path)
+    """Loads problems data from a given direcotry and commits them to DB
+
+    @Note: suitable as a Lifespan function
+
+    Args:
+        db_session (Session): database session
+        path (Path): path to the directory containing problem files
+    """
+    parser_outputs: list[ParserOutput] = _parse_problem_directory(path)
 
     for parser_output in parser_outputs:
         write_parser_output_to_db(parser_output, db_session)
@@ -35,6 +43,14 @@ def load_problem_data(db_session: Session, path: Path) -> None:
 
 
 def write_parser_output_to_db(parser_output: ParserOutput, db_session: Session) -> None:
+    """Takes a ParserOutput object and flushes it to DB
+
+    @Note: the caller is responsible for commiting the data to the database!
+
+    Args:
+        parser_output (ParserOutput): ParserOutput object to be flushed to DB
+        db_session (Session): DB session
+    """
     parsed_problem = parser_output["problem"]
     topic_name = parsed_problem.topic_name
     topic_id = topic_services.get_by_name(topic_name, db_session).id
@@ -58,7 +74,41 @@ def write_parser_output_to_db(parser_output: ParserOutput, db_session: Session) 
         )
 
 
-def parse_problem_directory(directory: Path) -> list[ParserOutput]:
+def parse_problem(text: str) -> ParserOutput:
+    """Parses the string content of a single problem template file into a ParserOutput object
+
+    Args:
+        text (str): string content of a problem template file
+
+    Returns:
+        ParserOutput: parsed object containing problem and test data
+    """
+    sections: list[str] = text.split("#@")
+    _validate_sections(sections)
+    parsed_problem = _problem_parser(sections[2])
+    test_cases: list[ParsedTestCase] = []
+    for i in range(3, len(sections)):
+        test_cases.append(_test_case_parser(sections[i]))
+
+    return {"problem": parsed_problem, "test_cases": test_cases}
+
+
+# -- Private Helpers --
+
+
+def _parse_problem_directory(directory: Path) -> list[ParserOutput]:
+    """Parses files in a given directory as ParserOutput objects
+
+    Args:
+        directory (Path): directory containing problem files
+
+    Raises:
+        InvalidPathError: raised when directory path is invalid
+        InvalidDataDirectoryError: raised when the path doesn't point to a directory
+
+    Returns:
+        list[ParserOutput]: list of ParserOutput objects
+    """
     results: list[ParserOutput] = []
     if not directory.exists():
         raise InvalidPathError(f"Path {directory!s} does not exist")
@@ -81,21 +131,18 @@ def parse_problem_directory(directory: Path) -> list[ParserOutput]:
         return results
 
 
-def parse_problem(text: str) -> ParserOutput:
-    sections: list[str] = text.split("#@")
-    _validate_sections(sections)
-    parsed_problem = _problem_parser(sections[2])
-    test_cases: list[ParsedTestCase] = []
-    for i in range(3, len(sections)):
-        test_cases.append(_test_case_parser(sections[i]))
-
-    return {"problem": parsed_problem, "test_cases": test_cases}
-
-
-# -- Private Helpers --
-
-
 def _validate_sections(sections: list[str]) -> None:
+    """Checks to ensure extracted sections from problem template file are all included and in the correct order
+
+    Args:
+        sections (list[str]): list of sections extracted from problem template file
+
+    Raises:
+        InvalidProblemTemplateFormatError: missing at least 1 of the required sections
+        InvalidProblemTemplateFormatError: preamble section absent
+        InvalidProblemTemplateFormatError: problem section absent
+        InvalidProblemTemplateFormatError: test case section absent
+    """
     PREAMBLE_HEADER = "Preamble"
     PROBLEM_HEADER = "Problem"
     TEST_CASE_HEADER = "Test Case"
@@ -121,7 +168,14 @@ def _validate_sections(sections: list[str]) -> None:
 
 
 def _problem_parser(text: str) -> ParsedProblem:
+    """Parses problem metadata from the problems section of the template problem file
 
+    Args:
+        text (str): problem section
+
+    Returns:
+        ParsedProblem: parsed problem metadata
+    """
     TOPIC_NAME_KEY = "topic_name:"
     SORT_ORDER_KEY = "sort_order:"
     TITLE_KEY = "title:"
@@ -172,6 +226,14 @@ def _problem_parser(text: str) -> ParsedProblem:
 
 
 def _test_case_parser(text: str) -> ParsedTestCase:
+    """Parses test case metadata from the test case section of the template problem file
+
+    Args:
+        text (str): test case section
+
+    Returns:
+        ParsedTestCase: parsed test case metadata
+    """
     SORT_ORDER_KEY = "sort_order:"
     BEGIN_CODE = "begin_test_case"
     END_CODE = "end_test_case"
@@ -197,8 +259,17 @@ def _test_case_parser(text: str) -> ParsedTestCase:
 
 
 def _extract_metadata_from_line(line: str, key: str) -> str:
+    """String clean up helper to remove extra space, comment marker (#), and keyword
+
+    Args:
+        line (str): line of a document to be processed
+        key (str): keyword to be removed from this line
+
+    Returns:
+        str: cleaned up string
+    """
     line = line.lstrip()
     line = line.replace("#", "", 1)
     line = line.replace(key, "", 1)
-    result = line.strip().title()
+    result = line.strip()
     return result

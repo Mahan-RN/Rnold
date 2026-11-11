@@ -9,6 +9,7 @@ from fastapi import (
     UploadFile,
     status,
 )
+from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
 from src.database import get_db
@@ -151,6 +152,8 @@ def upload_file(
             status.HTTP_422_UNPROCESSABLE_CONTENT,
             detail="Formatting issue in problem template file",
         ) from e
+    except ValidationError as e:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, detail=str(e))
 
     try:
         problem_parser.write_parser_output_to_db(parser_output, session)
@@ -161,4 +164,5 @@ def upload_file(
     except EvaluationCaseConflictError as e:
         raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
 
+    session.commit()
     return {"message": "Problem file processed successfully"}
