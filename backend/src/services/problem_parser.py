@@ -29,29 +29,33 @@ def load_problem_data(db_session: Session, path: Path) -> None:
     parser_outputs: list[ParserOutput] = parse_problem_directory(path)
 
     for parser_output in parser_outputs:
-        parsed_problem = parser_output["problem"]
-        topic_name = parsed_problem.topic_name
-        topic_id = topic_services.get_by_name(topic_name, db_session).id
-        problem = problem_services.insert_one(
-            topic_id=topic_id,
-            sort_order=parsed_problem.sort_order,
-            title=parsed_problem.title,
-            description=parsed_problem.description,
-            difficulty=parsed_problem.difficulty,
-            starter_code=parsed_problem.starter_code,
-            session=db_session,
-        )
-        problem_id = problem.id
-
-        for test_case in parser_output["test_cases"]:
-            evaluation_case_services.insert_one(
-                problem_id=problem_id,
-                sort_order=test_case.sort_order,
-                code=test_case.code,
-                session=db_session,
-            )
+        write_parser_output_to_db(parser_output, db_session)
 
     db_session.commit()
+
+
+def write_parser_output_to_db(parser_output: ParserOutput, db_session: Session) -> None:
+    parsed_problem = parser_output["problem"]
+    topic_name = parsed_problem.topic_name
+    topic_id = topic_services.get_by_name(topic_name, db_session).id
+    problem = problem_services.insert_one(
+        topic_id=topic_id,
+        sort_order=parsed_problem.sort_order,
+        title=parsed_problem.title,
+        description=parsed_problem.description,
+        difficulty=parsed_problem.difficulty,
+        starter_code=parsed_problem.starter_code,
+        session=db_session,
+    )
+    problem_id = problem.id
+
+    for test_case in parser_output["test_cases"]:
+        evaluation_case_services.insert_one(
+            problem_id=problem_id,
+            sort_order=test_case.sort_order,
+            code=test_case.code,
+            session=db_session,
+        )
 
 
 def parse_problem_directory(directory: Path) -> list[ParserOutput]:

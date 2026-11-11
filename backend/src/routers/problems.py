@@ -1,12 +1,22 @@
 from collections.abc import Sequence
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Response, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+    Response,
+    UploadFile,
+    status,
+)
 from sqlalchemy.orm import Session
 
 from src.database import get_db
 from src.dependency import CurrentAdmin
+from src.exceptions.evaluation_case_exceptions import EvaluationCaseConflictError
 from src.exceptions.problem_exceptions import ProblemConflictError, ProblemNotFoundError
+from src.exceptions.problem_parser_exceptions import InvalidProblemTemplateFormatError
+from src.exceptions.topic_exceptions import TopicNotFoundError
 from src.models import EvaluationCase, Problem
 from src.schemas.problem import (
     CreateProblemRequest,
@@ -15,7 +25,7 @@ from src.schemas.problem import (
     ProblemsResponse,
 )
 from src.schemas.test_case import TestCaseResponse
-from src.services import problem_services
+from src.services import problem_parser, problem_services
 
 router = APIRouter(prefix="/problems", tags=["problems"])
 
@@ -109,3 +119,46 @@ def delete_problem(
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
 
     return Response(status.HTTP_204_NO_CONTENT)
+
+
+@router.post("/files")
+def upload_file(
+    file: UploadFile, session: DbSession, admin: CurrentAdmin
+) -> dict[str, str]:
+    MAX_BYTES = 15 * 1024  # 15 KB
+    if file.filename is None or (file.filename).lower().endswith(".r"):
+        raise HTTPException(
+            status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Only .R files are accepted"
+        )
+
+    data: bytes = file.file.read(MAX_BYTES + 1)
+
+    if len(data) > MAX_BYTES:
+        raise HTTPException(
+            status.HTTP_413_CONTENT_TOO_LARGE, detail="File too large (> 15 KB)"
+        )
+    try:
+        text = data.decode()
+    except UnicodeDecodeError as e:
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT, detail="File must be UTF-8 text"
+        ) from e
+
+    try:
+        parser_output = problem_parser.parse_problem(text)
+    except InvalidProblemTemplateFormatError as e:
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_CONTENT,
+            detail="Formatting issue in problem template file",
+        ) from e
+
+    try:
+        problem_parser.write_parser_output_to_db(parser_output, session)
+    except TopicNotFoundError as e:
+        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+    except ProblemConflictError as e:
+        raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
+    except EvaluationCaseConflictError as e:
+        raise HTTPException(status.HTTP_409_CONFLICT, detail=str(e))
+
+    return {"message": "Problem file processed successfully"}
