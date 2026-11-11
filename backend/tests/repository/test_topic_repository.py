@@ -1,3 +1,5 @@
+from typing import TypedDict
+
 import pytest
 from sqlalchemy.orm import Session
 
@@ -5,35 +7,41 @@ from src.exceptions.repository_exceptions import NotFoundError
 from src.repository import topic_respository
 
 
+class TopicData(TypedDict):
+    name: str
+    description: str
+    sort_order: int
+
+
 class TestTopicRepository:
-    def setup_method(self):
-        self.topic_1_dict = {
+    def setup_method(self) -> None:
+        self.topic_1_dict: TopicData = {
             "name": "Recursion",
             "description": "Just trust the natural recursion",
             "sort_order": 100,
         }
-        self.topic_2_dict = {
+        self.topic_2_dict: TopicData = {
             "name": "Control flow",
             "description": "some string",
             "sort_order": 200,
         }
 
-    def test_get_one_no_match(self, db_session: Session):
+    def test_get_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(NotFoundError):
             topic_respository.get_one(1, db_session)
 
-    def test_insert_one(self, db_session: Session):
+    def test_insert_one(self, db_session: Session) -> None:
         result = topic_respository.insert_one(**self.topic_1_dict, session=db_session)
         assert result.id == 1
         assert result.name == self.topic_1_dict["name"]
         assert result.description == self.topic_1_dict["description"]
         assert result.sort_order == self.topic_1_dict["sort_order"]
 
-    def test_update_one_no_match(self, db_session: Session):
+    def test_update_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(NotFoundError):
             topic_respository.update_one(id=1, session=db_session)
 
-    def test_update_one_match_name(self, db_session: Session):
+    def test_update_one_match_name(self, db_session: Session) -> None:
         insert_result = topic_respository.insert_one(
             **self.topic_1_dict, session=db_session
         )
@@ -46,7 +54,7 @@ class TestTopicRepository:
         assert update_result.description == self.topic_1_dict["description"]
         assert update_result.sort_order == self.topic_1_dict["sort_order"]
 
-    def test_update_one_match_description(self, db_session: Session):
+    def test_update_one_match_description(self, db_session: Session) -> None:
         insert_result = topic_respository.insert_one(
             **self.topic_1_dict, session=db_session
         )
@@ -59,7 +67,7 @@ class TestTopicRepository:
         assert update_result.name == self.topic_1_dict["name"]
         assert update_result.sort_order == self.topic_1_dict["sort_order"]
 
-    def test_update_one_match_sort_order(self, db_session: Session):
+    def test_update_one_match_sort_order(self, db_session: Session) -> None:
         insert_result = topic_respository.insert_one(
             **self.topic_1_dict, session=db_session
         )
@@ -72,7 +80,7 @@ class TestTopicRepository:
         assert update_result.name == self.topic_1_dict["name"]
         assert update_result.description == self.topic_1_dict["description"]
 
-    def test_update_one_match_all(self, db_session: Session):
+    def test_update_one_match_all(self, db_session: Session) -> None:
         insert_result = topic_respository.insert_one(
             **self.topic_1_dict, session=db_session
         )
@@ -89,14 +97,13 @@ class TestTopicRepository:
         assert update_result.description == "new description"
         assert update_result.sort_order == 500
 
-    def test_delete_one_no_match(self, db_session: Session):
+    def test_delete_one_no_match(self, db_session: Session) -> None:
         topic_respository.insert_one(**self.topic_1_dict, session=db_session)
         with pytest.raises(NotFoundError):
             topic_respository.delete_one(2, db_session)
 
-    def test_delete_one_match(self, db_session: Session):
+    def test_delete_one_match(self, db_session: Session) -> None:
         topic_respository.insert_one(**self.topic_1_dict, session=db_session)
-        result = topic_respository.delete_one(1, db_session)
-        assert result is None
+        topic_respository.delete_one(1, db_session)
         with pytest.raises(NotFoundError):
             topic_respository.get_one(1, db_session)

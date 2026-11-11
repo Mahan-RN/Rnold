@@ -9,7 +9,7 @@ from src.services import submission_services
 
 
 class TestSubmissionServices:
-    def setup_method(self):
+    def setup_method(self) -> None:
         self.admin1 = User(
             github_id=123,
             github_email="user@email.com",
@@ -28,11 +28,11 @@ class TestSubmissionServices:
             starter_code="some starter code",
         )
 
-    def test_get_one_no_match(self, db_session: Session):
+    def test_get_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(SubmissionNotFoundError):
             submission_services.get_one(1, db_session)
 
-    def test_insert_one(self, db_session: Session):
+    def test_insert_one(self, db_session: Session) -> None:
         db_session.add(self.admin1)
         db_session.add(self.topic_1)
         db_session.add(self.problem_1)
@@ -55,7 +55,7 @@ class TestSubmissionServices:
         assert result.user == self.admin1
         assert result.problem == self.problem_1
 
-    def test_get_one_match(self, db_session: Session):
+    def test_get_one_match(self, db_session: Session) -> None:
         db_session.add(self.admin1)
         db_session.add(self.topic_1)
         db_session.add(self.problem_1)
@@ -71,7 +71,7 @@ class TestSubmissionServices:
         result = submission_services.get_one(1, db_session)
         assert result == submission
 
-    def test_get_all(self, db_session: Session):
+    def test_get_all(self, db_session: Session) -> None:
         db_session.add(self.admin1)
         db_session.add(self.topic_1)
         db_session.add(self.problem_1)
@@ -97,7 +97,7 @@ class TestSubmissionServices:
         assert results[0] == submission1
         assert results[1] == submission2
 
-    def test_get_per_problem_per_user(self, db_session: Session):
+    def test_get_per_problem_per_user(self, db_session: Session) -> None:
         db_session.add(self.admin1)
         db_session.add(self.topic_1)
         db_session.add(self.problem_1)
@@ -177,11 +177,11 @@ class TestSubmissionServices:
         assert len(result4) == 1
         assert result4[0] == submission4
 
-    def test_delete_one_no_match(self, db_session: Session):
+    def test_delete_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(SubmissionNotFoundError):
             submission_services.delete_one(1, db_session)
 
-    def test_delete_one_match(self, db_session: Session):
+    def test_delete_one_match(self, db_session: Session) -> None:
         db_session.add(self.admin1)
         db_session.add(self.topic_1)
         db_session.add(self.problem_1)

@@ -1,3 +1,5 @@
+from typing import TypedDict
+
 import pytest
 from sqlalchemy.orm import Session
 
@@ -6,8 +8,14 @@ from src.models import Difficulty, Problem
 from src.services import test_case_services
 
 
+class TestCaseData(TypedDict):
+    problem_id: int
+    sort_order: int
+    code: str
+
+
 class TestTestCaseServices:
-    def setup_method(self):
+    def setup_method(self) -> None:
         self.problem_1 = Problem(
             topic_id=1,
             sort_order=1,
@@ -24,22 +32,22 @@ class TestTestCaseServices:
             difficulty=Difficulty.EASY,
             starter_code="some starter code",
         )
-        self.test_case_1_dict = {
+        self.test_case_1_dict: TestCaseData = {
             "problem_id": 1,
             "sort_order": 0,
             "code": "some code",
         }
-        self.test_case_2_dict = {
+        self.test_case_2_dict: TestCaseData = {
             "problem_id": 2,
             "sort_order": 10,
             "code": "some other code",
         }
 
-    def test_get_one_no_match(self, db_session: Session):
+    def test_get_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(TestCaseNotFoundError):
             test_case_services.get_one(1, db_session)
 
-    def test_insert_one(self, db_session: Session):
+    def test_insert_one(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.flush()
         result = test_case_services.insert_one(
@@ -51,7 +59,7 @@ class TestTestCaseServices:
         assert result.sort_order == 0
         assert result.code == "some code"
 
-    def test_get_all(self, db_session: Session):
+    def test_get_all(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
@@ -66,11 +74,11 @@ class TestTestCaseServices:
         assert test_cases[0] == test_case1
         assert test_cases[1] == test_case2
 
-    def test_update_one_no_match(self, db_session: Session):
+    def test_update_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(TestCaseNotFoundError):
             test_case_services.update_one(id=1, session=db_session)
 
-    def test_update_one_match_problem_id(self, db_session: Session):
+    def test_update_one_match_problem_id(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
@@ -86,7 +94,7 @@ class TestTestCaseServices:
         assert after_result.sort_order == 0
         assert after_result.code == "some code"
 
-    def test_update_one_match_sort_order(self, db_session: Session):
+    def test_update_one_match_sort_order(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
@@ -102,7 +110,7 @@ class TestTestCaseServices:
         assert after_result.problem_id == 1
         assert after_result.code == "some code"
 
-    def test_update_one_match_code(self, db_session: Session):
+    def test_update_one_match_code(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
@@ -118,7 +126,7 @@ class TestTestCaseServices:
         assert after_result.problem_id == 1
         assert after_result.sort_order == 0
 
-    def test_update_one_all(self, db_session: Session):
+    def test_update_one_all(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.add(self.problem_2)
         db_session.flush()
@@ -138,7 +146,7 @@ class TestTestCaseServices:
         assert after_result.sort_order == 10
         assert after_result.code == "new code"
 
-    def test_delete_one_no_match(self, db_session: Session):
+    def test_delete_one_no_match(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.flush()
         test_case_services.insert_one(**self.test_case_1_dict, session=db_session)
@@ -147,11 +155,10 @@ class TestTestCaseServices:
         test_case = test_case_services.get_one(1, db_session)
         assert test_case is not None
 
-    def test_delete_one_match(self, db_session: Session):
+    def test_delete_one_match(self, db_session: Session) -> None:
         db_session.add(self.problem_1)
         db_session.flush()
         test_case_services.insert_one(**self.test_case_1_dict, session=db_session)
-        result = test_case_services.delete_one(1, db_session)
-        assert result is None
+        test_case_services.delete_one(1, db_session)
         with pytest.raises(TestCaseNotFoundError):
             test_case_services.get_one(1, db_session)

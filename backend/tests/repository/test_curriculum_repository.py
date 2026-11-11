@@ -1,16 +1,27 @@
+from typing import TypedDict
+
 from sqlalchemy.orm import Session
 
 from src.models import Difficulty, Topic
 from src.repository import curriculum_repository, problem_repository
 
 
+class ProblemData(TypedDict):
+    sort_order: int
+    topic_id: int
+    title: str
+    description: str
+    difficulty: Difficulty
+    starter_code: str
+
+
 class TestCurriculumRepository:
-    def setup_method(self):
+    def setup_method(self) -> None:
         self.topic_1 = Topic(
             "Arithmetic Operations", "Simple mathematical operations", 10
         )
         self.topic_2 = Topic("Data Structures", "Vectors and Matrices", 20)
-        self.problem_1_topic_1 = {
+        self.problem_1_topic_1: ProblemData = {
             "sort_order": 10,
             "topic_id": 1,
             "title": "Summation",
@@ -18,7 +29,7 @@ class TestCurriculumRepository:
             "difficulty": Difficulty.EASY,
             "starter_code": "some code",
         }
-        self.problem_2_topic_1 = {
+        self.problem_2_topic_1: ProblemData = {
             "sort_order": 20,
             "topic_id": 1,
             "title": "Subtraction",
@@ -26,7 +37,7 @@ class TestCurriculumRepository:
             "difficulty": Difficulty.MEDIUM,
             "starter_code": "some more code",
         }
-        self.problem_1_topic_2 = {
+        self.problem_1_topic_2: ProblemData = {
             "sort_order": 10,
             "topic_id": 2,
             "title": "Orthogonality",
@@ -34,7 +45,7 @@ class TestCurriculumRepository:
             "difficulty": Difficulty.HARD,
             "starter_code": "some code",
         }
-        self.problem_2_topic_2 = {
+        self.problem_2_topic_2: ProblemData = {
             "sort_order": 20,
             "topic_id": 2,
             "title": "Invertibility",
@@ -43,7 +54,7 @@ class TestCurriculumRepository:
             "starter_code": "some more code",
         }
 
-    def test_get_curriculum(self, db_session: Session):
+    def test_get_curriculum(self, db_session: Session) -> None:
         db_session.add(self.topic_1)
         db_session.add(self.topic_2)
         db_session.flush()

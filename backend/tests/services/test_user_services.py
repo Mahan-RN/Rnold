@@ -8,7 +8,7 @@ from src.services import user_services
 
 
 class TestUserServices:
-    def setup_method(self):
+    def setup_method(self) -> None:
         self.post_user1 = PostUser(
             github_id=123, github_email="user1@email.com", username="user1"
         )
@@ -28,34 +28,34 @@ class TestUserServices:
             role=Role.ADMIN,
         )
 
-    def test_get_one_no_match(self, db_session: Session):
+    def test_get_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(UserNotFoundError):
             user_services.get_one(123, db_session)
 
-    def test_insert_one_user(self, db_session: Session):
+    def test_insert_one_user(self, db_session: Session) -> None:
         user_services.insert_one(self.post_user1, db_session)
         user_result = user_services.get_one(self.post_user1.github_id, db_session)
         assert user_result is not None
         assert user_result.role == Role.USER
 
-    def test_insert_one_admin(self, db_session: Session):
+    def test_insert_one_admin(self, db_session: Session) -> None:
         user_services.insert_one(self.post_admin1, db_session)
         admin_result = user_services.get_one(self.post_admin1.github_id, db_session)
         assert admin_result is not None
         assert admin_result.role == Role.ADMIN
 
-    def test_update_one_no_match(self, db_session: Session):
+    def test_update_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(UserNotFoundError):
             user_services.update_one(5000, db_session, None, "new_user")
 
-    def test_updated_one_match_username(self, db_session: Session):
+    def test_updated_one_match_username(self, db_session: Session) -> None:
         user_services.insert_one(self.post_user1, db_session)
         result = user_services.update_one(
             self.post_user1.github_id, db_session, None, "new_username"
         )
         assert result.username == "new_username"
 
-    def test_update_one_match_role(self, db_session: Session):
+    def test_update_one_match_role(self, db_session: Session) -> None:
         user_services.insert_one(self.post_user1, db_session)
         before = user_services.get_one(self.post_user1.github_id, db_session)
         assert before.role == Role.USER
@@ -64,11 +64,11 @@ class TestUserServices:
         )
         assert after.role == Role.ADMIN
 
-    def test_delete_one_no_match(self, db_session: Session):
+    def test_delete_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(UserNotFoundError):
             user_services.delete_one(111, db_session)
 
-    def test_delete_match_user(self, db_session: Session):
+    def test_delete_match_user(self, db_session: Session) -> None:
         user_services.insert_one(self.post_user1, db_session)
         result = user_services.get_one(self.post_user1.github_id, db_session)
         assert result is not None
@@ -76,7 +76,7 @@ class TestUserServices:
         with pytest.raises(UserNotFoundError):
             user_services.get_one(self.post_user1.github_id, db_session)
 
-    def test_delete_match_admin_no_error(self, db_session: Session):
+    def test_delete_match_admin_no_error(self, db_session: Session) -> None:
         user_services.insert_one(self.post_admin1, db_session)
         user_services.insert_one(self.post_admin2, db_session)
         result = user_services.get_one(self.post_admin2.github_id, db_session)
@@ -85,7 +85,7 @@ class TestUserServices:
         with pytest.raises(UserNotFoundError):
             user_services.get_one(self.post_admin2.github_id, db_session)
 
-    def test_delete_match_admin_error(self, db_session: Session):
+    def test_delete_match_admin_error(self, db_session: Session) -> None:
         user_services.insert_one(self.post_admin1, db_session)
         user_services.insert_one(self.post_user1, db_session)
         result = user_services.get_one(self.post_admin1.github_id, db_session)

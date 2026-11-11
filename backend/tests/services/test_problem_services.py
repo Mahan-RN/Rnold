@@ -1,4 +1,6 @@
 # from src.schemas.user import PostUser
+from typing import TypedDict
+
 import pytest
 from sqlalchemy.orm import Session
 
@@ -7,12 +9,27 @@ from src.models import Difficulty, Topic
 from src.services import problem_services, test_case_services
 
 
+class ProblemData(TypedDict):
+    sort_order: int
+    topic_id: int
+    title: str
+    description: str
+    difficulty: Difficulty
+    starter_code: str
+
+
+class TestCaseData(TypedDict):
+    problem_id: int
+    sort_order: int
+    code: str
+
+
 class TestProblemServices:
-    def setup_method(self):
+    def setup_method(self) -> None:
         self.topic_1 = Topic(
             "Arithmetic Operations", "Simple mathematical operations", 10
         )
-        self.problem_1 = {
+        self.problem_1: ProblemData = {
             "sort_order": 10,
             "topic_id": 1,
             "title": "Summation",
@@ -20,7 +37,7 @@ class TestProblemServices:
             "difficulty": Difficulty.EASY,
             "starter_code": "some code",
         }
-        self.problem_2 = {
+        self.problem_2: ProblemData = {
             "sort_order": 20,
             "topic_id": 1,
             "title": "Subtraction",
@@ -29,11 +46,11 @@ class TestProblemServices:
             "starter_code": "some more code",
         }
 
-    def test_get_one_no_match(self, db_session: Session):
+    def test_get_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(ProblemNotFoundError):
             problem_services.get_one(1, db_session)
 
-    def test_insert_one(self, db_session: Session):
+    def test_insert_one(self, db_session: Session) -> None:
         db_session.add(self.topic_1)
         db_session.flush()
         result = problem_services.insert_one(**self.problem_1, session=db_session)
@@ -45,7 +62,7 @@ class TestProblemServices:
         assert result.difficulty == Difficulty.EASY
         assert result.starter_code == "some code"
 
-    def test_insert_one_duplicate_title(self, db_session: Session):
+    def test_insert_one_duplicate_title(self, db_session: Session) -> None:
         db_session.add(self.topic_1)
         db_session.flush()
         problem_services.insert_one(**self.problem_1, session=db_session)
@@ -53,11 +70,11 @@ class TestProblemServices:
             self.problem_2["title"] = self.problem_1["title"]
             problem_services.insert_one(**self.problem_2, session=db_session)
 
-    def test_get_all_test_cases_no_match(self, db_session: Session):
+    def test_get_all_test_cases_no_match(self, db_session: Session) -> None:
         with pytest.raises(ProblemNotFoundError):
             problem_services.get_test_cases(1, db_session)
 
-    def test_get_all_test_cases(self, db_session: Session):
+    def test_get_all_test_cases(self, db_session: Session) -> None:
         problem_services.insert_one(
             topic_id=1,
             sort_order=1,
@@ -76,12 +93,12 @@ class TestProblemServices:
             starter_code="some starter code",
             session=db_session,
         )
-        test_case_1_dict = {
+        test_case_1_dict: TestCaseData = {
             "problem_id": 1,
             "sort_order": 0,
             "code": "some code",
         }
-        test_case_2_dict = {
+        test_case_2_dict: TestCaseData = {
             "problem_id": 2,
             "sort_order": 10,
             "code": "some other code",
@@ -103,11 +120,11 @@ class TestProblemServices:
         assert len(problem_2_test_cases) == 1
         assert problem_2_test_cases[0] == test_case2
 
-    def test_update_one_no_match(self, db_session: Session):
+    def test_update_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(ProblemNotFoundError):
             problem_services.update_one(**self.problem_1, id=1, session=db_session)
 
-    def test_update_one_match(self, db_session: Session):
+    def test_update_one_match(self, db_session: Session) -> None:
         db_session.add(self.topic_1)
         db_session.flush()
         before_update = problem_services.insert_one(
@@ -119,11 +136,11 @@ class TestProblemServices:
         )
         assert result.description == "new description"
 
-    def test_delete_one_no_match(self, db_session: Session):
+    def test_delete_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(ProblemNotFoundError):
             problem_services.delete_one(1, db_session)
 
-    def test_delete_one_match(self, db_session: Session):
+    def test_delete_one_match(self, db_session: Session) -> None:
         db_session.add(self.topic_1)
         db_session.flush()
         before_delete = problem_services.insert_one(
