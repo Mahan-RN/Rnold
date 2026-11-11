@@ -160,7 +160,7 @@ def _problem_parser(text: str) -> ParsedProblem:
         elif BEGIN_CODE in curr_line:
             is_code = True
         elif is_code and END_CODE not in curr_line:
-            data["starter_code"] += curr_line.rstrip(" \t")
+            data["starter_code"] += curr_line.rstrip(" \t") + "\n"
         elif END_CODE in curr_line:
             break
 
@@ -185,7 +185,7 @@ def _test_case_parser(text: str) -> ParsedTestCase:
         elif BEGIN_CODE in curr_line:
             is_code = True
         elif is_code and END_CODE not in curr_line:
-            data["code"] += curr_line.rstrip(" \t")
+            data["code"] += curr_line.rstrip(" \t") + "\n"
         elif END_CODE in curr_line:
             break
 
