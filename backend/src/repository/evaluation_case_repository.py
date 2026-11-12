@@ -15,6 +15,22 @@ def get_one(id: int, session: Session) -> EvaluationCase:
     return result
 
 
+def get_by_unique_constraint(
+    problem_id: int, sort_order: int, session: Session
+) -> EvaluationCase:
+    stmt = select(EvaluationCase).where(
+        EvaluationCase.problem_id == problem_id
+        and EvaluationCase.sort_order == sort_order
+    )
+    evaluation_case = session.scalars(stmt).one_or_none()
+    if evaluation_case is None:
+        raise NotFoundError(
+            f"Test Case with problem ID {problem_id} and sort order {sort_order} not found"
+        )
+
+    return evaluation_case
+
+
 def get_all(session: Session) -> Sequence[EvaluationCase]:
     stmt = select(EvaluationCase).order_by(EvaluationCase.sort_order)
     return session.scalars(stmt).all()
@@ -37,7 +53,7 @@ def insert_one(
         session.flush()
     except exc.IntegrityError as e:
         session.rollback()
-        raise ConflictError("Failed to insert submission") from e
+        raise ConflictError("Failed to insert test case") from e
 
     return test_case
 

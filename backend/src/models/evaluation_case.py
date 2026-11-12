@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
@@ -19,6 +19,10 @@ class EvaluationCase(Base):
 
     problem: Mapped["Problem"] = relationship(
         back_populates="evaluation_cases", init=False
+    )
+
+    __table_args__ = (
+        UniqueConstraint("problem_id", "sort_order", name="problemID_sortOrder_unique"),
     )
 
     def __repr__(self) -> str:

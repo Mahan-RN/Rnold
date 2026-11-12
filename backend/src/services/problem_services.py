@@ -17,6 +17,15 @@ def get_one(id: int, session: Session) -> Problem:
     return problem
 
 
+def get_by_title(title: str, session: Session) -> Problem:
+    try:
+        problem = problem_repository.get_by_title(title, session)
+    except NotFoundError as e:
+        raise ProblemNotFoundError from e
+
+    return problem
+
+
 def get_test_cases(problem_id: int, session: Session) -> Sequence[EvaluationCase]:
     try:
         result = problem_repository.get_test_cases(problem_id, session)

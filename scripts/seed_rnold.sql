@@ -17,7 +17,9 @@
   * expect_equal() is used everywhere except Count Vowels, which uses
     expect_identical() because that problem requires an integer result.
   * evaluation_cases has only problem_id, code and sort_order, so each assertion
-    carries its own expected value. sort_order is the position within the problem.
+    carries its own expected value. sort_order is the position within the problem,
+    and the pair (problem_id, sort_order) must be unique, so each problem numbers
+    its cases 1, 2, 3 and so on without repeats.
   * The webR instance needs the testthat package installed.
   * topics.sort_order and problems.sort_order are required, and topics.sort_order
     is unique, so every row below has a value.
@@ -35,9 +37,8 @@
     3 = ERROR. runtime_ms and code are required. created_at has a server default,
     but explicit values are used so each user has a believable attempt history.
     A submission is never dated before its user's created_at or after their last_login.
-  * Run once on an empty database. evaluation_cases and submissions have no unique
-    constraint, so a second run could duplicate them. To reset, uncomment the line
-    below. CASCADE also empties submissions, because it references problems. Users
+  * Run once on an empty database. A second run stops at the unique topic name, and
+    ON_ERROR_STOP rolls the transaction back. To reset, uncomment the line below. CASCADE also empties submissions, because it references problems. Users
     are not touched.
 
   TRUNCATE evaluation_cases, problems, topics RESTART IDENTITY CASCADE;

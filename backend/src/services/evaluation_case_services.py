@@ -20,6 +20,19 @@ def get_one(id: int, session: Session) -> EvaluationCase:
     return result
 
 
+def get_by_unique_constraint(
+    problem_id: int, sort_order: int, session: Session
+) -> EvaluationCase:
+    try:
+        evaluation_case = evaluation_case_repository.get_by_unique_constraint(
+            problem_id, sort_order, session
+        )
+    except NotFoundError as e:
+        raise EvaluationCaseNotFoundError from e
+
+    return evaluation_case
+
+
 def get_all(session: Session) -> Sequence[EvaluationCase]:
     return evaluation_case_repository.get_all(session)
 

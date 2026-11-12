@@ -15,6 +15,15 @@ def get_one(id: int, session: Session) -> Problem:
     return problem
 
 
+def get_by_title(title: str, session: Session) -> Problem:
+    stmt = select(Problem).where(Problem.title == title)
+    problem = session.scalars(stmt).one_or_none()
+    if problem is None:
+        raise NotFoundError(f"Problem with title '{title}' not found")
+
+    return problem
+
+
 def get_test_cases(problem_id: int, session: Session) -> Sequence[EvaluationCase]:
     get_one(problem_id, session)  # First check if problem ID exists
     stmt = (

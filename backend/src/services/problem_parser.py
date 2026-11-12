@@ -5,6 +5,8 @@ from typing import TypedDict
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
 
+from src.exceptions.evaluation_case_exceptions import EvaluationCaseNotFoundError
+from src.exceptions.problem_exceptions import ProblemNotFoundError
 from src.exceptions.problem_parser_exceptions import (
     InvalidDataDirectoryError,
     InvalidPathError,
@@ -54,24 +56,49 @@ def write_parser_output_to_db(parser_output: ParserOutput, db_session: Session) 
     parsed_problem = parser_output["problem"]
     topic_name = parsed_problem.topic_name
     topic_id = topic_services.get_by_name(topic_name, db_session).id
-    problem = problem_services.insert_one(
-        topic_id=topic_id,
-        sort_order=parsed_problem.sort_order,
-        title=parsed_problem.title,
-        description=parsed_problem.description,
-        difficulty=parsed_problem.difficulty,
-        starter_code=parsed_problem.starter_code,
-        session=db_session,
-    )
-    problem_id = problem.id
-
-    for test_case in parser_output["test_cases"]:
-        evaluation_case_services.insert_one(
-            problem_id=problem_id,
-            sort_order=test_case.sort_order,
-            code=test_case.code,
+    try:
+        problem = problem_services.get_by_title(parsed_problem.title, db_session)
+        problem = problem_services.update_one(
+            id=problem.id,
+            topic_id=topic_id,
+            sort_order=parsed_problem.sort_order,
+            title=parsed_problem.title,
+            description=parsed_problem.description,
+            difficulty=parsed_problem.difficulty,
+            starter_code=parsed_problem.starter_code,
             session=db_session,
         )
+    except ProblemNotFoundError:
+        problem = problem_services.insert_one(
+            topic_id=topic_id,
+            sort_order=parsed_problem.sort_order,
+            title=parsed_problem.title,
+            description=parsed_problem.description,
+            difficulty=parsed_problem.difficulty,
+            starter_code=parsed_problem.starter_code,
+            session=db_session,
+        )
+    problem_id = problem.id
+
+    for parsed_test_case in parser_output["test_cases"]:
+        try:
+            test_case = evaluation_case_services.get_by_unique_constraint(
+                problem_id, parsed_test_case.sort_order, db_session
+            )
+            evaluation_case_services.update_one(
+                id=test_case.id,
+                problem_id=problem_id,
+                sort_order=parsed_test_case.sort_order,
+                code=parsed_test_case.code,
+                session=db_session,
+            )
+        except EvaluationCaseNotFoundError:
+            evaluation_case_services.insert_one(
+                problem_id=problem_id,
+                sort_order=parsed_test_case.sort_order,
+                code=parsed_test_case.code,
+                session=db_session,
+            )
 
 
 def parse_problem(text: str) -> ParserOutput:
