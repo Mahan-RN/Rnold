@@ -122,7 +122,27 @@ def delete_problem(
     return Response(status.HTTP_204_NO_CONTENT)
 
 
-@router.post("/files")
+@router.post(
+    "/files",
+    responses={
+        415: {"description": "Uploaded file is not a .R file"},
+        413: {"description": "Uplaoded file is larger than 15 KB"},
+        422: {
+            "description": (
+                "Uploaded file is not UTF-8 encoded OR "
+                "does not follow proper problem template format OR "
+                "values provided in the problem template have a wrong type (e.g., str instead of int)"
+            )
+        },
+        404: {"description": "Topic name provided not found in database"},
+        409: {
+            "description": (
+                "Problem cannot be inserted into database due to a conflicting value OR "
+                "one of the test cases cannot be inserted due to a conflicting value"
+            )
+        },
+    },
+)
 def upload_file(
     file: UploadFile, session: DbSession, admin: CurrentAdmin
 ) -> dict[str, str]:
