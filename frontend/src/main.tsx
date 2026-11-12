@@ -22,6 +22,7 @@ import deleteUserAction from "./actions/admin/deleteUserAction";
 import TopicManagementPage from "./pages/admin/TopicManagementPage/TopicManagementPage";
 import createTopicAction from "./actions/admin/topicAction";
 import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader";
+import ProblemManagementPage from "./pages/admin/ProblemManagementPage/ProblemManagementPage";
 
 const router = createBrowserRouter([
     {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
                         element: <TopicManagementPage />,
                         loader: topicManagementPageLoader,
                         action: createTopicAction,
+                    },
+                    {
+                        path: "/admin/problems",
+                        element: <ProblemManagementPage />,
                     },
                 ],
             },
