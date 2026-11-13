@@ -147,7 +147,7 @@ def upload_file(
     file: UploadFile, session: DbSession, admin: CurrentAdmin
 ) -> dict[str, str]:
     MAX_BYTES = 15 * 1024  # 15 KB
-    if file.filename is None or (file.filename).lower().endswith(".r"):
+    if file.filename is None or not (file.filename).lower().endswith(".r"):
         raise HTTPException(
             status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, detail="Only .R files are accepted"
         )
