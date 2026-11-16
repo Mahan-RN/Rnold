@@ -1,0 +1,32 @@
+[
+    {
+        "name": "Basic Arithmetic Operations",
+        "description": "Covers using R's arithmetic operators, including addition, multiplication, exponentiation, modulo, and integer division, to perform calculations on numbers.",
+        "sort_order": 10
+    },
+    {
+        "name": "String Manipulation",
+        "description": "Introduces working with text in R by combining strings with paste and changing their case with toupper and tolower.",
+        "sort_order": 20
+    },
+    {
+        "name": "Vectors",
+        "description": "Introduces creating, indexing, and summarising collections of values in R, including filtering them with logical conditions.",
+        "sort_order": 30
+    },
+    {
+        "name": "Logical Operators",
+        "description": "Covers combining and negating TRUE and FALSE values with AND, OR, NOT, and XOR, alongside comparison operators and the vectorised versus short circuit forms.",
+        "sort_order": 40
+    },
+    {
+        "name": "Conditionals",
+        "description": "Teaches how to make decisions in code using if, else if, and else chains so that a function returns different results depending on its input.",
+        "sort_order": 50
+    },
+    {
+        "name": "Loops",
+        "description": "Teaches repeating work with for and while loops to accumulate totals, process each element of a vector, and continue until a condition is met.",
+        "sort_order": 60
+    }
+]
