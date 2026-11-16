@@ -25,11 +25,11 @@ IsFilled <- function(str) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(FALSE, IsFilled(""))
+testthat::expect_equal(IsFilled(""), FALSE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(TRUE, IsFilled("abc"))
+testthat::expect_equal(IsFilled("abc"), TRUE)
 #end_test_case

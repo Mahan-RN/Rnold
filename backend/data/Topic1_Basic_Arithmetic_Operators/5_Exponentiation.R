@@ -25,29 +25,29 @@ PowerOfTwo <- function(num) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(1, PowerOfTwo(0))
+testthat::expect_equal(PowerOfTwo(0), 1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(8, PowerOfTwo(3))
+testthat::expect_equal(PowerOfTwo(3), 8)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(1024, PowerOfTwo(10))
+testthat::expect_equal(PowerOfTwo(10), 1024)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(0.5, PowerOfTwo(-1))
+testthat::expect_equal(PowerOfTwo(-1), 0.5)
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(0.125, PowerOfTwo(-3))
+testthat::expect_equal(PowerOfTwo(-3), 0.125)
 #end_test_case

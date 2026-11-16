@@ -27,23 +27,23 @@ SquareRoot <- function(num) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, SquareRoot(0))
+testthat::expect_equal(SquareRoot(0), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(2, SquareRoot(4))
+testthat::expect_equal(SquareRoot(4), 2)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(13, SquareRoot(169))
+testthat::expect_equal(SquareRoot(169), 13)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(0.2, SquareRoot(0.04))
+testthat::expect_equal(SquareRoot(0.04), 0.2)
 #end_test_case

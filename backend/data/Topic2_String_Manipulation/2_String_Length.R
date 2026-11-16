@@ -27,23 +27,23 @@ SumOfLengths <- function(str1, str2) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, SumOfLengths("", ""))
+testthat::expect_equal(SumOfLengths("", ""), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(5, SumOfLengths("hello", ""))
+testthat::expect_equal(SumOfLengths("hello", ""), 5)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(5, SumOfLengths("", "hello"))
+testthat::expect_equal(SumOfLengths("", "hello"), 5)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(6, SumOfLengths("Cat", "Dog"))
+testthat::expect_equal(SumOfLengths("Cat", "Dog"), 6)
 #end_test_case

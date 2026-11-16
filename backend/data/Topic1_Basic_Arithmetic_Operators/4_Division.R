@@ -27,47 +27,47 @@ Divide <- function(num1, num2) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, Divide(0, 2))
+testthat::expect_equal(Divide(0, 2), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(1, Divide(2, 2))
+testthat::expect_equal(Divide(2, 2), 1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(4, Divide(4, 1))
+testthat::expect_equal(Divide(4, 1), 4)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(0.25, Divide(1, 4))
+testthat::expect_equal(Divide(1, 4), 0.25)
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(12, Divide(144, 12))
+testthat::expect_equal(Divide(144, 12), 12)
 #end_test_case
 
 #@ Test Case
 # sort_order: 60
 # begin_test_case
-testthat::expect_equal(-3, Divide(12, -4))
+testthat::expect_equal(Divide(12, -4), -3)
 #end_test_case
 
 #@ Test Case
 # sort_order: 70
 # begin_test_case
-testthat::expect_equal(-3, Divide(-12, 4))
+testthat::expect_equal(Divide(-12, 4), -3)
 #end_test_case
 
 #@ Test Case
 # sort_order: 80
 # begin_test_case
-testthat::expect_equal(3, Divide(-12, -4))
+testthat::expect_equal(Divide(-12, -4), 3)
 #end_test_case

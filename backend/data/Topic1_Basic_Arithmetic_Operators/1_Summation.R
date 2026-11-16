@@ -25,23 +25,23 @@ SumThree <- function(num1, num2, num3) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(sum(0, 0, 0), SumThree(0, 0, 0))
+testthat::expect_equal(SumThree(0, 0, 0), sum(0, 0, 0))
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(sum(1, 2, 3), SumThree(1, 2, 3))
+testthat::expect_equal(SumThree(1, 2, 3), sum(1, 2, 3))
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(sum(-1, -8, -1), SumThree(-1, -8, -1))
+testthat::expect_equal(SumThree(-1, -8, -1), sum(-1, -8, -1))
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(sum(25, 25, -50), SumThree(25, 25, -50))
+testthat::expect_equal(SumThree(25, 25, -50), sum(25, 25, -50))
 #end_test_case

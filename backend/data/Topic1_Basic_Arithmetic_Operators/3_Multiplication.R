@@ -25,47 +25,47 @@ Multiply <- function(num1, num2) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(prod(0, 0), Multiply(0, 0))
+testthat::expect_equal(Multiply(0, 0), prod(0, 0))
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(prod(0, 5), Multiply(0, 5))
+testthat::expect_equal(Multiply(0, 5), prod(0, 5))
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(prod(5, 0), Multiply(5, 0))
+testthat::expect_equal(Multiply(5, 0), prod(5, 0))
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(prod(5, 5), Multiply(5, 5))
+testthat::expect_equal(Multiply(5, 5), prod(5, 5))
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(prod(-5, 5), Multiply(-5, 5))
+testthat::expect_equal(Multiply(-5, 5), prod(-5, 5))
 #end_test_case
 
 #@ Test Case
 # sort_order: 60
 # begin_test_case
-testthat::expect_equal(prod(5, -5), Multiply(5, -5))
+testthat::expect_equal(Multiply(5, -5), prod(5, -5))
 #end_test_case
 
 #@ Test Case
 # sort_order: 70
 # begin_test_case
-testthat::expect_equal(prod(-5, -5), Multiply(-5, -5))
+testthat::expect_equal(Multiply(-5, -5), prod(-5, -5))
 #end_test_case
 
 #@ Test Case
 # sort_order: 80
 # begin_test_case
-testthat::expect_equal(prod(6, 15), Multiply(6, 15))
+testthat::expect_equal(Multiply(6, 15), prod(6, 15))
 #end_test_case

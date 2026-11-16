@@ -32,59 +32,59 @@ IntegerDivision <- function(num1, num2) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, IntegerDivision(0, 2))
+testthat::expect_equal(IntegerDivision(0, 2), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(1, IntegerDivision(2, 2))
+testthat::expect_equal(IntegerDivision(2, 2), 1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(4, IntegerDivision(4, 1))
+testthat::expect_equal(IntegerDivision(4, 1), 4)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(0, IntegerDivision(1, 4))
+testthat::expect_equal(IntegerDivision(1, 4), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(12, IntegerDivision(144, 12))
+testthat::expect_equal(IntegerDivision(144, 12), 12)
 #end_test_case
 
 #@ Test Case
 # sort_order: 60
 # begin_test_case
-testthat::expect_equal(-3, IntegerDivision(12, -4))
+testthat::expect_equal(IntegerDivision(12, -4), -3)
 #end_test_case
 
 #@ Test Case
 # sort_order: 70
 # begin_test_case
-testthat::expect_equal(-3, IntegerDivision(-12, 4))
+testthat::expect_equal(IntegerDivision(-12, 4), -3)
 #end_test_case
 
 #@ Test Case
 # sort_order: 80
 # begin_test_case
-testthat::expect_equal(3, IntegerDivision(-12, -4))
+testthat::expect_equal(IntegerDivision(-12, -4), 3)
 #end_test_case
 
 #@ Test Case
 # sort_order: 90
 # begin_test_case
-testthat::expect_equal(3, IntegerDivision(7, 2))
+testthat::expect_equal(IntegerDivision(7, 2), 3)
 #end_test_case
 
 #@ Test Case
 # sort_order: 100
 # begin_test_case
-testthat::expect_equal(-4, IntegerDivision(-7, 2))
+testthat::expect_equal(IntegerDivision(-7, 2), -4)
 #end_test_case

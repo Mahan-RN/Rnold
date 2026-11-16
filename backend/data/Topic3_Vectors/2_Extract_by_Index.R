@@ -27,11 +27,11 @@ ExtractByIndex <- function(vec, i) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(30, ExtractByIndex(c(10, 20, 30, 40), 3))
+testthat::expect_equal(ExtractByIndex(c(10, 20, 30, 40), 3), 30)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal("Cat", ExtractByIndex(c("Cat", "Dog", "Duck", "Raven", "Fox"), 1))
+testthat::expect_equal(ExtractByIndex(c("Cat", "Dog", "Duck", "Raven", "Fox"), 1), "Cat")
 #end_test_case

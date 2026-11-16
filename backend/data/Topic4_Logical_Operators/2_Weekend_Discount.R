@@ -29,17 +29,17 @@ WeekendDiscount <- function(today) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(FALSE, WeekendDiscount("Mon"))
+testthat::expect_equal(WeekendDiscount("Mon"), FALSE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(TRUE, WeekendDiscount("Sat"))
+testthat::expect_equal(WeekendDiscount("Sat"), TRUE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(TRUE, WeekendDiscount("Sun"))
+testthat::expect_equal(WeekendDiscount("Sun"), TRUE)
 #end_test_case

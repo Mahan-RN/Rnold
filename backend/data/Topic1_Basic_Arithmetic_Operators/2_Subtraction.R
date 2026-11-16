@@ -25,29 +25,29 @@ Subtract <- function(num1, num2) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, Subtract(0, 0))
+testthat::expect_equal(Subtract(0, 0), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(1, Subtract(-1, -2))
+testthat::expect_equal(Subtract(-1, -2), 1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(-1, Subtract(1, 2))
+testthat::expect_equal(Subtract(1, 2), -1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(-3, Subtract(-1, 2))
+testthat::expect_equal(Subtract(-1, 2), -3)
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(3, Subtract(1, -2))
+testthat::expect_equal(Subtract(1, -2), 3)
 #end_test_case

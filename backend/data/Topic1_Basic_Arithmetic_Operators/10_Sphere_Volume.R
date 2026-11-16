@@ -29,23 +29,23 @@ SphereVolume <- function(diameter) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, SphereVolume(0))
+testthat::expect_equal(SphereVolume(0), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(0.5235987756, SphereVolume(1))
+testthat::expect_equal(SphereVolume(1), 0.5235987756)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(65.4498469498, SphereVolume(5))
+testthat::expect_equal(SphereVolume(5), 65.4498469498)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(0.0654498469, SphereVolume(0.5))
+testthat::expect_equal(SphereVolume(0.5), 0.0654498469)
 #end_test_case

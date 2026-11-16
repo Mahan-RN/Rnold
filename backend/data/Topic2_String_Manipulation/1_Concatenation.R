@@ -27,23 +27,23 @@ Concatenate <- function(str1, str2, str3, str4) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal("I love Rnold :)", Concatenate("I", "love", "Rnold", ":)"))
+testthat::expect_equal(Concatenate("I", "love", "Rnold", ":)"), "I love Rnold :)")
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal("1 2 3 4", Concatenate("1", "2", "3", "4"))
+testthat::expect_equal(Concatenate("1", "2", "3", "4"), "1 2 3 4")
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal("_ _ _ _", Concatenate("_", "_", "_", "_"))
+testthat::expect_equal(Concatenate("_", "_", "_", "_"), "_ _ _ _")
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal("Trust the Natural Recursion", Concatenate("Trust", "the", "Natural", "Recursion"))
+testthat::expect_equal(Concatenate("Trust", "the", "Natural", "Recursion"), "Trust the Natural Recursion")
 #end_test_case

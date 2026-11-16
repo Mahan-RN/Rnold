@@ -27,29 +27,29 @@ IsValidGrade <- function(grade) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(FALSE, IsValidGrade(-1))
+testthat::expect_equal(IsValidGrade(-1), FALSE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(FALSE, IsValidGrade(101))
+testthat::expect_equal(IsValidGrade(101), FALSE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(TRUE, IsValidGrade(0))
+testthat::expect_equal(IsValidGrade(0), TRUE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(TRUE, IsValidGrade(100))
+testthat::expect_equal(IsValidGrade(100), TRUE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(TRUE, IsValidGrade(50))
+testthat::expect_equal(IsValidGrade(50), TRUE)
 #end_test_case

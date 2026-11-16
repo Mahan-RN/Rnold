@@ -28,11 +28,11 @@ ReplaceByIndex <- function(vec, i, new_element) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(c("Canada", "USA", "Mexico"), ReplaceByIndex(c("Canada", "", "Mexico"), 2, "USA"))
+testthat::expect_equal(ReplaceByIndex(c("Canada", "", "Mexico"), 2, "USA"), c("Canada", "USA", "Mexico"))
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(c(100, 200, 300, 400, 500), ReplaceByIndex(c(100, 200, 300, 400, 5), 5, 500))
+testthat::expect_equal(ReplaceByIndex(c(100, 200, 300, 400, 5), 5, 500), c(100, 200, 300, 400, 500))
 #end_test_case

@@ -25,11 +25,11 @@ VectorizeGenes <- function(gene1, gene2, gene3) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(c("PAX1", "PAX2", "PAX3"), VectorizeGenes("PAX1", "PAX2", "PAX3"))
+testthat::expect_equal(VectorizeGenes("PAX1", "PAX2", "PAX3"), c("PAX1", "PAX2", "PAX3"))
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(c("TLR1", "TLR2", "TLR3"), VectorizeGenes("TLR1", "TLR2", "TLR3"))
+testthat::expect_equal(VectorizeGenes("TLR1", "TLR2", "TLR3"), c("TLR1", "TLR2", "TLR3"))
 #end_test_case

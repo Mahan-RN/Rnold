@@ -31,35 +31,35 @@ Modulo <- function(num1, num2) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, Modulo(0, 5))
+testthat::expect_equal(Modulo(0, 5), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(0, Modulo(2, 2))
+testthat::expect_equal(Modulo(2, 2), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(0, Modulo(1024, 2))
+testthat::expect_equal(Modulo(1024, 2), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(-1, Modulo(5, -2))
+testthat::expect_equal(Modulo(5, -2), -1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(-1, Modulo(-5, -2))
+testthat::expect_equal(Modulo(-5, -2), -1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 60
 # begin_test_case
-testthat::expect_equal(1, Modulo(-5, 2))
+testthat::expect_equal(Modulo(-5, 2), 1)
 #end_test_case

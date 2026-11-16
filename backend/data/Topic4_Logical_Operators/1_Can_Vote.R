@@ -26,29 +26,29 @@ CanVote <- function(age, is_citizen) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(FALSE, CanVote(17, FALSE))
+testthat::expect_equal(CanVote(17, FALSE), FALSE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(FALSE, CanVote(17, TRUE))
+testthat::expect_equal(CanVote(17, TRUE), FALSE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(FALSE, CanVote(18, FALSE))
+testthat::expect_equal(CanVote(18, FALSE), FALSE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(TRUE, CanVote(18, TRUE))
+testthat::expect_equal(CanVote(18, TRUE), TRUE)
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal(TRUE, CanVote(50, TRUE))
+testthat::expect_equal(CanVote(50, TRUE), TRUE)
 #end_test_case

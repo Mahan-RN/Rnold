@@ -27,29 +27,29 @@ PassiveAggressive <- function(str1, str2) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(" ", PassiveAggressive("", ""))
+testthat::expect_equal(PassiveAggressive("", ""), " ")
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal("it’s fine i’ll just do it all myself LIKE USUAL", PassiveAggressive("It’s fine I’ll just do it all myself", "LIKE USUAL"))
+testthat::expect_equal(PassiveAggressive("It’s fine I’ll just do it all myself", "LIKE USUAL"), "it’s fine i’ll just do it all myself LIKE USUAL")
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal("yay, TEAMWORK", PassiveAggressive("Yay,", "teamwork"))
+testthat::expect_equal(PassiveAggressive("Yay,", "teamwork"), "yay, TEAMWORK")
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal("living the DREAM", PassiveAggressive("living the", "dream"))
+testthat::expect_equal(PassiveAggressive("living the", "dream"), "living the DREAM")
 #end_test_case
 
 #@ Test Case
 # sort_order: 50
 # begin_test_case
-testthat::expect_equal("good luck WITH THAT", PassiveAggressive("GOOD LUCK", "with that"))
+testthat::expect_equal(PassiveAggressive("GOOD LUCK", "with that"), "good luck WITH THAT")
 #end_test_case

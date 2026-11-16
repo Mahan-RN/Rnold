@@ -29,23 +29,23 @@ CubeRoot <- function(num) {
 #@ Test Case
 # sort_order: 10
 # begin_test_case
-testthat::expect_equal(0, CubeRoot(0))
+testthat::expect_equal(CubeRoot(0), 0)
 #end_test_case
 
 #@ Test Case
 # sort_order: 20
 # begin_test_case
-testthat::expect_equal(1, CubeRoot(1))
+testthat::expect_equal(CubeRoot(1), 1)
 #end_test_case
 
 #@ Test Case
 # sort_order: 30
 # begin_test_case
-testthat::expect_equal(2, CubeRoot(8))
+testthat::expect_equal(CubeRoot(8), 2)
 #end_test_case
 
 #@ Test Case
 # sort_order: 40
 # begin_test_case
-testthat::expect_equal(0.2, CubeRoot(0.008))
+testthat::expect_equal(CubeRoot(0.008), 0.2)
 #end_test_case
