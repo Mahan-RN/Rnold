@@ -144,17 +144,23 @@ def _parse_problem_directory(directory: Path) -> list[ParserOutput]:
             f"Path {directory!s} does not point to a directory"
         )
     else:
-        for file in directory.iterdir():
-            if file.is_file() and file.suffix.upper() == ".R":
-                text = file.read_text()
-                try:
-                    results.append(parse_problem(text))
-                except InvalidProblemTemplateFormatError:
-                    logger.warning(f"File {file!s} has invalid problem template")
-                    raise
-                except ValidationError:
-                    logger.warning(f"File {file!s} has type error in problem template")
-                    raise
+        for folder in directory.iterdir():
+            if folder.is_dir():
+                for file in folder.iterdir():
+                    if file.is_file() and file.suffix.upper() == ".R":
+                        text = file.read_text()
+                        try:
+                            results.append(parse_problem(text))
+                        except InvalidProblemTemplateFormatError:
+                            logger.warning(
+                                f"File {file!s} has invalid problem template"
+                            )
+                            raise
+                        except ValidationError:
+                            logger.warning(
+                                f"File {file!s} has type error in problem template"
+                            )
+                            raise
         return results
 
 

@@ -19,7 +19,9 @@ git_auth_settings = GitAuthSettings()  # pyright: ignore[reportCallIssue]
 
 
 class AppSettings(BaseSettings):
+    topics_dir: Path
     problems_dir: Path
+    load_topics_on_startup: bool = True
     load_problems_on_startup: bool = True
 
     model_config = SettingsConfigDict(

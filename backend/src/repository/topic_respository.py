@@ -19,7 +19,7 @@ def get_by_name(name: str, session: Session) -> Topic:
     stmt = select(Topic).where(Topic.name == name)
     topic = session.scalars(stmt).one_or_none()
     if topic is None:
-        raise NotFoundError(f"Topic with ID {id} not found")
+        raise NotFoundError(f"Topic with name '{name}' not found")
 
     return topic
 

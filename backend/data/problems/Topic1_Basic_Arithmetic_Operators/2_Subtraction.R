@@ -18,7 +18,7 @@ Subtract `num2` from `num1` and return the result.
 # begin_starter_code
 Subtract <- function(num1, num2) {
     
-    return(num1 - num2)
+    return(...)
 }
 # end_starter_code
 

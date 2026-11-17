@@ -17,12 +17,20 @@ from src.routers import (
     users_router,
 )
 from src.services.problem_parser import load_problem_data
+from src.services.topic_parser import load_topic_data
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     # Create tables
     Base.metadata.create_all(bind=engine)
+
+    # Load topics
+    if app_settings.load_topics_on_startup:
+        with SessionLocal() as db_session:
+            load_topic_data(db_session, app_settings.topics_dir)
+
+    # Load problems
     if app_settings.load_problems_on_startup:
         with SessionLocal() as db_session:
             load_problem_data(db_session, app_settings.problems_dir)

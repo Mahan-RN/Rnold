@@ -29,6 +29,8 @@ def get_by_unique_constraint(
         )
     except NotFoundError as e:
         raise EvaluationCaseNotFoundError from e
+    except ConflictError as e:
+        raise EvaluationCaseConflictError from e
 
     return evaluation_case
 

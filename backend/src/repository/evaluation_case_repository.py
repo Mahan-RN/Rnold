@@ -22,7 +22,12 @@ def get_by_unique_constraint(
         EvaluationCase.problem_id == problem_id
         and EvaluationCase.sort_order == sort_order
     )
-    evaluation_case = session.scalars(stmt).one_or_none()
+    try:
+        evaluation_case = session.scalars(stmt).one_or_none()
+    except exc.MultipleResultsFound as e:
+        raise ConflictError(
+            f"Test case for problem ID {problem_id}, with sort order {sort_order} violates unique constraint"
+        ) from e
     if evaluation_case is None:
         raise NotFoundError(
             f"Test Case with problem ID {problem_id} and sort order {sort_order} not found"

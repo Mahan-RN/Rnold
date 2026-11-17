@@ -24,7 +24,7 @@ You can assume that `num2` is non-zero.
 # begin_starter_code
 Modulo <- function(num1, num2) {
     
-    return(num1 %% num2)
+    return(...)
 }
 # end_starter_code
 
