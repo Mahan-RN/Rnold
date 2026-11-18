@@ -25,6 +25,8 @@ import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader
 import ProblemManagementPage from "./pages/admin/ProblemManagementPage/ProblemManagementPage";
 import problemAction from "./actions/admin/problemAction";
 import deleteMeAction from "./actions/deleteMeAction";
+import adminLoader from "./loaders/admin/adminLoader";
+import AdminErrorBoundary from "./boundaries/AdminErrorBoundary/AdminErrorBoundary";
 
 const router = createBrowserRouter([
     {
@@ -60,6 +62,8 @@ const router = createBrowserRouter([
             {
                 path: "/admin",
                 element: <AdminDashboardPage />,
+                loader: adminLoader,
+                ErrorBoundary: AdminErrorBoundary,
                 children: [
                     {
                         path: "/admin/users",
