@@ -34,7 +34,7 @@ export default function ProblemPage() {
         />
     ));
 
-    return (     
+    return (
         <div className={styles.flexContainer}>
             <div className={styles.titleContainer}>
                 <h1>
@@ -42,8 +42,10 @@ export default function ProblemPage() {
                 </h1>
                 <h3>{difficultyElm}</h3>
             </div>
-            <h2>Description:</h2>
-            <Markdown>{problem.description}</Markdown>
+            <div className={styles.descriptionContainer}>
+                <h2>Description:</h2>
+                <Markdown>{problem.description}</Markdown>
+            </div>
             <CodeEditor
                 starterCode={problem.starter_code}
                 testCases={testCases}

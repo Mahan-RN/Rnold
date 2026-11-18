@@ -7,11 +7,19 @@
 }
 
 .titleContainer {
-    margin: 10px 0px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 10px 0px;
     width: 100%;
+}
+
+.titleContainer h1 {
+    line-height: 1.2;
+}
+
+.descriptionContainer {
+    margin-bottom: 20px;
 }
 
 .titleContainer h3 {
