@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router";
+import { Form, useLoaderData } from "react-router";
 import profilePageLoader from "src/loaders/ProfilePageLoader";
 import styles from "src/pages/ProfilePage/ProfilePage.module.css";
 
@@ -79,6 +79,25 @@ export default function ProfilePage() {
                             </span>
                         </div>
                     </div>
+                </section>
+                <section>
+                    <Form method="delete" action="/delete-me">
+                        <button
+                            className={styles.deleteMeBtn}
+                            type="submit"
+                            onClick={(event) => {
+                                if (
+                                    !confirm(
+                                        "Are you sure you want to delete your account?",
+                                    )
+                                ) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        >
+                            Delete Account
+                        </button>
+                    </Form>
                 </section>
             </div>
         </main>

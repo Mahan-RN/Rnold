@@ -24,6 +24,7 @@ import createTopicAction from "./actions/admin/topicAction";
 import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader";
 import ProblemManagementPage from "./pages/admin/ProblemManagementPage/ProblemManagementPage";
 import problemAction from "./actions/admin/problemAction";
+import deleteMeAction from "./actions/deleteMeAction";
 
 const router = createBrowserRouter([
     {
@@ -84,6 +85,11 @@ const router = createBrowserRouter([
     {
         path: "/logout",
         action: logoutAction,
+        loader: logoutLoader,
+    },
+    {
+        path: "/delete-me",
+        action: deleteMeAction,
         loader: logoutLoader,
     },
 ]);

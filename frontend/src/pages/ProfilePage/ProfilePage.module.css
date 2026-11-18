@@ -122,6 +122,35 @@
     overflow-wrap: anywhere;
 }
 
+/* Logout button */
+.deleteMeBtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 15px;
+
+    color: #c9d1d9;
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    border-radius: 6px;
+
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+
+    cursor: pointer;
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.deleteMeBtn:hover {
+    color: #ff7b72;
+    background-color: #2d1f20;
+    border-color: #f85149;
+}
+
 /* Responsive layout */
 
 @media (max-width: 480px) {
