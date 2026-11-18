@@ -19,8 +19,7 @@ def get_by_unique_constraint(
     problem_id: int, sort_order: int, session: Session
 ) -> EvaluationCase:
     stmt = select(EvaluationCase).where(
-        EvaluationCase.problem_id == problem_id
-        and EvaluationCase.sort_order == sort_order
+        EvaluationCase.problem_id == problem_id, EvaluationCase.sort_order == sort_order
     )
     try:
         evaluation_case = session.scalars(stmt).one_or_none()
