@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from "react-router";
+import { useLocation, useLoaderData } from "react-router";
 import type problemPageLoader from "src/loaders/ProblemPageLoader";
 import Markdown from "react-markdown";
 import styles from "src/pages/ProblemPage/ProblemPage.module.css";
@@ -8,12 +8,13 @@ import { useState } from "react";
 import type { TestResult } from "src/services/rubSubmission";
 
 export default function ProblemPage() {
-    const params = useParams();
-    const problemID = params.problemID;
     const loaderData = useLoaderData<typeof problemPageLoader>();
     const problem = loaderData.problem;
     const testCases = loaderData.testCases;
     const difficulty = problem.difficulty;
+
+    const location = useLocation();
+    const position = location.state?.position;
 
     const [testResults, setTestResults] = useState<TestResult[] | null>(null);
 
@@ -38,7 +39,7 @@ export default function ProblemPage() {
         <div className={styles.flexContainer}>
             <div className={styles.titleContainer}>
                 <h1>
-                    Problem {problemID}: {problem.title}
+                    Problem #{position}: {problem.title}
                 </h1>
                 <h3>{difficultyElm}</h3>
             </div>

@@ -2,10 +2,15 @@ import type { CurriculumProblemResponse } from "../../loaders/HomePageLoader";
 import { Link } from "react-router";
 import styles from "src/components/ViewProblemButton/ViewProblemButton.module.css";
 
-export default function ViewProblemButton(props: CurriculumProblemResponse) {
+interface ViewProblemButtonProps extends CurriculumProblemResponse {
+    problemIndex: number;
+}
+
+export default function ViewProblemButton(props: ViewProblemButtonProps) {
     const id = props.id;
     const title = props.title;
     const difficulty = props.difficulty;
+    const index = props.problemIndex;
 
     let difficultyElm;
     if (difficulty === 1) {
@@ -17,7 +22,11 @@ export default function ViewProblemButton(props: CurriculumProblemResponse) {
     }
 
     return (
-        <Link to={`problems/${id}`} className={styles.problemLink}>
+        <Link
+            to={`problems/${id}`}
+            state={{ position: index}}
+            className={styles.problemLink}
+        >
             <span className={styles.problemTitle}>{title}</span>
             {difficultyElm}
         </Link>

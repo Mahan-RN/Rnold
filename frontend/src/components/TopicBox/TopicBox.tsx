@@ -7,12 +7,14 @@ export default function TopicBox(props: CurriculumResponse) {
     const topicName = props.name;
     const topicDescription = props.description;
     const problems = props.problems;
-    const viewProblemButtons = problems.map((problem) => (
+    const viewProblemButtons = problems.map((problem, index) => (
         <li>
             <ViewProblemButton
+                key={problem.id}
                 id={problem.id}
                 title={problem.title}
                 difficulty={problem.difficulty}
+                problemIndex={index + 1}
             />
         </li>
     ));
