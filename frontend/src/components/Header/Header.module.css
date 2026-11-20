@@ -28,13 +28,13 @@
     display: grid;
     grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    border: 3px solid #e6e6e6;
+    border: 3px solid var(--border);
     border-radius: 10px;
     padding: 8px 10px;
 }
 
 .navLink {
-    color: #fff6dc;
+    color: var(--text);
     text-decoration: none;
 }
 

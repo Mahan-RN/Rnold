@@ -3,7 +3,7 @@
     flex: 1;
     justify-content: space-between;
     gap: 12px;
-    color: #fff6dc;
+    color: var(--text);
     text-decoration: none;
 }
 
