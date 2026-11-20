@@ -7,8 +7,8 @@
     max-width: 520px;
     padding: 24px;
 
-    background-color: #20232b;
-    border: 1px solid #353a46;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 10px;
 }
 
@@ -20,14 +20,14 @@
 
 .header h2 {
     margin: 0;
-    color: #f1f3f5;
+    color: var(--text);
     font-size: 1.25rem;
     font-weight: 600;
 }
 
 .header p {
     margin: 0;
-    color: #a1a8b5;
+    color: var(--text);
     font-size: 0.9rem;
     line-height: 1.5;
 }
@@ -39,7 +39,7 @@
 }
 
 .fileSection label {
-    color: #e1e5eb;
+    color: var(--text);
     font-size: 0.95rem;
     font-weight: 500;
 }
@@ -48,7 +48,7 @@
     width: 100%;
     padding: 10px;
 
-    color: #cbd0da;
+    color: var(--text);
     background-color: #181b22;
 
     border: 1px solid #414754;
@@ -61,7 +61,7 @@
     margin-right: 12px;
     padding: 7px 12px;
 
-    color: #e5e9f0;
+    color: var(--text);
     background-color: #343b49;
 
     border: none;

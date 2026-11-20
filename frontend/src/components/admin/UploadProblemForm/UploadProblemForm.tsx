@@ -9,7 +9,7 @@ export default function UploadProblemForm() {
         <Form
             method="POST"
             encType="multipart/form-data"
-            className={styles.flexContainer}
+            className={styles.form}
         >
             <div className={styles.header}>
                 <h2>Upload a Problem</h2>

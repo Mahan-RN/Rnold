@@ -4,6 +4,7 @@
     --text-h: #20242c;
     --bg: #ffffff;
     --border: #e1e4e8;
+    --surface: #f8f9fb;
     --code-bg: #f3f4f6;
 
     --accent: #2563eb;
@@ -42,6 +43,7 @@
         --text-h: #e4e6eb;
         --bg: #181a20;
         --border: #343741;
+        --surface: #22252d;
         --code-bg: #22252d;
 
         --accent: #75a7ff;

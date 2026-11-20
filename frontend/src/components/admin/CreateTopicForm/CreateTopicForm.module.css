@@ -7,7 +7,7 @@
     max-width: 520px;
     padding: 1.75rem;
 
-    background-color: #181d25;
+    background-color: var(--surface);
     border: 1px solid #303743;
     border-radius: 12px;
 }
@@ -20,14 +20,13 @@
 
 .header h2 {
     margin: 0;
-    color: #f1f5f9;
     font-size: 1.35rem;
     font-weight: 600;
 }
 
 .header p {
     margin: 0;
-    color: #929ba9;
+    color: var(--text);
     font-size: 0.9rem;
 }
 
@@ -38,7 +37,7 @@
 }
 
 .field label {
-    color: #dce2eb;
+    color: var(--text);
     font-size: 0.9rem;
     font-weight: 500;
 }
