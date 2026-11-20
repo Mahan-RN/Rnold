@@ -1,6 +1,6 @@
 import { Form, Link, useRouteLoaderData } from "react-router";
-import type rootLayoutLoader from "src/loaders/RootLayoutLoader";
 import styles from "src/components/AuthControls/AuthControls.module.css";
+import type rootLayoutLoader from "src/loaders/RootLayoutLoader";
 
 export default function AuthControls() {
     const user = useRouteLoaderData<typeof rootLayoutLoader>("root");

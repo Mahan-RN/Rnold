@@ -1,13 +1,13 @@
-import CodeMirror from "@uiw/react-codemirror";
-import { materialDark } from "@uiw/codemirror-theme-material";
-import styles from "src/components/CodeEditor/CodeEditor.module.css";
 import { StreamLanguage } from "@codemirror/language";
 import { r } from "@codemirror/legacy-modes/mode/r";
+import { materialDark } from "@uiw/codemirror-theme-material";
+import CodeMirror from "@uiw/react-codemirror";
 import { useState } from "react";
+import styles from "src/components/CodeEditor/CodeEditor.module.css";
 import OutputTerminal from "src/components/OutputTerminal/OutputTerminal";
-import { runSubmission } from "src/services/rubSubmission";
-import type { TestResult } from "src/services/rubSubmission";
 import type { TestCasesResponse } from "src/loaders/ProblemPageLoader";
+import type { TestResult } from "src/services/rubSubmission";
+import { runSubmission } from "src/services/rubSubmission";
 
 interface CodeEditorProps {
     starterCode: string;

@@ -1,6 +1,7 @@
 import { data, type LoaderFunctionArgs } from "react-router";
-import type { CurrentUser } from "../RootLayoutLoader";
 import apiFetch from "src/api/Fetch";
+
+import type { CurrentUser } from "../RootLayoutLoader";
 
 export default async function adminLoader({ request }: LoaderFunctionArgs) {
     const user = await apiFetch<CurrentUser>("/users/me", {

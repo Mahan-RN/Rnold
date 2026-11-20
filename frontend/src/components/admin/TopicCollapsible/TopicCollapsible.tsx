@@ -1,6 +1,6 @@
 import { Collapsible } from "@base-ui/react/collapsible";
-import styles from "src/components/admin/UserCollapsible/UserCollapsible.module.css";
 import { Form } from "react-router";
+import styles from "src/components/admin/UserCollapsible/UserCollapsible.module.css";
 
 interface TopicCollapsibleProps {
     id: number;

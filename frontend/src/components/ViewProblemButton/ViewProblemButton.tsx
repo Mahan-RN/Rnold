@@ -1,6 +1,7 @@
-import type { CurriculumProblemResponse } from "../../loaders/HomePageLoader";
 import { Link } from "react-router";
 import styles from "src/components/ViewProblemButton/ViewProblemButton.module.css";
+
+import type { CurriculumProblemResponse } from "../../loaders/HomePageLoader";
 
 interface ViewProblemButtonProps extends CurriculumProblemResponse {
     problemIndex: number;

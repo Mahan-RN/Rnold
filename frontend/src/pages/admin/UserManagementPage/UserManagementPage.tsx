@@ -1,4 +1,4 @@
-import { useLoaderData, useActionData } from "react-router";
+import { useActionData,useLoaderData } from "react-router";
 import type deleteUserAction from "src/actions/admin/deleteUserAction";
 import UserCollapsible from "src/components/admin/UserCollapsible/UserCollapsible";
 import type userManagementPageLoader from "src/loaders/admin/UserManagementPageLoader";

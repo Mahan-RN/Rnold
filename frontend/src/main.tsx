@@ -1,32 +1,34 @@
+import "./index.css";
+
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
-import "./index.css";
+
+import deleteUserAction from "./actions/admin/deleteUserAction";
+import problemAction from "./actions/admin/problemAction";
+import createTopicAction from "./actions/admin/topicAction";
+import deleteMeAction from "./actions/deleteMeAction";
+import logoutAction from "./actions/logoutAction";
+import AdminErrorBoundary from "./boundaries/AdminErrorBoundary/AdminErrorBoundary";
+import RootLayout from "./layouts/RootLayout";
+import adminLoader from "./loaders/admin/adminLoader";
+import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader";
+import userManagementPageLoader from "./loaders/admin/UserManagementPageLoader";
+import homePageLoader from "./loaders/HomePageLoader";
+import logoutLoader from "./loaders/logoutLoader";
+import problemPageLoader from "./loaders/ProblemPageLoader";
+import profilePageLoader from "./loaders/ProfilePageLoader";
+import rootLayoutLoader from "./loaders/RootLayoutLoader";
+import AboutPage from "./pages/AboutPage/AboutPage";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage/AdminDashboardPage";
+import ProblemManagementPage from "./pages/admin/ProblemManagementPage/ProblemManagementPage";
+import TopicManagementPage from "./pages/admin/TopicManagementPage/TopicManagementPage";
+import UserManagementPage from "./pages/admin/UserManagementPage/UserManagementPage";
 import HomePage from "./pages/HomePage/HomePage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProblemPage from "./pages/ProblemPage/ProblemPage";
-import AboutPage from "./pages/AboutPage/AboutPage";
-import homePageLoader from "./loaders/HomePageLoader";
-import rootLayoutLoader from "./loaders/RootLayoutLoader";
-import RootLayout from "./layouts/RootLayout";
-import logoutLoader from "./loaders/logoutLoader";
-import logoutAction from "./actions/logoutAction";
-import problemPageLoader from "./loaders/ProblemPageLoader";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
-import profilePageLoader from "./loaders/ProfilePageLoader";
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage/AdminDashboardPage";
-import UserManagementPage from "./pages/admin/UserManagementPage/UserManagementPage";
-import userManagementPageLoader from "./loaders/admin/UserManagementPageLoader";
-import deleteUserAction from "./actions/admin/deleteUserAction";
-import TopicManagementPage from "./pages/admin/TopicManagementPage/TopicManagementPage";
-import createTopicAction from "./actions/admin/topicAction";
-import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader";
-import ProblemManagementPage from "./pages/admin/ProblemManagementPage/ProblemManagementPage";
-import problemAction from "./actions/admin/problemAction";
-import deleteMeAction from "./actions/deleteMeAction";
-import adminLoader from "./loaders/admin/adminLoader";
-import AdminErrorBoundary from "./boundaries/AdminErrorBoundary/AdminErrorBoundary";
 
 const router = createBrowserRouter([
     {

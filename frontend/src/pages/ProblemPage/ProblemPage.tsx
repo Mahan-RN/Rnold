@@ -1,10 +1,10 @@
-import { useLocation, useLoaderData } from "react-router";
-import type problemPageLoader from "src/loaders/ProblemPageLoader";
+import { useState } from "react";
 import Markdown from "react-markdown";
-import styles from "src/pages/ProblemPage/ProblemPage.module.css";
+import { useLoaderData,useLocation } from "react-router";
 import CodeEditor from "src/components/CodeEditor/CodeEditor";
 import TestCasePanel from "src/components/TestCasePanel/TestCasePanel";
-import { useState } from "react";
+import type problemPageLoader from "src/loaders/ProblemPageLoader";
+import styles from "src/pages/ProblemPage/ProblemPage.module.css";
 import type { TestResult } from "src/services/rubSubmission";
 
 export default function ProblemPage() {

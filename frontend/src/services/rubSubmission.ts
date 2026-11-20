@@ -1,6 +1,6 @@
-import { WebRError } from "webr";
-import type { REnvironment } from "webr";
 import getWebR from "src/services/webr";
+import type { REnvironment } from "webr";
+import { WebRError } from "webr";
 
 interface RawOutputEntry {
     type: string;

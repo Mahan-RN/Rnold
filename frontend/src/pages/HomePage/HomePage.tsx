@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router";
-import type homePageLoader from "src/loaders/HomePageLoader";
 import TopicBox from "src/components/TopicBox/TopicBox";
+import type homePageLoader from "src/loaders/HomePageLoader";
 import styles from "src/pages/HomePage/HomePage.module.css"
 
 export default function HomePage() {
