@@ -2,7 +2,6 @@ import { Link, NavLink, useRouteLoaderData } from "react-router";
 import logo from "src/assets/logo.svg";
 import styles from "src/components/Header/Header.module.css";
 import type rootLayoutLoader from "src/loaders/RootLayoutLoader";
-import { ThemeToggle } from "src/theme/ThemeToggle/ThemeToggle";
 
 import AuthControls from "../AuthControls/AuthControls";
 
@@ -19,7 +18,6 @@ export default function Header() {
                     </Link>
                 </div>
                 <div className={styles.gridItem2}>
-                    <ThemeToggle />
                     <AuthControls />
                 </div>
             </div>

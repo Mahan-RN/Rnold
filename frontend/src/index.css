@@ -1,42 +1,4 @@
 :root {
-    /* Light theme */
-    --text: #525866;
-    --text-h: #20242c;
-    --bg: #ffffff;
-    --border: #e1e4e8;
-    --surface: #f8f9fb;
-    --code-bg: #f3f4f6;
-
-    --accent: #2563eb;
-    --accent-bg: rgba(37, 99, 235, 0.08);
-    --accent-border: rgba(37, 99, 235, 0.35);
-
-    --social-bg: #f3f4f6;
-
-    --shadow:
-        rgba(0, 0, 0, 0.08) 0 10px 15px -3px, rgba(0, 0, 0, 0.04) 0 4px 6px -2px;
-
-    --sans: system-ui, "Segoe UI", Roboto, sans-serif;
-    --heading: system-ui, "Segoe UI", Roboto, sans-serif;
-    --mono: ui-monospace, Consolas, monospace;
-
-    font: 18px/145% var(--sans);
-    letter-spacing: 0.18px;
-    color-scheme: light;
-    color: var(--text);
-    background: var(--bg);
-
-    font-synthesis: none;
-    text-rendering: optimizeLegibility;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-
-    @media (max-width: 1024px) {
-        font-size: 16px;
-    }
-}
-
-:root[data-theme="dark"] {
     /* Dark theme */
     --text: #b1b5bd;
     --text-h: #e4e6eb;
@@ -54,7 +16,24 @@
     --shadow:
         rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
 
+    --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+    --heading: system-ui, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, Consolas, monospace;
+
+    font: 18px/145% var(--sans);
+    letter-spacing: 0.18px;
+    color: var(--text);
+    background: var(--bg);
     color-scheme: dark;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    @media (max-width: 1024px) {
+        font-size: 16px;
+    }
 }
 
 #root {
