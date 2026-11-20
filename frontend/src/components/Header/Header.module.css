@@ -11,7 +11,8 @@
 
 .gridContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr auto;
+    align-items: center;
 }
 
 .gridItem1 {
@@ -19,8 +20,9 @@
 }
 
 .gridItem2 {
-    justify-self: end;
-    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
     margin-right: 5px;
 }
 

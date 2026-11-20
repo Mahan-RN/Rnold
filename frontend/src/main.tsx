@@ -29,6 +29,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import ProblemPage from "./pages/ProblemPage/ProblemPage";
 import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import { ThemeProvider } from "./theme/ThemeProvider";
 
 const router = createBrowserRouter([
     {
@@ -102,6 +103,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <ThemeProvider>
+            <RouterProvider router={router} />
+        </ThemeProvider>
     </StrictMode>,
 );
