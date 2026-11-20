@@ -3,3 +3,8 @@
     margin-bottom: 15px;
     text-align: center;
 }
+
+.root a {
+    color: var(--text);
+    text-decoration: underline;
+}
