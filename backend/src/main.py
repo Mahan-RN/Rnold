@@ -19,6 +19,8 @@ from src.routers import (
 from src.services.problem_parser import load_problem_data
 from src.services.topic_parser import load_topic_data
 
+API_PREFIX = "/api"
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
@@ -47,13 +49,13 @@ app.add_middleware(
     https_only=False,
 )
 
-app.include_router(users_router, prefix="/api")
-app.include_router(auth_router, prefix="/api")
-app.include_router(curriculum_router, prefix="/api")
-app.include_router(problems_router, prefix="/api")
-app.include_router(submissions_router, prefix="/api")
-app.include_router(topics_router, prefix="/api")
-app.include_router(test_cases_router, prefix="/api")
+app.include_router(users_router, prefix=API_PREFIX)
+app.include_router(auth_router, prefix=API_PREFIX)
+app.include_router(curriculum_router, prefix=API_PREFIX)
+app.include_router(problems_router, prefix=API_PREFIX)
+app.include_router(submissions_router, prefix=API_PREFIX)
+app.include_router(topics_router, prefix=API_PREFIX)
+app.include_router(test_cases_router, prefix=API_PREFIX)
 
 
 @app.get("/")
