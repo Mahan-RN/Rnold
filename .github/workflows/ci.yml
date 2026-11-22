@@ -24,6 +24,8 @@ jobs:
         working-directory: ./backend
     steps:
       - uses: actions/checkout@v7
+      - name: Create .env file
+        run: echo "${{ secrets.ENV_FILE }}" > .env
       - name: Install the latest version of uv
         uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
         with:
