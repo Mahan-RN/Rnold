@@ -7,11 +7,11 @@ from src.routers.topics import router as topics_router
 from src.routers.users import router as users_router
 
 __all__ = [
-    "users_router",
     "auth_router",
     "curriculum_router",
     "problems_router",
     "submissions_router",
     "test_cases_router",
     "topics_router",
+    "users_router",
 ]
