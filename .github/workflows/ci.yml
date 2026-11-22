@@ -1,0 +1,61 @@
+name: CI
+run-name: CI for ${{ github.actor }}
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs for the same PR/branch, but let
+# pushes to main (and other non-PR events) run to completion.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ./backend
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          working-directory: backend
+      - name: Install dependencies
+        run: uv sync --locked
+      - name: Check formatting
+        run: uv run ruff format --check .
+      - name: Check linting
+        run: uv run ruff check .
+      - name: Run type checking
+        run: uv run mypy .
+      - name: Run unit tests
+        run: uv run pytest
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install frontend dependencies
+        run: npm ci
+      - name: Check linting
+        run: npm run lint
+      - name: Build frontend
+        run: npm run build
