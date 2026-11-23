@@ -14,6 +14,5 @@ class SubmissionResponse(BaseModel):
 
 
 class CreateSubmissionRequest(BaseModel):
-    user_id: int
     problem_id: int
     accepted: bool

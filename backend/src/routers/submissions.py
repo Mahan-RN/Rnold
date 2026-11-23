@@ -56,7 +56,12 @@ def get_submission(
 def add_submission(
     request: CreateSubmissionRequest, session: DbSession, user: CurrentUser
 ) -> Submission:
-    result = submission_services.insert_one(**request.model_dump(), session=session)
+    result = submission_services.insert_one(
+        user_id=user.github_id,
+        problem_id=request.problem_id,
+        accepted=request.accepted,
+        session=session,
+    )
     session.commit()
     return result
 

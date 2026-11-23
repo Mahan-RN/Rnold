@@ -10,6 +10,7 @@ import problemAction from "./actions/admin/problemAction";
 import createTopicAction from "./actions/admin/topicAction";
 import deleteMeAction from "./actions/deleteMeAction";
 import logoutAction from "./actions/logoutAction";
+import problemPageAction from "./actions/problemPageAction";
 import AdminErrorBoundary from "./boundaries/AdminErrorBoundary/AdminErrorBoundary";
 import RootLayout from "./layouts/RootLayout";
 import adminLoader from "./loaders/admin/adminLoader";
@@ -53,6 +54,7 @@ const router = createBrowserRouter([
                 path: "/problems/:problemID",
                 element: <ProblemPage />,
                 loader: problemPageLoader,
+                action: problemPageAction,
                 errorElement: <NotFoundPage />,
             },
             {

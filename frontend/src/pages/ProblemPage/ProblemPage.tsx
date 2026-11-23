@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Markdown from "react-markdown";
-import { useLoaderData,useLocation } from "react-router";
+import { useLoaderData, useLocation } from "react-router";
 import CodeEditor from "src/components/CodeEditor/CodeEditor";
 import TestCasePanel from "src/components/TestCasePanel/TestCasePanel";
 import type problemPageLoader from "src/loaders/ProblemPageLoader";
@@ -48,6 +48,7 @@ export default function ProblemPage() {
                 <Markdown>{problem.description}</Markdown>
             </div>
             <CodeEditor
+                problemID={problem.id}
                 starterCode={problem.starter_code}
                 testCases={testCases}
                 onTestResults={setTestResults}

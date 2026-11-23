@@ -2,6 +2,7 @@ import type { LoaderFunctionArgs } from "react-router";
 import apiFetch from "src/api/Fetch";
 
 export interface ProblemResponse {
+    id: number;
     title: string;
     description: string;
     difficulty: number;
