@@ -36,16 +36,12 @@ def insert_one(
     user_id: int,
     problem_id: int,
     status: int,
-    runtime_ms: int,
-    code: str,
     session: Session,
 ) -> Submission:
     submission = Submission(
         user_id=user_id,
         problem_id=problem_id,
         status=status,
-        runtime_ms=runtime_ms,
-        code=code,
     )
     session.add(submission)
     try:

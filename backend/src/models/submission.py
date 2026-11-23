@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import IntEnum, auto
 from typing import TYPE_CHECKING
 
-from sqlalchemy import DateTime, ForeignKey, Text, func
+from sqlalchemy import DateTime, ForeignKey, Index, func
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.database import Base
@@ -32,10 +32,10 @@ class Submission(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), init=False
     )
-    runtime_ms: Mapped[int]
-    code: Mapped[str] = mapped_column(Text)
     user: Mapped["User"] = relationship(back_populates="submissions", init=False)
     problem: Mapped["Problem"] = relationship(back_populates="submissions", init=False)
+
+    __table_args__ = (Index("idx_user_problem", "user_id", "problem_id"),)
 
     def __repr__(self) -> str:
         return f"""
@@ -44,8 +44,6 @@ class Submission(Base):
         user_id: {self.user_id},
         problem_id: {self.problem_id},
         status: {self.status},
-        created_at: '{self.created_at}',
-        runtime_ms: {self.runtime_ms},
-        code: '{self.code}'
+        created_at: '{self.created_at}'
         )
         """
