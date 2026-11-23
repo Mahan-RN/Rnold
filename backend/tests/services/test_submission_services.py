@@ -40,13 +40,13 @@ class TestSubmissionServices:
         result = submission_services.insert_one(
             user_id=self.admin1.github_id,
             problem_id=self.problem_1.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         assert result.id == 1
         assert result.user_id == 123
         assert result.problem_id == 1
-        assert result.status == 1
+        assert result.accepted == True
         assert isinstance(result.created_at, datetime)
         assert result.user == self.admin1
         assert result.problem == self.problem_1
@@ -59,7 +59,7 @@ class TestSubmissionServices:
         submission = submission_services.insert_one(
             user_id=self.admin1.github_id,
             problem_id=self.problem_1.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         result = submission_services.get_one(1, db_session)
@@ -73,13 +73,13 @@ class TestSubmissionServices:
         submission1 = submission_services.insert_one(
             user_id=self.admin1.github_id,
             problem_id=self.problem_1.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         submission2 = submission_services.insert_one(
             user_id=self.admin1.github_id,
             problem_id=self.problem_1.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         results = submission_services.get_all(db_session)
@@ -113,28 +113,28 @@ class TestSubmissionServices:
         submission1 = submission_services.insert_one(
             user_id=self.admin1.github_id,
             problem_id=self.problem_1.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         # First user, second problem
         submission2 = submission_services.insert_one(
             user_id=self.admin1.github_id,
             problem_id=problem_2.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         # Second user, first problem
         submission3 = submission_services.insert_one(
             user_id=user2.github_id,
             problem_id=self.problem_1.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         # Second user, second problem
         submission4 = submission_services.insert_one(
             user_id=user2.github_id,
             problem_id=problem_2.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         # Now test
@@ -171,7 +171,7 @@ class TestSubmissionServices:
         insert_result = submission_services.insert_one(
             user_id=self.admin1.github_id,
             problem_id=self.problem_1.id,
-            status=1,
+            accepted=True,
             session=db_session,
         )
         submission_services.delete_one(insert_result.id, db_session)

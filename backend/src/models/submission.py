@@ -1,5 +1,4 @@
 from datetime import datetime
-from enum import IntEnum, auto
 from typing import TYPE_CHECKING
 
 from sqlalchemy import DateTime, ForeignKey, Index, func
@@ -12,12 +11,6 @@ if TYPE_CHECKING:
     from src.models.user import User
 
 
-class Status(IntEnum):
-    ACCEPTED = auto()
-    WRONG_ANSWER = auto()
-    ERROR = auto()
-
-
 class Submission(Base):
     __tablename__ = "submissions"
 
@@ -28,7 +21,7 @@ class Submission(Base):
     problem_id: Mapped[int] = mapped_column(
         ForeignKey("problems.id", ondelete="CASCADE")
     )
-    status: Mapped[int]
+    accepted: Mapped[bool]
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), init=False
     )
@@ -43,7 +36,7 @@ class Submission(Base):
         id: {self.id},
         user_id: {self.user_id},
         problem_id: {self.problem_id},
-        status: {self.status},
+        status: {self.accepted},
         created_at: '{self.created_at}'
         )
         """

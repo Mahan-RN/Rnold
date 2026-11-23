@@ -34,7 +34,7 @@ def get_per_problem_per_user(
 def get_completed_problems_per_user(user_id: int, session: Session) -> Sequence[int]:
     stmt = (
         select(Submission.problem_id)
-        .where(Submission.user_id == user_id, Submission.status == "ACCEPTED")
+        .where(Submission.user_id == user_id, Submission.accepted == "ACCEPTED")
         .distinct()
     )
 
@@ -45,13 +45,13 @@ def insert_one(
     *,
     user_id: int,
     problem_id: int,
-    status: int,
+    accepted: bool,
     session: Session,
 ) -> Submission:
     submission = Submission(
         user_id=user_id,
         problem_id=problem_id,
-        status=status,
+        accepted=accepted,
     )
     session.add(submission)
     try:

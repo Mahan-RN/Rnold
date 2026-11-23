@@ -41,14 +41,14 @@ def insert_one(
     *,
     user_id: int,
     problem_id: int,
-    status: int,
+    accepted: bool,
     session: Session,
 ) -> Submission:
     try:
         submission = submission_repository.insert_one(
             user_id=user_id,
             problem_id=problem_id,
-            status=status,
+            accepted=accepted,
             session=session,
         )
     except ConflictError as e:
