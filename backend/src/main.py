@@ -10,9 +10,9 @@ from src.database import Base, SessionLocal, engine
 from src.routers import (
     auth_router,
     curriculum_router,
+    evaluation_cases_router,
     problems_router,
     submissions_router,
-    test_cases_router,
     topics_router,
     users_router,
 )
@@ -52,10 +52,10 @@ app.add_middleware(
 app.include_router(users_router, prefix=API_PREFIX)
 app.include_router(auth_router, prefix=API_PREFIX)
 app.include_router(curriculum_router, prefix=API_PREFIX)
+app.include_router(evaluation_cases_router, prefix=API_PREFIX)
 app.include_router(problems_router, prefix=API_PREFIX)
 app.include_router(submissions_router, prefix=API_PREFIX)
 app.include_router(topics_router, prefix=API_PREFIX)
-app.include_router(test_cases_router, prefix=API_PREFIX)
 
 
 @app.get("/")
