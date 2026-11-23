@@ -15,8 +15,6 @@ Table submissions {
     problem_id integer [not null, ref: > problems.id]
     status varchar [not null]
     created_at timestamptz [not null, default:'now()']
-    runtime_ms integer [not null]
-    code varchar
 }
 
 Table problems {
@@ -36,9 +34,9 @@ Table topics {
     sort_order integer
 }
 
-Table test_cases {
+Table evaluation_cases {
     id integer [primary key]
-    problem_id integer [primary key, ref: > problems.id, note: 'ON DELETE CASCADE']
+    problem_id integer [not null, ref: > problems.id, note: 'ON DELETE CASCADE']
     code varchar [not null]
     sort_order integer [not null]
 }
