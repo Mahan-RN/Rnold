@@ -7,7 +7,7 @@ class SubmissionResponse(BaseModel):
     id: int
     user_id: int
     problem_id: int
-    status: bool
+    accepted: bool
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
@@ -16,4 +16,4 @@ class SubmissionResponse(BaseModel):
 class CreateSubmissionRequest(BaseModel):
     user_id: int
     problem_id: int
-    status: bool
+    accepted: bool
