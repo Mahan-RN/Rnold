@@ -20,6 +20,10 @@ def get_one(id: int, session: Session) -> Submission:
     return result
 
 
+def get_all(session: Session) -> Sequence[Submission]:
+    return submission_repository.get_all(session)
+
+
 def get_per_problem_per_user(
     user_id: int, problem_id: int, session: Session
 ) -> Sequence[Submission]:
@@ -29,8 +33,8 @@ def get_per_problem_per_user(
     return result
 
 
-def get_all(session: Session) -> Sequence[Submission]:
-    return submission_repository.get_all(session)
+def get_completed_problems_per_user(user_id: int, session: Session) -> Sequence[int]:
+    return submission_repository.get_completed_problems_per_user(user_id, session)
 
 
 def insert_one(

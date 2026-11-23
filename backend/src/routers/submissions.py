@@ -21,6 +21,15 @@ def get_submissions(session: DbSession, admin: CurrentAdmin) -> Sequence[Submiss
     return submission_services.get_all(session)
 
 
+@router.get("/accepted", response_model=list[int])
+def get_completed_problems_per_user(
+    session: DbSession, user: CurrentUser
+) -> Sequence[int]:
+    user_id = user.github_id
+    result = submission_services.get_completed_problems_per_user(user_id, session)
+    return result
+
+
 @router.get("/{problem_id}/me", response_model=list[SubmissionResponse])
 def get_user_submissions_per_problem(
     problem_id: int, session: DbSession, user: CurrentUser
