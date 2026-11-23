@@ -34,7 +34,7 @@ def get_per_problem_per_user(
 def get_completed_problems_per_user(user_id: int, session: Session) -> Sequence[int]:
     stmt = (
         select(Submission.problem_id)
-        .where(Submission.user_id == user_id, Submission.accepted == "ACCEPTED")
+        .where(Submission.user_id == user_id, Submission.accepted == True)
         .distinct()
     )
 
