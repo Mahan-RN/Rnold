@@ -31,7 +31,9 @@ export default function ViewProblemButton(props: ViewProblemButtonProps) {
             className={styles.problemLink}
         >
             <span className={styles.problemTitle}>{title}</span>
-            {accepted && "Completed ✅"}
+            <span className={styles.completion}>
+                {accepted && "Completed ✅"}
+            </span>
             {difficultyElm}
         </Link>
     );

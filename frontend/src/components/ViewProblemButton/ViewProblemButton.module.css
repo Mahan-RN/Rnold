@@ -1,7 +1,8 @@
 .problemLink {
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 180px 60px;
+    align-items: center;
     flex: 1;
-    justify-content: space-between;
     gap: 12px;
     color: var(--text);
     text-decoration: none;
@@ -11,14 +12,21 @@
     font-weight: bold;
 }
 
+.completion {
+    text-align: center;
+}
+
 .easy {
     color: #06d001;
+    text-align: right;
 }
 
 .normal {
     color: #ffaf00;
+    text-align: right;
 }
 
 .hard {
     color: #ff0b55;
+    text-align: right;
 }
