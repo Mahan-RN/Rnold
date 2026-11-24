@@ -5,6 +5,7 @@ import type { CurriculumProblemResponse } from "../../loaders/HomePageLoader";
 
 interface ViewProblemButtonProps extends CurriculumProblemResponse {
     problemIndex: number;
+    accepted: boolean;
 }
 
 export default function ViewProblemButton(props: ViewProblemButtonProps) {
@@ -12,6 +13,7 @@ export default function ViewProblemButton(props: ViewProblemButtonProps) {
     const title = props.title;
     const difficulty = props.difficulty;
     const index = props.problemIndex;
+    const accepted = props.accepted;
 
     let difficultyElm;
     if (difficulty === 1) {
@@ -25,10 +27,11 @@ export default function ViewProblemButton(props: ViewProblemButtonProps) {
     return (
         <Link
             to={`problems/${id}`}
-            state={{ position: index}}
+            state={{ position: index }}
             className={styles.problemLink}
         >
             <span className={styles.problemTitle}>{title}</span>
+            {accepted && "Completed ✅"}
             {difficultyElm}
         </Link>
     );

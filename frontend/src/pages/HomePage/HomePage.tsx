@@ -1,17 +1,19 @@
 import { useLoaderData } from "react-router";
 import TopicBox from "src/components/TopicBox/TopicBox";
 import type homePageLoader from "src/loaders/HomePageLoader";
-import styles from "src/pages/HomePage/HomePage.module.css"
+import styles from "src/pages/HomePage/HomePage.module.css";
 
 export default function HomePage() {
-    const curriculum = useLoaderData<typeof homePageLoader>();
+    const loaderData = useLoaderData<typeof homePageLoader>();
+    const curriculum = loaderData.curriculum;
+    const completedProblems = loaderData.completedProblems;
     const topicBoxes = curriculum.map((topic) => (
         <TopicBox
             key={topic.id}
-            id={topic.id}
-            name={topic.name}
-            description={topic.description}
+            topicName={topic.name}
+            topicDescription={topic.description}
             problems={topic.problems}
+            completedProblems={completedProblems}
         />
     ));
     return (

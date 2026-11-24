@@ -1,12 +1,20 @@
 import styles from "src/components/TopicBox/TopicBox.module.css";
 import ViewProblemButton from "src/components/ViewProblemButton/ViewProblemButton";
-import type { CurriculumResponse } from "src/loaders/HomePageLoader";
+import type { CurriculumProblemResponse } from "src/loaders/HomePageLoader";
 
-export default function TopicBox(props: CurriculumResponse) {
-    // const topicID = props.id;
-    const topicName = props.name;
-    const topicDescription = props.description;
-    const problems = props.problems;
+interface TopicBoxProps {
+    topicName: string;
+    topicDescription: string;
+    problems: CurriculumProblemResponse[];
+    completedProblems: number[] | null;
+}
+
+export default function TopicBox({
+    topicName,
+    topicDescription,
+    problems,
+    completedProblems,
+}: TopicBoxProps) {
     const viewProblemButtons = problems.map((problem, index) => (
         <li>
             <ViewProblemButton
@@ -15,6 +23,7 @@ export default function TopicBox(props: CurriculumResponse) {
                 title={problem.title}
                 difficulty={problem.difficulty}
                 problemIndex={index + 1}
+                accepted={completedProblems?.includes(problem.id) ?? false}
             />
         </li>
     ));
