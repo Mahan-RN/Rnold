@@ -13,7 +13,9 @@ class EvaluationCase(Base):
     __tablename__ = "evaluation_cases"
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
-    problem_id: Mapped[int] = mapped_column(ForeignKey("problems.id"))
+    problem_id: Mapped[int] = mapped_column(
+        ForeignKey("problems.id", ondelete="CASCADE")
+    )
     code: Mapped[str]
     sort_order: Mapped[int]
 

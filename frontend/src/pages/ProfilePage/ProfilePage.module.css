@@ -122,6 +122,12 @@
     overflow-wrap: anywhere;
 }
 
+/* Buttons sections */
+.buttonsSection {
+    display: flex;
+    justify-content: space-around;
+}
+
 /* Logout button */
 .deleteMeBtn {
     display: inline-flex;

@@ -8,9 +8,11 @@ import { RouterProvider } from "react-router/dom";
 import deleteUserAction from "./actions/admin/deleteUserAction";
 import problemAction from "./actions/admin/problemAction";
 import createTopicAction from "./actions/admin/topicAction";
-import deleteMeAction from "./actions/deleteMeAction";
 import logoutAction from "./actions/logoutAction";
+import problemPageAction from "./actions/problemPageAction";
+import profilePageAction from "./actions/profilePageAction";
 import AdminErrorBoundary from "./boundaries/AdminErrorBoundary/AdminErrorBoundary";
+import RootErrorBoundary from "./boundaries/RootErrorBoundary/RootErrorBoundary";
 import RootLayout from "./layouts/RootLayout";
 import adminLoader from "./loaders/admin/adminLoader";
 import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader";
@@ -36,6 +38,7 @@ const router = createBrowserRouter([
         path: "/",
         loader: rootLayoutLoader,
         element: <RootLayout />,
+        ErrorBoundary: RootErrorBoundary,
         children: [
             {
                 index: true,
@@ -53,12 +56,14 @@ const router = createBrowserRouter([
                 path: "/problems/:problemID",
                 element: <ProblemPage />,
                 loader: problemPageLoader,
+                action: problemPageAction,
                 errorElement: <NotFoundPage />,
             },
             {
                 path: "/profile",
                 element: <ProfilePage />,
                 loader: profilePageLoader,
+                action: profilePageAction,
                 errorElement: <NotFoundPage />,
             },
             {
@@ -91,11 +96,6 @@ const router = createBrowserRouter([
     {
         path: "/logout",
         action: logoutAction,
-        loader: logoutLoader,
-    },
-    {
-        path: "/delete-me",
-        action: deleteMeAction,
         loader: logoutLoader,
     },
 ]);

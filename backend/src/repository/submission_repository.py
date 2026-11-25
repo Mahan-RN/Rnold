@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from sqlalchemy import exc, select
+from sqlalchemy import delete, exc, select
 from sqlalchemy.orm import Session
 
 from src.exceptions.repository_exceptions import ConflictError, NotFoundError
@@ -31,21 +31,39 @@ def get_per_problem_per_user(
     return session.scalars(stmt).all()
 
 
+def get_completed_problems_per_user(user_id: int, session: Session) -> Sequence[int]:
+    stmt = (
+        select(Submission.problem_id)
+        .where(Submission.user_id == user_id, Submission.accepted == True)
+        .distinct()
+    )
+
+    return session.scalars(stmt).all()
+
+
+def get_problem_status_per_user(
+    user_id: int, problem_id: int, session: Session
+) -> bool:
+    stmt = select(Submission.accepted).where(
+        Submission.user_id == user_id,
+        Submission.problem_id == problem_id,
+        Submission.accepted == True,
+    )
+    results = session.scalars(stmt).all()
+    return len(results) > 0
+
+
 def insert_one(
     *,
     user_id: int,
     problem_id: int,
-    status: int,
-    runtime_ms: int,
-    code: str,
+    accepted: bool,
     session: Session,
 ) -> Submission:
     submission = Submission(
         user_id=user_id,
         problem_id=problem_id,
-        status=status,
-        runtime_ms=runtime_ms,
-        code=code,
+        accepted=accepted,
     )
     session.add(submission)
     try:
@@ -60,4 +78,10 @@ def delete_one(id: int, session: Session) -> None:
     submission = get_one(id, session)
 
     session.delete(submission)
+    session.flush()
+
+
+def delete_user_submissions(user_id: int, session: Session) -> None:
+    stmt = delete(Submission).where(Submission.user_id == user_id)
+    session.execute(stmt)
     session.flush()

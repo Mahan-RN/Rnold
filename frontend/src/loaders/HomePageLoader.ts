@@ -1,6 +1,5 @@
+import axios from "axios";
 import type { LoaderFunctionArgs } from "react-router";
-
-import apiFetch from "../api/Fetch";
 
 export interface CurriculumProblemResponse {
     id: number;
@@ -16,8 +15,28 @@ export interface CurriculumResponse {
 
 export default async function homePageLoader({ request }: LoaderFunctionArgs) {
     const signal = request.signal;
-    const curriculum = await apiFetch<CurriculumResponse[]>("/curriculum", {
-        signal,
-    });
-    return curriculum;
+    const [curriculumResponse, completedProblemsResponse] = await Promise.all([
+        axios.get<CurriculumResponse[]>("/api/curriculum", {
+            signal,
+        }),
+        axios
+            .get<number[]>("/api/submissions/accepted", {
+                signal,
+            })
+            .catch((error: unknown) => {
+                if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 401
+                ) {
+                    return null;
+                }
+                throw error;
+            }),
+    ]);
+    console.log("Hello!")
+    console.log(curriculumResponse.data)
+    return {
+        curriculum: curriculumResponse.data,
+        completedProblems: completedProblemsResponse?.data ?? null,
+    };
 }

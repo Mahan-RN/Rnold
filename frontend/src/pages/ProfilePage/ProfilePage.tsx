@@ -80,25 +80,50 @@ export default function ProfilePage() {
                         </div>
                     </div>
                 </section>
-                <section>
-                    <Form method="delete" action="/delete-me">
-                        <button
-                            className={styles.deleteMeBtn}
-                            type="submit"
-                            onClick={(event) => {
-                                if (
-                                    !confirm(
-                                        "Are you sure you want to delete your account?",
-                                    )
-                                ) {
-                                    event.preventDefault();
-                                }
-                            }}
-                        >
-                            Delete Account
-                        </button>
-                    </Form>
-                </section>
+                <div className={styles.buttonsSection}>
+                    <section>
+                        <Form method="delete">
+                            <button
+                                className={styles.deleteMeBtn}
+                                name="intent"
+                                value="delete-me"
+                                type="submit"
+                                onClick={(event) => {
+                                    if (
+                                        !confirm(
+                                            "Are you sure you want to delete your account?",
+                                        )
+                                    ) {
+                                        event.preventDefault();
+                                    }
+                                }}
+                            >
+                                Delete Account
+                            </button>
+                        </Form>
+                    </section>
+                    <section>
+                        <Form method="delete">
+                            <button
+                                className={styles.deleteMeBtn}
+                                name="intent"
+                                value="delete-submissions"
+                                type="submit"
+                                onClick={(event) => {
+                                    if (
+                                        !confirm(
+                                            "Are you sure you want to reset your progress? This will delete your submission history",
+                                        )
+                                    ) {
+                                        event.preventDefault();
+                                    }
+                                }}
+                            >
+                                Reset Progress
+                            </button>
+                        </Form>
+                    </section>
+                </div>
             </div>
         </main>
     );

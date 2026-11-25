@@ -20,6 +20,10 @@ def get_one(id: int, session: Session) -> Submission:
     return result
 
 
+def get_all(session: Session) -> Sequence[Submission]:
+    return submission_repository.get_all(session)
+
+
 def get_per_problem_per_user(
     user_id: int, problem_id: int, session: Session
 ) -> Sequence[Submission]:
@@ -29,26 +33,30 @@ def get_per_problem_per_user(
     return result
 
 
-def get_all(session: Session) -> Sequence[Submission]:
-    return submission_repository.get_all(session)
+def get_completed_problems_per_user(user_id: int, session: Session) -> Sequence[int]:
+    return submission_repository.get_completed_problems_per_user(user_id, session)
+
+
+def get_problem_status_per_user(
+    user_id: int, problem_id: int, session: Session
+) -> bool:
+    return submission_repository.get_problem_status_per_user(
+        user_id, problem_id, session
+    )
 
 
 def insert_one(
     *,
     user_id: int,
     problem_id: int,
-    status: int,
-    runtime_ms: int,
-    code: str,
+    accepted: bool,
     session: Session,
 ) -> Submission:
     try:
         submission = submission_repository.insert_one(
             user_id=user_id,
             problem_id=problem_id,
-            status=status,
-            runtime_ms=runtime_ms,
-            code=code,
+            accepted=accepted,
             session=session,
         )
     except ConflictError as e:
@@ -62,3 +70,7 @@ def delete_one(id: int, session: Session) -> None:
         submission_repository.delete_one(id, session)
     except NotFoundError as e:
         raise SubmissionNotFoundError from e
+
+
+def delete_user_submissions(user_id: int, session: Session) -> None:
+    submission_repository.delete_user_submissions(user_id, session)

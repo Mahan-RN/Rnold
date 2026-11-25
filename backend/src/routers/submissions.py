@@ -21,12 +21,23 @@ def get_submissions(session: DbSession, admin: CurrentAdmin) -> Sequence[Submiss
     return submission_services.get_all(session)
 
 
-@router.get("/{problem_id}/me", response_model=list[SubmissionResponse])
-def get_user_submissions_per_problem(
-    problem_id: int, session: DbSession, user: CurrentUser
-) -> Sequence[Submission]:
+@router.get("/accepted", response_model=list[int])
+def get_completed_problems_per_user(
+    session: DbSession, user: CurrentUser
+) -> Sequence[int]:
     user_id = user.github_id
-    result = submission_services.get_per_problem_per_user(user_id, problem_id, session)
+    result = submission_services.get_completed_problems_per_user(user_id, session)
+    return result
+
+
+@router.get("/{problem_id}/me")
+def get_problem_status_per_user(
+    problem_id: int, session: DbSession, user: CurrentUser
+) -> bool:
+    user_id = user.github_id
+    result = submission_services.get_problem_status_per_user(
+        user_id, problem_id, session
+    )
     return result
 
 
@@ -47,20 +58,18 @@ def get_submission(
 def add_submission(
     request: CreateSubmissionRequest, session: DbSession, user: CurrentUser
 ) -> Submission:
-    result = submission_services.insert_one(**request.model_dump(), session=session)
+    result = submission_services.insert_one(
+        user_id=user.github_id,
+        problem_id=request.problem_id,
+        accepted=request.accepted,
+        session=session,
+    )
     session.commit()
     return result
 
 
-@router.delete(
-    "/{submission_id}", responses={404: {"description": "Submission not found"}}
-)
-def delete_submission(
-    submission_id: int, session: DbSession, admin: CurrentAdmin
-) -> Response:
-    try:
-        submission_services.delete_one(submission_id, session)
-        session.commit()
-        return Response(status.HTTP_204_NO_CONTENT)
-    except SubmissionNotFoundError as e:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+@router.delete("/me")
+def delete_user_submissions(session: DbSession, user: CurrentUser) -> Response:
+    submission_services.delete_user_submissions(user.github_id, session)
+    session.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

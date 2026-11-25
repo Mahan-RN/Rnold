@@ -1,6 +1,7 @@
+
 import { useState } from "react";
 import Markdown from "react-markdown";
-import { useLoaderData,useLocation } from "react-router";
+import { useLoaderData, useLocation } from "react-router";
 import CodeEditor from "src/components/CodeEditor/CodeEditor";
 import TestCasePanel from "src/components/TestCasePanel/TestCasePanel";
 import type problemPageLoader from "src/loaders/ProblemPageLoader";
@@ -11,6 +12,7 @@ export default function ProblemPage() {
     const loaderData = useLoaderData<typeof problemPageLoader>();
     const problem = loaderData.problem;
     const testCases = loaderData.testCases;
+    const accepted = loaderData.accepted;
     const difficulty = problem.difficulty;
 
     const location = useLocation();
@@ -20,12 +22,25 @@ export default function ProblemPage() {
 
     let difficultyElm;
     if (difficulty === 1) {
-        difficultyElm = <span className={styles.easy}>Easy</span>;
+        difficultyElm = (
+            <span className={`${styles.badge} ${styles.easy}`}>
+                Easy
+            </span>
+        );
     } else if (difficulty === 2) {
-        difficultyElm = <span className={styles.normal}>Medium</span>;
+        difficultyElm = (
+            <span className={`${styles.badge} ${styles.normal}`}>
+                Medium
+            </span>
+        );
     } else {
-        difficultyElm = <span className={styles.hard}>Hard</span>;
+        difficultyElm = (
+            <span className={`${styles.badge} ${styles.hard}`}>
+                Hard
+            </span>
+        );
     }
+
     const testCaseElements = testCases.map((testCase, index) => (
         <TestCasePanel
             key={testCase.id}
@@ -41,18 +56,42 @@ export default function ProblemPage() {
                 <h1>
                     Problem #{position}: {problem.title}
                 </h1>
-                <h3>{difficultyElm}</h3>
+
+                <div className={styles.infoContainer}>
+                    {difficultyElm}
+
+                    {accepted !== null && (
+                        <span
+                            className={`${styles.status} ${
+                                accepted
+                                    ? styles.completed
+                                    : styles.incomplete
+                            }`}
+                        >
+                            <span aria-hidden="true">
+                                {accepted ? "✓" : "✕"}
+                            </span>
+                            {accepted ? "Completed" : "Incomplete"}
+                        </span>
+                    )}
+                </div>
             </div>
+
             <div className={styles.descriptionContainer}>
                 <h2>Description:</h2>
                 <Markdown>{problem.description}</Markdown>
             </div>
+
             <CodeEditor
+                problemID={problem.id}
                 starterCode={problem.starter_code}
                 testCases={testCases}
                 onTestResults={setTestResults}
             />
-            {testCaseElements}
+
+            <div className={styles.testCasesContainer}>
+                {testCaseElements}
+            </div>
         </div>
     );
 }

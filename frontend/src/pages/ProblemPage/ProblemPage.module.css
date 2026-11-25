@@ -1,31 +1,50 @@
+
 .flexContainer {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin: 0px 15px;
+    margin: 0 15px;
     text-align: left;
+    gap: 12px;
 }
 
+/* Problem title and information */
 .titleContainer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0px;
+    gap: 24px;
+    margin: 10px 0 20px;
     width: 100%;
 }
 
 .titleContainer h1 {
     line-height: 1.2;
+    margin: 0;
+    min-width: 0;
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
 }
 
-.descriptionContainer {
-    margin-bottom: 20px;
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: 12px;
 }
 
-.titleContainer h3 {
-    border: 3px #d97706 solid;
-    border-radius: 15px;
-    padding: 3px 8px;
+/* Difficulty badge */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #d97706;
+    border-radius: 14px;
+    padding: 4px 10px;
+    font-size: 1rem;
+    font-weight: 650;
+    white-space: nowrap;
 }
 
 .easy {
@@ -38,4 +57,94 @@
 
 .hard {
     color: #ff0b55;
+}
+
+/* Completion status */
+.status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.completed {
+    color: #06d001;
+}
+
+.incomplete {
+    color: #ff4d4d;
+}
+
+/* Problem description */
+.descriptionContainer {
+    margin-bottom: 12px;
+    width: 100%;
+    line-height: 1.6;
+}
+
+.descriptionContainer h2 {
+    margin: 0 0 8px;
+    font-size: 1.35rem;
+    font-weight: 600;
+}
+
+.descriptionContainer p {
+    margin: 0;
+    color: var(--text);
+    line-height: 1.7;
+}
+
+.descriptionContainer code {
+    background: var(--surface);
+    border-radius: 5px;
+    padding: 3px 6px;
+    font-size: 0.9em;
+}
+
+.descriptionContainer ul,
+.descriptionContainer ol {
+    padding-left: 24px;
+    margin: 8px 0;
+}
+
+.descriptionContainer li {
+    margin: 4px 0;
+}
+
+.descriptionContainer pre {
+    padding: 12px;
+    border-radius: 6px;
+    background: var(--surface);
+    overflow-x: auto;
+}
+
+/* Test cases */
+.testCasesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+/* Smaller screens */
+@media (max-width: 650px) {
+    .titleContainer {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .infoContainer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 8px;
+    }
+
+    .titleContainer h1 {
+        font-size: 1.8rem;
+    }
 }
