@@ -12,6 +12,7 @@ import logoutAction from "./actions/logoutAction";
 import problemPageAction from "./actions/problemPageAction";
 import profilePageAction from "./actions/profilePageAction";
 import AdminErrorBoundary from "./boundaries/AdminErrorBoundary/AdminErrorBoundary";
+import RootErrorBoundary from "./boundaries/RootErrorBoundary/RootErrorBoundary";
 import RootLayout from "./layouts/RootLayout";
 import adminLoader from "./loaders/admin/adminLoader";
 import topicManagementPageLoader from "./loaders/admin/TopicManagementPageLoader";
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
         path: "/",
         loader: rootLayoutLoader,
         element: <RootLayout />,
+        ErrorBoundary: RootErrorBoundary,
         children: [
             {
                 index: true,
