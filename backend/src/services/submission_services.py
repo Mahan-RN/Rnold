@@ -37,6 +37,14 @@ def get_completed_problems_per_user(user_id: int, session: Session) -> Sequence[
     return submission_repository.get_completed_problems_per_user(user_id, session)
 
 
+def get_problem_status_per_user(
+    user_id: int, problem_id: int, session: Session
+) -> bool:
+    return submission_repository.get_problem_status_per_user(
+        user_id, problem_id, session
+    )
+
+
 def insert_one(
     *,
     user_id: int,

@@ -30,7 +30,6 @@ export default async function homePageLoader({ request }: LoaderFunctionArgs) {
                 ) {
                     return null;
                 }
-                console.log("Some other error was thrown in the homePageLoader")
                 throw error;
             }),
     ]);

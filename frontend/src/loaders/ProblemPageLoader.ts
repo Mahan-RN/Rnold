@@ -1,5 +1,5 @@
+import axios from "axios";
 import type { LoaderFunctionArgs } from "react-router";
-import apiFetch from "src/api/Fetch";
 
 export interface ProblemResponse {
     id: number;
@@ -22,13 +22,32 @@ export default async function problemPageLoader({
 }: LoaderFunctionArgs) {
     const signal = request.signal;
     const problemID = params.problemID;
-    const [problem, testCases] = await Promise.all([
-        apiFetch<ProblemResponse>(`/problems/${problemID}`, {
-            signal,
-        }),
-        apiFetch<TestCasesResponse[]>(`/problems/${problemID}/test-cases`, {
-            signal,
-        }),
-    ]);
-    return { problem, testCases };
+    const [problemResponse, testCasesResponse, submissionStatusResponse] =
+        await Promise.all([
+            axios.get<ProblemResponse>(`/api/problems/${problemID}`, {
+                signal,
+            }),
+            axios.get<TestCasesResponse[]>(
+                `/api/problems/${problemID}/test-cases`,
+                {
+                    signal,
+                },
+            ),
+            axios
+                .get<boolean>(`/api/submissions/${problemID}/me`, { signal })
+                .catch((error: unknown) => {
+                    if (
+                        axios.isAxiosError(error) &&
+                        error.response?.status === 401
+                    ) {
+                        return null;
+                    }
+                    throw error;
+                }),
+        ]);
+    return {
+        problem: problemResponse.data,
+        testCases: testCasesResponse.data,
+        accepted: submissionStatusResponse?.data ?? null,
+    };
 }

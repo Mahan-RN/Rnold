@@ -41,6 +41,18 @@ def get_completed_problems_per_user(user_id: int, session: Session) -> Sequence[
     return session.scalars(stmt).all()
 
 
+def get_problem_status_per_user(
+    user_id: int, problem_id: int, session: Session
+) -> bool:
+    stmt = select(Submission.accepted).where(
+        Submission.user_id == user_id,
+        Submission.problem_id == problem_id,
+        Submission.accepted == True,
+    )
+    results = session.scalars(stmt).all()
+    return len(results) > 0
+
+
 def insert_one(
     *,
     user_id: int,

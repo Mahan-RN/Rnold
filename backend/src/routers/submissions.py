@@ -30,12 +30,14 @@ def get_completed_problems_per_user(
     return result
 
 
-@router.get("/{problem_id}/me", response_model=list[SubmissionResponse])
-def get_user_submissions_per_problem(
+@router.get("/{problem_id}/me")
+def get_problem_status_per_user(
     problem_id: int, session: DbSession, user: CurrentUser
-) -> Sequence[Submission]:
+) -> bool:
     user_id = user.github_id
-    result = submission_services.get_per_problem_per_user(user_id, problem_id, session)
+    result = submission_services.get_problem_status_per_user(
+        user_id, problem_id, session
+    )
     return result
 
 
