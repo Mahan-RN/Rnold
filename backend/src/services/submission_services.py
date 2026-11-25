@@ -70,3 +70,7 @@ def delete_one(id: int, session: Session) -> None:
         submission_repository.delete_one(id, session)
     except NotFoundError as e:
         raise SubmissionNotFoundError from e
+
+
+def delete_user_submissions(user_id: int, session: Session) -> None:
+    submission_repository.delete_user_submissions(user_id, session)

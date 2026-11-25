@@ -81,9 +81,11 @@ export default function ProfilePage() {
                     </div>
                 </section>
                 <section>
-                    <Form method="delete" action="/delete-me">
+                    <Form method="delete">
                         <button
                             className={styles.deleteMeBtn}
+                            name="intent"
+                            value="delete-me"
                             type="submit"
                             onClick={(event) => {
                                 if (
@@ -96,6 +98,27 @@ export default function ProfilePage() {
                             }}
                         >
                             Delete Account
+                        </button>
+                    </Form>
+                </section>
+                <section>
+                    <Form method="delete">
+                        <button
+                            className={styles.deleteMeBtn}
+                            name="intent"
+                            value="delete-submissions"
+                            type="submit"
+                            onClick={(event) => {
+                                if (
+                                    !confirm(
+                                        "Are you sure you want to reset your progress? This will delete your submission history",
+                                    )
+                                ) {
+                                    event.preventDefault();
+                                }
+                            }}
+                        >
+                            Reset Progress
                         </button>
                     </Form>
                 </section>

@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 
-from sqlalchemy import exc, select
+from sqlalchemy import delete, exc, select
 from sqlalchemy.orm import Session
 
 from src.exceptions.repository_exceptions import ConflictError, NotFoundError
@@ -78,4 +78,10 @@ def delete_one(id: int, session: Session) -> None:
     submission = get_one(id, session)
 
     session.delete(submission)
+    session.flush()
+
+
+def delete_user_submissions(user_id: int, session: Session) -> None:
+    stmt = delete(Submission).where(Submission.user_id == user_id)
+    session.execute(stmt)
     session.flush()

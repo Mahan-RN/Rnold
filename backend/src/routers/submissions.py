@@ -68,15 +68,8 @@ def add_submission(
     return result
 
 
-@router.delete(
-    "/{submission_id}", responses={404: {"description": "Submission not found"}}
-)
-def delete_submission(
-    submission_id: int, session: DbSession, admin: CurrentAdmin
-) -> Response:
-    try:
-        submission_services.delete_one(submission_id, session)
-        session.commit()
-        return Response(status.HTTP_204_NO_CONTENT)
-    except SubmissionNotFoundError as e:
-        raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(e))
+@router.delete("/me")
+def delete_user_submissions(session: DbSession, user: CurrentUser) -> Response:
+    submission_services.delete_user_submissions(user.github_id, session)
+    session.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -8,9 +8,9 @@ import { RouterProvider } from "react-router/dom";
 import deleteUserAction from "./actions/admin/deleteUserAction";
 import problemAction from "./actions/admin/problemAction";
 import createTopicAction from "./actions/admin/topicAction";
-import deleteMeAction from "./actions/deleteMeAction";
 import logoutAction from "./actions/logoutAction";
 import problemPageAction from "./actions/problemPageAction";
+import profilePageAction from "./actions/profilePageAction";
 import AdminErrorBoundary from "./boundaries/AdminErrorBoundary/AdminErrorBoundary";
 import RootLayout from "./layouts/RootLayout";
 import adminLoader from "./loaders/admin/adminLoader";
@@ -61,6 +61,7 @@ const router = createBrowserRouter([
                 path: "/profile",
                 element: <ProfilePage />,
                 loader: profilePageLoader,
+                action: profilePageAction,
                 errorElement: <NotFoundPage />,
             },
             {
@@ -93,11 +94,6 @@ const router = createBrowserRouter([
     {
         path: "/logout",
         action: logoutAction,
-        loader: logoutLoader,
-    },
-    {
-        path: "/delete-me",
-        action: deleteMeAction,
         loader: logoutLoader,
     },
 ]);
