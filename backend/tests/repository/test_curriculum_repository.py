@@ -1,19 +1,7 @@
-from typing import TypedDict
-
 from sqlalchemy.orm import Session
 
-from src.models import Difficulty
 from src.repository import curriculum_repository
 from tests.factory_types import ProblemMaker, TopicMaker
-
-
-class ProblemData(TypedDict):
-    sort_order: int
-    topic_id: int
-    title: str
-    description: str
-    difficulty: Difficulty
-    starter_code: str
 
 
 class TestCurriculumRepository:
