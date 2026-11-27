@@ -4,9 +4,10 @@ from typing import TypedDict
 import pytest
 from sqlalchemy.orm import Session
 
-from src.exceptions.repository_exceptions import NotFoundError
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
 from src.models import Role
 from src.repository import user_repository
+from tests.factory_types import UserMaker
 
 
 class UserData(TypedDict):
@@ -41,9 +42,24 @@ class TestUserRepository:
         with pytest.raises(NotFoundError):
             user_repository.get_one(1, db_session)
 
+    def test_get_one_match(self, make_user: UserMaker, db_session: Session) -> None:
+        make_user()
+        make_user(github_id=-2, username="user 2")
+        result = user_repository.get_one(-1, db_session)
+        assert result.github_id == -1
+        assert result.username == "user 1"
+
     def test_get_all_empty(self, db_session: Session) -> None:
         users = user_repository.get_all(db_session)
         assert len(users) == 0
+
+    def test_get_all(self, make_user: UserMaker, db_session: Session) -> None:
+        make_user()
+        make_user(github_id=-2, username="user 2")
+        result = user_repository.get_all(db_session)
+        assert len(result) == 2
+        assert result[0].github_id == -1
+        assert result[1].github_id == -2
 
     def test_insert_one_user(self, db_session: Session) -> None:
         user_repository.insert_one(**self.user1, session=db_session)
@@ -77,6 +93,12 @@ class TestUserRepository:
         user_repository.insert_one(**self.admin1, session=db_session)
         users = user_repository.get_all(db_session)
         assert len(users) == 3
+
+    def test_insert_one_duplicate_github_id(self, db_session: Session) -> None:
+        user_repository.insert_one(**self.user1, session=db_session)
+        self.user2["github_id"] = self.user1["github_id"]
+        with pytest.raises(ConflictError):
+            user_repository.insert_one(**self.user2, session=db_session)
 
     def test_update_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(NotFoundError):

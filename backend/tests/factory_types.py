@@ -1,6 +1,6 @@
 from typing import Protocol
 
-from src.models import Difficulty, Problem, Topic
+from src.models import Difficulty, Problem, Role, Topic, User
 
 
 class TopicMaker(Protocol):
@@ -19,3 +19,13 @@ class ProblemMaker(Protocol):
         difficulty: Difficulty = ...,
         starter_code: str = ...,
     ) -> Problem: ...
+
+
+class UserMaker(Protocol):
+    def __call__(
+        self,
+        github_id: int = ...,
+        github_email: str = ...,
+        username: str = ...,
+        role: Role = ...,
+    ) -> User: ...

@@ -52,12 +52,7 @@ def update_one(
     if role is not None:
         user.role = role
 
-    try:
-        session.flush()
-    except exc.IntegrityError as e:
-        session.rollback()
-        raise ConflictError("Failed to update user") from e
-
+    session.flush()
     return user
 
 

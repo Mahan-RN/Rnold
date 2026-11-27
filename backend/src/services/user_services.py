@@ -57,8 +57,6 @@ def update_one(
         result = user_repository.update_one(github_id, session, username, role)
     except NotFoundError as e:
         raise UserNotFoundError from e
-    except ConflictError as e:
-        raise UserConflictError from e
 
     return result
 
@@ -66,21 +64,13 @@ def update_one(
 def delete_one(github_id: int, session: Session) -> None:
     try:
         user = user_repository.get_one(github_id, session)
+
+        users = user_repository.get_all(session)
+        admins = list(filter(lambda user: user.role == Role.ADMIN, users))
+
+        if user.role == Role.ADMIN and len(admins) <= 1:
+            raise LastAdminDeletionError("Last admin cannot be deleted")
+
+        user_repository.delete_one(github_id, session)
     except NotFoundError as e:
         raise UserNotFoundError from e
-
-    if user.role == Role.USER:
-        try:
-            user_repository.delete_one(user.github_id, session)
-        except NotFoundError as e:
-            raise UserNotFoundError from e
-    else:
-        users = list(user_repository.get_all(session))
-        admins = list(filter(lambda user: user.role == Role.ADMIN, users))
-        if len(admins) > 1:
-            try:
-                user_repository.delete_one(user.github_id, session)
-            except NotFoundError as e:
-                raise UserNotFoundError from e
-        else:
-            raise LastAdminDeletionError("Last admin cannot be deleted")

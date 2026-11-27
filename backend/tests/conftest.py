@@ -8,8 +8,8 @@ from sqlalchemy.pool import StaticPool
 
 from src.database import Base, get_db
 from src.main import app
-from src.models import Difficulty, Problem, Topic
-from tests.factory_types import ProblemMaker, TopicMaker
+from src.models import Difficulty, Problem, Role, Topic, User
+from tests.factory_types import ProblemMaker, TopicMaker, UserMaker
 
 test_engine = create_engine(
     "sqlite:///:memory:",
@@ -76,5 +76,21 @@ def make_problem(db_session: Session) -> ProblemMaker:
         db_session.add(problem)
         db_session.flush()
         return problem
+
+    return _make
+
+
+@pytest.fixture
+def make_user(db_session: Session) -> UserMaker:
+    def _make(
+        github_id: int = -1,
+        github_email: str = "user1@email.com",
+        username: str = "user 1",
+        role: Role = Role.USER,
+    ) -> User:
+        user = User(github_id, github_email, username, role)
+        db_session.add(user)
+        db_session.flush()
+        return user
 
     return _make
