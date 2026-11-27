@@ -3,8 +3,9 @@ from typing import TypedDict
 import pytest
 from sqlalchemy.orm import Session
 
-from src.exceptions.repository_exceptions import NotFoundError
+from src.exceptions.repository_exceptions import ConflictError, NotFoundError
 from src.repository import topic_respository
+from tests.factory_types import TopicMaker
 
 
 class TopicData(TypedDict):
@@ -16,19 +17,50 @@ class TopicData(TypedDict):
 class TestTopicRepository:
     def setup_method(self) -> None:
         self.topic_1_dict: TopicData = {
-            "name": "Recursion",
-            "description": "Just trust the natural recursion",
-            "sort_order": 100,
+            "name": "topic 1",
+            "description": " description 1",
+            "sort_order": 10,
         }
         self.topic_2_dict: TopicData = {
-            "name": "Control flow",
-            "description": "some string",
-            "sort_order": 200,
+            "name": "topic 2",
+            "description": "description 2",
+            "sort_order": 20,
         }
 
     def test_get_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(NotFoundError):
             topic_respository.get_one(1, db_session)
+
+    def test_get_one_match(self, make_topic: TopicMaker, db_session: Session) -> None:
+        make_topic()
+        result = topic_respository.get_one(1, db_session)
+        assert result.id == 1
+        assert result.name == "topic 1"
+
+    def test_get_by_name_not_found(
+        self, make_topic: TopicMaker, db_session: Session
+    ) -> None:
+        make_topic()
+        make_topic(name="topic 2", sort_order=20)
+        with pytest.raises(NotFoundError):
+            topic_respository.get_by_name("topic x", db_session)
+
+    def test_get_by_name_found(
+        self, make_topic: TopicMaker, db_session: Session
+    ) -> None:
+        make_topic()
+        make_topic(name="topic 2", sort_order=20)
+        result = topic_respository.get_all(db_session)
+        assert len(result) == 2
+        assert result[0].sort_order == 10
+        assert result[1].sort_order == 20
+
+    def test_get_all(self, make_topic: TopicMaker, db_session: Session) -> None:
+        make_topic()
+        make_topic(name="topic 2", sort_order=20)
+        result = topic_respository.get_by_name("topic 1", db_session)
+        assert result.id == 1
+        assert result.name == "topic 1"
 
     def test_insert_one(self, db_session: Session) -> None:
         result = topic_respository.insert_one(**self.topic_1_dict, session=db_session)
@@ -37,9 +69,33 @@ class TestTopicRepository:
         assert result.description == self.topic_1_dict["description"]
         assert result.sort_order == self.topic_1_dict["sort_order"]
 
+    def test_insert_one_duplicate_name(self, db_session: Session) -> None:
+        topic_respository.insert_one(**self.topic_1_dict, session=db_session)
+        self.topic_2_dict["name"] = "topic 1"
+        with pytest.raises(ConflictError):
+            topic_respository.insert_one(**self.topic_2_dict, session=db_session)
+
+    def test_insert_one_duplicate_sort_order(self, db_session: Session) -> None:
+        topic_respository.insert_one(**self.topic_1_dict, session=db_session)
+        self.topic_2_dict["sort_order"] = 10
+        with pytest.raises(ConflictError):
+            topic_respository.insert_one(**self.topic_2_dict, session=db_session)
+
     def test_update_one_no_match(self, db_session: Session) -> None:
         with pytest.raises(NotFoundError):
             topic_respository.update_one(id=1, session=db_session)
+
+    def test_update_one_duplicate_name(self, db_session: Session) -> None:
+        topic_respository.insert_one(**self.topic_1_dict, session=db_session)
+        topic_respository.insert_one(**self.topic_2_dict, session=db_session)
+        with pytest.raises(ConflictError):
+            topic_respository.update_one(id=2, name="topic 1", session=db_session)
+
+    def test_update_one_duplicate_sort_order(self, db_session: Session) -> None:
+        topic_respository.insert_one(**self.topic_1_dict, session=db_session)
+        topic_respository.insert_one(**self.topic_2_dict, session=db_session)
+        with pytest.raises(ConflictError):
+            topic_respository.update_one(id=2, sort_order=10, session=db_session)
 
     def test_update_one_match_name(self, db_session: Session) -> None:
         insert_result = topic_respository.insert_one(
