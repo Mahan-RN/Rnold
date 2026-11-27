@@ -4,7 +4,7 @@ from sqlalchemy import exc, select
 from sqlalchemy.orm import Session
 
 from src.exceptions.repository_exceptions import ConflictError, NotFoundError
-from src.models import EvaluationCase, Problem, Topic
+from src.models import EvaluationCase, Problem
 
 
 def get_one(id: int, session: Session) -> Problem:
@@ -35,11 +35,7 @@ def get_test_cases(problem_id: int, session: Session) -> Sequence[EvaluationCase
 
 
 def get_all(session: Session) -> Sequence[Problem]:
-    stmt = (
-        select(Problem)
-        .join(Topic, Problem.topic_id == Topic.id)
-        .order_by(Topic.sort_order, Problem.sort_order)
-    )
+    stmt = select(Problem).order_by(Problem.sort_order)
     return session.scalars(stmt).all()
 
 

@@ -8,8 +8,8 @@ from sqlalchemy.pool import StaticPool
 
 from src.database import Base, get_db
 from src.main import app
-from src.models import Difficulty, Problem, Role, Topic, User
-from tests.factory_types import ProblemMaker, TopicMaker, UserMaker
+from src.models import Difficulty, EvaluationCase, Problem, Role, Topic, User
+from tests.factory_types import EvaluationCaseMaker, ProblemMaker, TopicMaker, UserMaker
 
 test_engine = create_engine(
     "sqlite:///:memory:",
@@ -76,6 +76,19 @@ def make_problem(db_session: Session) -> ProblemMaker:
         db_session.add(problem)
         db_session.flush()
         return problem
+
+    return _make
+
+
+@pytest.fixture()
+def make_evaluation_case(db_session: Session) -> EvaluationCaseMaker:
+    def _make(
+        problem_id: int = 1, code: str = "some code", sort_order: int = 10
+    ) -> EvaluationCase:
+        evaluation_case = EvaluationCase(problem_id, code, sort_order)
+        db_session.add(evaluation_case)
+        db_session.flush()
+        return evaluation_case
 
     return _make
 
